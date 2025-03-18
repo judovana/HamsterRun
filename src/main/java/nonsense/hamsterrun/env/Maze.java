@@ -17,17 +17,22 @@ public class Maze {
     public static Maze generate(BaseConfig config) {
         Maze maze = new Maze(config.getGridSize());
         maze.maze[config.getGridSize() / 2][config.getGridSize() / 2] = BaseBlock.generateMiddle(config);
-        for (int y = config.getGridSize() / 2 - 1; y >= 0; y--) {
-            maze.maze[config.getGridSize() / 2][y] = BaseBlock.generateByNeighours(config, null,  maze.maze[config.getGridSize() / 2][y + 1], null, null);
+        //main cross
+        for (int y = 0; y < config.getGridSize()/2; y++) {
+            int yy=config.getGridSize() / 2 - y - 1;
+            //left half
+            maze.maze[config.getGridSize() / 2][yy] = BaseBlock.generateByNeighours(config, null,  maze.maze[config.getGridSize() / 2][yy + 1], null, null);
+            int yyy=config.getGridSize() / 2 + y + 1;
+            //right half
+            maze.maze[config.getGridSize() / 2][yyy] = BaseBlock.generateByNeighours(config, maze.maze[config.getGridSize() / 2][yyy - 1], null, null, null);
         }
-        for (int y = config.getGridSize() / 2 + 1; y < config.getGridSize(); y++) {
-            maze.maze[config.getGridSize() / 2][y] = BaseBlock.generateByNeighours(config, maze.maze[config.getGridSize() / 2][y - 1], null, null, null);
-        }
-        for (int x = config.getGridSize() / 2 - 1; x >= 0; x--) {
-            maze.maze[x] [config.getGridSize() / 2] = BaseBlock.generateByNeighours(config, null, null,  null, maze.maze[x + 1][config.getGridSize() / 2]);
-        }
-        for (int x = config.getGridSize() / 2 + 1; x < config.getGridSize(); x++) {
-            maze.maze[x] [config.getGridSize() / 2]= BaseBlock.generateByNeighours(config, null, null, maze.maze[x - 1][config.getGridSize() / 2], null);
+        for (int x = 0; x < config.getGridSize()/2; x++) {
+            int xx = config.getGridSize() / 2 - x - 1;
+            //up half
+            maze.maze[xx] [config.getGridSize() / 2] = BaseBlock.generateByNeighours(config, null, null,  null, maze.maze[xx + 1][config.getGridSize() / 2]);
+            int xxx = config.getGridSize() / 2 + x + 1;
+            //down half
+            maze.maze[xxx] [config.getGridSize() / 2]= BaseBlock.generateByNeighours(config, null, null, maze.maze[xxx - 1][config.getGridSize() / 2], null);
         }
         return maze;
     }
