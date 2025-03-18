@@ -22,6 +22,7 @@ public class BaseConfig {
         System.out.println("There will be grid of  " + gridSize + " x " + gridSize + " of base blocks");
         System.out.println("Each base element will be connected to each neighbour at least by  " + gridConnectivityMin + " lines");
         System.out.println("Each base element will be connected to each neighbour no more then  " + gridConnectivityMax + " lines");
+        System.out.println("The max connectivity can no always be honoured, but engine is doing its best.");
     }
 
      void verify() {
@@ -40,17 +41,17 @@ public class BaseConfig {
         if (gridConnectivityMin > baseDensityMin) {
             throw new RuntimeException("connectivity min must be lower or equals  base density min " + gridConnectivityMin + "!<=" + baseDensityMin);
         }
-        if (gridConnectivityMax > baseDensityMin) {
-            throw new RuntimeException("connectivity max must be lower or equals  base density min " + gridConnectivityMax + "!<=" + baseDensityMin);
+        if (gridConnectivityMax > baseDensityMax) {
+            throw new RuntimeException("connectivity max must be lower or equals  base density min " + gridConnectivityMax + "!<=" + baseDensityMax);
         }
         if (gridSize<=2) {
             throw new RuntimeException(" minimal number of bases in grid is  3. You set" + gridSize);
         }
         if (gridConnectivityMin>baseDensityMax) {
-            throw new RuntimeException("grid connectivitymin must be lower or equal to max, is not: " + gridConnectivityMin + "!<=" + baseDensityMax);
+            throw new RuntimeException("grid connectivity min must be lower or equal to max, is not: " + gridConnectivityMin + "!<=" + baseDensityMax);
         }
          if (gridSize % 2 == 0 ) {
-             throw new RuntimeException("grid size msut be odd. is not: " + gridSize);
+             throw new RuntimeException("grid size must be odd. is not: " + gridSize);
          }
     }
 
