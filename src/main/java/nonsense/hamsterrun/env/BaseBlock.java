@@ -5,7 +5,6 @@ import nonsense.hamsterrun.Utils;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -19,19 +18,29 @@ public class BaseBlock {
     public BaseBlock(int baseSize) {
         this.sizex = baseSize;
         this.sizey = baseSize; //relict for ancient times when non-square rectangle was allowed
-         this.baseSize=baseSize;
+        this.baseSize = baseSize;
         this.map = new int[sizex][sizey];
         reset();
     }
 
-    private void reset() {
-        Utils.clear(map, 0);
-    }
-
-    public static BaseBlock generateMiddle(BaseConfig config) {
+    public static BaseBlock generateByNeighours(BaseConfig config, BaseBlock west, BaseBlock east, BaseBlock north, BaseBlock south) {
+        int vcon = config.getConnectivity();
+        int hcon = config.getConnectivity();
+        BaseBlock block = new BaseBlock(config.getBaseSize());
+        if (west != null || east != null) {
+            while (block.getRows().size() < hcon) {
+                setConnectingRow(west, block);
+                setConnectingRow(east, block);
+            }
+        }
+        if (north != null || south != null) {
+            while (block.getColumns().size() < vcon) {
+                setConnectingColumn(north, block);
+                setConnectingColumn(south, block);
+            }
+        }
         int vdens = config.getDensity();
         int hdens = config.getDensity();
-        BaseBlock block = new BaseBlock(config.getBaseSize());
         while (block.getColumns().size() < vdens) {
             block.setRandomColumn();
         }
@@ -41,7 +50,31 @@ public class BaseBlock {
         return block;
     }
 
-    private Collection<Integer> getRows() {
+    private static void setConnectingRow(BaseBlock hNeighbour, BaseBlock block) {
+        if (hNeighbour != null) {
+            List<Integer> neighbourRows = hNeighbour.getRows();
+            int connection = neighbourRows.get(seed.nextInt(neighbourRows.size()));
+            block.setRow(connection);
+        }
+    }
+
+    private static void setConnectingColumn(BaseBlock vNeighbour, BaseBlock block) {
+        if (vNeighbour != null) {
+            List<Integer> neighbourColumns = vNeighbour.getColumns();
+            int connection = neighbourColumns.get(seed.nextInt(neighbourColumns.size()));
+            block.setColumn(connection);
+        }
+    }
+
+    private void reset() {
+        Utils.clear(map, 0);
+    }
+
+    public static BaseBlock generateMiddle(BaseConfig config) {
+        return generateByNeighours(config, null, null, null, null);
+    }
+
+    private List<Integer> getRows() {
         List<Integer> columns = new ArrayList<>();
         for (int x = 0; x < map.length; x++) {
             if (map[x][0] > 0) {
@@ -51,7 +84,7 @@ public class BaseBlock {
         return columns;
     }
 
-    private Collection<Integer> getColumns() {
+    private List<Integer> getColumns() {
         List<Integer> rows = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
             if (map[0][y] > 0) {

@@ -4,6 +4,7 @@ import nonsense.hamsterrun.env.BaseBlock;
 
 import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Hello world!
@@ -11,9 +12,9 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) throws Exception {
         BaseConfig config = BaseConfig.baseConfig;
-        for(int x = 0 ; x< args.length; x++){
+        for (int x = 0; x < args.length; x++) {
             if (args[x].startsWith("-")) {
-                String sanitized = args[x].replaceAll("^-+","").toLowerCase();
+                String sanitized = args[x].replaceAll("^-+", "").toLowerCase();
                 switch (sanitized) {
                     case "base-size":
                         x++;
@@ -48,11 +49,42 @@ public class Main {
         }
         config.summUp();
         config.verify();
-        BaseBlock middle = BaseBlock.generateMiddle(config);
-        System.out.println(middle.toString());
-        File f = new File("/tmp/block.png");
-        ImageIO.write(middle.toImage(20), "png", f);
-        Runtime.getRuntime().exec(new String[]{"eog", f.getAbsolutePath()});
+
+        demo1(config);
+
         System.out.println("bye");
+    }
+
+    private static void demo1(BaseConfig config) throws IOException {
+        BaseBlock middle = BaseBlock.generateMiddle(config);
+        BaseBlock right = BaseBlock.generateByNeighours(config, middle, null, null, null);
+        BaseBlock left = BaseBlock.generateByNeighours(config, null, middle, null, null);
+        BaseBlock up = BaseBlock.generateByNeighours(config, null, null, null, middle);
+        BaseBlock down = BaseBlock.generateByNeighours(config, null, null, middle, null);
+        show(middle, "mid");
+        show(up, "up");
+        show(down, "down");
+        show(left, "left");
+        show(right, "right");
+        BaseBlock newMiddle = BaseBlock.generateByNeighours(config, left, right, up, down);
+        show(newMiddle, "nwm");
+        BaseBlock leftup = BaseBlock.generateByNeighours(config, up, null, null, left);
+        show(leftup, "leftup");
+        BaseBlock righttup = BaseBlock.generateByNeighours(config, null, up, null, right);
+        show(righttup, "righttup");
+        BaseBlock leftdown = BaseBlock.generateByNeighours(config, down, null, left, null);
+        show(leftdown, "leftdown");
+        BaseBlock rightdown = BaseBlock.generateByNeighours(config, null, down, right, null);
+        show(rightdown, "rightdown");
+    }
+
+    private static void show(BaseBlock middle, String id) throws IOException {
+        System.out.println("------- start " + id + " start -------");
+        System.out.println(middle.toString());
+        System.out.println("------- end " + id + " end -------");
+        File f = new File("/tmp/" + id + "block.png");
+        ImageIO.write(middle.toImage(20), "png", f);
+        ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
+        pb.start();
     }
 }
