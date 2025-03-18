@@ -2,11 +2,14 @@ package nonsense.hamsterrun;
 
 import nonsense.hamsterrun.env.BaseBlock;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+
 /**
  * Hello world!
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         BaseConfig config = BaseConfig.baseConfig;
         for(int x = 0 ; x< args.length; x++){
             if (args[x].startsWith("-")) {
@@ -45,6 +48,11 @@ public class Main {
         }
         config.summUp();
         config.verify();
-        System.out.println(BaseBlock.generateMiddle(config).toString());
+        BaseBlock middle = BaseBlock.generateMiddle(config);
+        System.out.println(middle.toString());
+        File f = new File("/tmp/block.png");
+        ImageIO.write(middle.toImage(20), "png", f);
+        Runtime.getRuntime().exec(new String[]{"eog", f.getAbsolutePath()});
+        System.out.println("bye");
     }
 }
