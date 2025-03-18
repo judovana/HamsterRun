@@ -4,6 +4,7 @@ import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.Maze;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -51,10 +52,19 @@ public class Main {
         config.summUp();
         config.verify();
 
-        Maze maze = Maze.generate(config);
+        mazeDeemo(config);
         //baseBlockDemo(config);
 
         System.out.println("bye");
+    }
+
+    private static void mazeDeemo(BaseConfig config) throws IOException {
+        Maze maze = Maze.generate(config);
+        BufferedImage bi = maze.toImage(10, config);
+        File f = new File("/tmp/mazr.png");
+        ImageIO.write(bi, "png", f);
+        ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
+        pb.start();
     }
 
     private static void baseBlockDemo(BaseConfig config) throws IOException {

@@ -1,5 +1,7 @@
 package nonsense.hamsterrun;
 
+import nonsense.hamsterrun.env.BaseBlock;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -94,4 +96,19 @@ public class Utils {
         return bi;
     }
 
+    public static BufferedImage toImage(BaseBlock[][] map, int zoom, BaseConfig config) {
+        BufferedImage bi = new BufferedImage(map[0].length * config.getBaseSize() * zoom, map.length * config.getBaseSize() * zoom, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bi.createGraphics();
+        for (int x = 0; x < map.length; x++) {
+            for (int y = 0; y < map[x].length; y++) {
+                if (map[x][y] != null) {
+                    int coordx = y * config.getBaseSize() * zoom;
+                    int coordy = x * config.getBaseSize() * zoom;
+                    g2d.drawImage(map[x][y].toImage(zoom), coordx, coordy, null);
+                }
+
+            }
+        }
+        return bi;
+    }
 }
