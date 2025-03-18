@@ -1,6 +1,7 @@
 package nonsense.hamsterrun;
 
 import nonsense.hamsterrun.env.BaseBlock;
+import nonsense.hamsterrun.env.Maze;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -50,12 +51,13 @@ public class Main {
         config.summUp();
         config.verify();
 
-        demo1(config);
+        Maze maze = Maze.generate(config);
+        //baseBlockDemo(config);
 
         System.out.println("bye");
     }
 
-    private static void demo1(BaseConfig config) throws IOException {
+    private static void baseBlockDemo(BaseConfig config) throws IOException {
         BaseBlock middle = BaseBlock.generateMiddle(config);
         BaseBlock right = BaseBlock.generateByNeighours(config, middle, null, null, null);
         BaseBlock left = BaseBlock.generateByNeighours(config, null, middle, null, null);
