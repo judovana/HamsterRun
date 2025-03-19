@@ -52,13 +52,13 @@ public class Main {
         config.summUp();
         config.verify();
 
-        mazeDeemo(config);
+        mazeDemo(config);
         //baseBlockDemo(config);
 
         System.out.println("bye");
     }
 
-    private static void mazeDeemo(BaseConfig config) throws IOException {
+    private static void mazeDemo(BaseConfig config) throws IOException {
         Maze maze = Maze.generate(config);
         BufferedImage bi = maze.toImage(10, config);
         File f = new File("/tmp/mazr.png");
