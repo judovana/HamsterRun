@@ -75,7 +75,17 @@ public class Maze {
                     }
                     //left down
                     {
-                        //maze.maze[config.getGridSize() / 2 + c][config.getGridSize() / 2 - c] = BaseBlock.generateByNeighours(config, null, maze.maze[config.getGridSize() / 2 + c][config.getGridSize() / 2], null, maze.maze[config.getGridSize() / 2][config.getGridSize() / 2 - c]);
+                        //left
+                        int xx = config.getGridSize() / 2 + c;
+                        int yy = config.getGridSize() / 2 - c - i;
+                        maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx - 1][yy]);
+                        //the corner would be generated twice, but its "just before" added neighbour is not counted.. that can make bad result!
+                        if (i != 0) {
+                            //down
+                            xx = config.getGridSize() / 2 + c + i;
+                            yy = config.getGridSize() / 2 - c;
+                            maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx - 1][yy]);
+                        }
                     }
                     //right down
                     {
