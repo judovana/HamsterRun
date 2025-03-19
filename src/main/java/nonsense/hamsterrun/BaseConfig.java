@@ -23,11 +23,15 @@ public class BaseConfig {
         this.gridConnectivityMax = gridConnectivityMax;
     }
 
-    public static BaseConfig baseConfig = BaseConfig.sparse();
+    public static BaseConfig baseConfig = BaseConfig.small();
 
     private static BaseConfig dense() {
         return new BaseConfig();
 
+    }
+
+    private static BaseConfig small() {
+        return new BaseConfig(10, 1, 2, 3, 1, 1);
     }
 
     private static BaseConfig sparse() {

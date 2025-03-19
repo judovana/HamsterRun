@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 public class Maze {
@@ -110,5 +111,19 @@ public class Maze {
         return Utils.toImage(maze, zoom, config);
     }
 
+    public void drawTo(Graphics2D g2d, int zoom, BaseConfig config, int userx, int usery) {
+        Utils.drawTo(userx, usery, maze, zoom, config,  g2d);
+    }
 
+
+    public void regenerate(int x, int y, BaseConfig config) {
+        System.out.println(x + " x " + y);
+        maze[x][y] = BaseBlock.generateByNeighours(config,
+                (y>0)?maze[x][y-1]:null,
+                (y<config.getGridSize()-1)?maze[x][y+1]:null,
+                (x>0)?maze[x-1][y]:null,
+                (x<config.getGridSize()-1)?maze[x+1][y]:null
+                );
+
+    }
 }

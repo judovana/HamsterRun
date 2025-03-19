@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,4 +130,9 @@ public class BaseBlock {
     public BufferedImage toImage(int zoom) {
         return Utils.toImage(map, zoom);
     }
+
+    public void drawTo(Graphics2D g2d, int zoom, int userx, int usery) {
+        Utils.drawTo(userx, usery, map, zoom, g2d);
+    }
+
 }
