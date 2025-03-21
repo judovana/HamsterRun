@@ -127,24 +127,24 @@ public class Main {
 
     private static void baseBlockDemo(BaseConfig config) throws IOException {
         BaseBlock middle = BaseBlock.generateMiddle(config);
-        BaseBlock right = BaseBlock.generateByNeighours(config, middle, null, null, null);
-        BaseBlock left = BaseBlock.generateByNeighours(config, null, middle, null, null);
-        BaseBlock up = BaseBlock.generateByNeighours(config, null, null, null, middle);
-        BaseBlock down = BaseBlock.generateByNeighours(config, null, null, middle, null);
+        BaseBlock right = BaseBlock.generateByNeighbours(config, middle, null, null, null);
+        BaseBlock left = BaseBlock.generateByNeighbours(config, null, middle, null, null);
+        BaseBlock up = BaseBlock.generateByNeighbours(config, null, null, null, middle);
+        BaseBlock down = BaseBlock.generateByNeighbours(config, null, null, middle, null);
         show(middle, "mid");
         show(up, "up");
         show(down, "down");
         show(left, "left");
         show(right, "right");
-        BaseBlock newMiddle = BaseBlock.generateByNeighours(config, left, right, up, down);
+        BaseBlock newMiddle = BaseBlock.generateByNeighbours(config, left, right, up, down);
         show(newMiddle, "nwm");
-        BaseBlock leftup = BaseBlock.generateByNeighours(config, up, null, null, left);
+        BaseBlock leftup = BaseBlock.generateByNeighbours(config, up, null, null, left);
         show(leftup, "leftup");
-        BaseBlock righttup = BaseBlock.generateByNeighours(config, null, up, null, right);
+        BaseBlock righttup = BaseBlock.generateByNeighbours(config, null, up, null, right);
         show(righttup, "righttup");
-        BaseBlock leftdown = BaseBlock.generateByNeighours(config, down, null, left, null);
+        BaseBlock leftdown = BaseBlock.generateByNeighbours(config, down, null, left, null);
         show(leftdown, "leftdown");
-        BaseBlock rightdown = BaseBlock.generateByNeighours(config, null, down, right, null);
+        BaseBlock rightdown = BaseBlock.generateByNeighbours(config, null, down, right, null);
         show(rightdown, "rightdown");
     }
 

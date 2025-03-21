@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class BaseBlock {
     //TODO replace int by object Field
-    private final int[][] map;
+    private final BlockField[][] map;
     private static final Random seed = new Random();
     private final int sizex;
     private final int sizey;
@@ -21,11 +21,11 @@ public class BaseBlock {
         this.sizex = baseSize;
         this.sizey = baseSize; //relict for ancient times when non-square rectangle was allowed
         this.baseSize = baseSize;
-        this.map = new int[sizex][sizey];
+        this.map = new BlockField[sizex][sizey];
         reset();
     }
 
-    public static BaseBlock generateByNeighours(BaseConfig config, BaseBlock west, BaseBlock east, BaseBlock north, BaseBlock south) {
+    public static BaseBlock generateByNeighbours(BaseConfig config, BaseBlock west, BaseBlock east, BaseBlock north, BaseBlock south) {
         int vcon = config.getConnectivity();
         int hcon = config.getConnectivity();
         BaseBlock block = new BaseBlock(config.getBaseSize());
@@ -69,17 +69,17 @@ public class BaseBlock {
     }
 
     private void reset() {
-        Utils.clear(map, 0);
+        Utils.clear(map, false);
     }
 
     public static BaseBlock generateMiddle(BaseConfig config) {
-        return generateByNeighours(config, null, null, null, null);
+        return generateByNeighbours(config, null, null, null, null);
     }
 
     private List<Integer> getRows() {
         List<Integer> columns = new ArrayList<>();
         for (int x = 0; x < map.length; x++) {
-            if (map[x][0] > 0) {
+            if (map[x][0].isPassable()) {
                 columns.add(x);
             }
         }
@@ -89,7 +89,7 @@ public class BaseBlock {
     private List<Integer> getColumns() {
         List<Integer> rows = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
-            if (map[0][y] > 0) {
+            if (map[0][y].isPassable()) {
                 rows.add(y);
             }
         }
@@ -102,10 +102,10 @@ public class BaseBlock {
     }
 
     private void setColumn(int i) {
-        setColumn(i, 1);
+        setColumn(i, true);
     }
 
-    private void setColumn(int i, int value) {
+    private void setColumn(int i, boolean value) {
         Utils.column(map, i, value);
     }
 
@@ -115,10 +115,10 @@ public class BaseBlock {
     }
 
     private void setRow(int i) {
-        setRow(i, 1);
+        setRow(i, true);
     }
 
-    private void setRow(int i, int value) {
+    private void setRow(int i, boolean value) {
         Utils.row(map, i, value);
     }
 

@@ -27,19 +27,19 @@ public class Maze {
                     //note, that in current impl it do not matter whether the neighbour is on left or right.. so it is slightly ignored here
                     int yy = config.getGridSize() / 2 - y - 1;
                     //left half
-                    maze.maze[config.getGridSize() / 2][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[config.getGridSize() / 2][yy + 1], null, null);
+                    maze.maze[config.getGridSize() / 2][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[config.getGridSize() / 2][yy + 1], null, null);
                     int yyy = config.getGridSize() / 2 + y + 1;
                     //right half
-                    maze.maze[config.getGridSize() / 2][yyy] = BaseBlock.generateByNeighours(config, maze.maze[config.getGridSize() / 2][yyy - 1], null, null, null);
+                    maze.maze[config.getGridSize() / 2][yyy] = BaseBlock.generateByNeighbours(config, maze.maze[config.getGridSize() / 2][yyy - 1], null, null, null);
                 }
                 for (int x = 0; x < config.getGridSize() / 2; x++) {
                     //note, that in current impl it do not matter whether the neighbour is on up or down.. so it is slightly ignored here
                     int xx = config.getGridSize() / 2 - x - 1;
                     //up half
-                    maze.maze[xx][config.getGridSize() / 2] = BaseBlock.generateByNeighours(config, null, null, null, maze.maze[xx + 1][config.getGridSize() / 2]);
+                    maze.maze[xx][config.getGridSize() / 2] = BaseBlock.generateByNeighbours(config, null, null, null, maze.maze[xx + 1][config.getGridSize() / 2]);
                     int xxx = config.getGridSize() / 2 + x + 1;
                     //down half
-                    maze.maze[xxx][config.getGridSize() / 2] = BaseBlock.generateByNeighours(config, null, null, maze.maze[xxx - 1][config.getGridSize() / 2], null);
+                    maze.maze[xxx][config.getGridSize() / 2] = BaseBlock.generateByNeighbours(config, null, null, maze.maze[xxx - 1][config.getGridSize() / 2], null);
                 }
             } else {
                 //the FOUR QUADRANTS
@@ -50,13 +50,13 @@ public class Maze {
                         //left
                         int xx = config.getGridSize() / 2 - c;
                         int yy = config.getGridSize() / 2 - c - i;
-                        maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx + 1][yy]);
+                        maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx + 1][yy]);
                         //the corner would be generated twice, but its "just before" added neighbour is not counted.. that can make bad result!
                         if (i != 0) {
                             //up
                             xx = config.getGridSize() / 2 - c - i;
                             yy = config.getGridSize() / 2 - c;
-                            maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx + 1][yy]);
+                            maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx + 1][yy]);
                         }
                     }
                     // right up
@@ -64,13 +64,13 @@ public class Maze {
                         //right
                         int xx = config.getGridSize() / 2 - c;
                         int yy = config.getGridSize() / 2 + c + i;
-                        maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx + 1][yy]);
+                        maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx + 1][yy]);
                         //the corner would be generated twice, but its "just before" added neighbour is not counted.. that can make bad result!
                         if (i != 0) {
                             //up
                             xx = config.getGridSize() / 2 - c - i;
                             yy = config.getGridSize() / 2 + c;
-                            maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx + 1][yy]);
+                            maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx + 1][yy]);
                         }
 
                     }
@@ -79,13 +79,13 @@ public class Maze {
                         //left
                         int xx = config.getGridSize() / 2 + c;
                         int yy = config.getGridSize() / 2 - c - i;
-                        maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx - 1][yy]);
+                        maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx - 1][yy]);
                         //the corner would be generated twice, but its "just before" added neighbour is not counted.. that can make bad result!
                         if (i != 0) {
                             //down
                             xx = config.getGridSize() / 2 + c + i;
                             yy = config.getGridSize() / 2 - c;
-                            maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx - 1][yy]);
+                            maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy + 1], null, maze.maze[xx - 1][yy]);
                         }
                     }
                     //right down
@@ -93,12 +93,12 @@ public class Maze {
                         //right
                         int xx = config.getGridSize() / 2 + c;
                         int yy = config.getGridSize() / 2 + c + i;
-                        maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx - 1][yy]);
+                        maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx - 1][yy]);
                         if (i != 0) {
                             //down
                             xx = config.getGridSize() / 2 + c + i;
                             yy = config.getGridSize() / 2 + c;
-                            maze.maze[xx][yy] = BaseBlock.generateByNeighours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx - 1][yy]);
+                            maze.maze[xx][yy] = BaseBlock.generateByNeighbours(config, null, maze.maze[xx][yy - 1], null, maze.maze[xx - 1][yy]);
                         }
                     }
                 }
@@ -118,7 +118,7 @@ public class Maze {
 
     public void regenerate(int x, int y, BaseConfig config) {
         System.out.println(x + " x " + y);
-        maze[x][y] = BaseBlock.generateByNeighours(config,
+        maze[x][y] = BaseBlock.generateByNeighbours(config,
                 (y>0)?maze[x][y-1]:null,
                 (y<config.getGridSize()-1)?maze[x][y+1]:null,
                 (x>0)?maze[x-1][y]:null,
