@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
@@ -109,6 +110,7 @@ public class Main {
                     }
                 });
                 f.setSize(700, 700);
+                f.getContentPane().setBackground(Color.BLACK);
                 f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 f.setVisible(true);
             }
