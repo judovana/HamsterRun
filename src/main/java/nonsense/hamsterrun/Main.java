@@ -5,6 +5,7 @@ import nonsense.hamsterrun.env.Maze;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import java.awt.Color;
@@ -73,13 +74,16 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame f = new JFrame() {
+                JPanel view = new JPanel() {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
                         maze.drawTo(g2d, xyz[2], config, xyz[0] * xyz[2], xyz[1] * xyz[2]);
                     }
                 };
+                view.setBackground(Color.BLACK);
+                JFrame f = new JFrame() ;
+                f.add(view);
                 f.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -110,7 +114,6 @@ public class Main {
                     }
                 });
                 f.setSize(700, 700);
-                f.getContentPane().setBackground(Color.BLACK);
                 f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 f.setVisible(true);
             }
