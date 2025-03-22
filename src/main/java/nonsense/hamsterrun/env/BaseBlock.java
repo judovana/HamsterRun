@@ -49,7 +49,18 @@ public class BaseBlock {
         while (block.getRows().size() < hdens) {
             block.setRandomRow();
         }
+        setObstacles(block.map);
         return block;
+    }
+
+    public static void setObstacles(BlockField[][] map) {
+        for (int x = 0; x < map.length; x++) {
+            for (int y = 0; y < map[x].length; y++) {
+                if (map[x][y].isPassable() && seed.nextBoolean()) {
+                    map[x][y].setRandomObstacle(seed);
+                }
+            }
+        }
     }
 
     private static void setConnectingRow(BaseBlock hNeighbour, BaseBlock block) {
