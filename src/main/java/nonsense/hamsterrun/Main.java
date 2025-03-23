@@ -58,6 +58,7 @@ public class Main {
                 }
             }
         }
+        Rats.load();
         config.summUp();
         config.verify();
 
