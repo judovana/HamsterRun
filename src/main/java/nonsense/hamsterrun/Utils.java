@@ -2,8 +2,8 @@ package nonsense.hamsterrun;
 
 import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.BlockField;
+import nonsense.hamsterrun.env.Maze;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -78,59 +78,25 @@ public class Utils {
     02 ...
     ...
      */
-    public static BufferedImage toImage(BlockField[][] map, int zoom) {
-        BufferedImage bi = new BufferedImage(map[0].length * zoom, map.length * zoom, BufferedImage.TYPE_INT_ARGB);
+    public static BufferedImage toImage(BaseBlock map, int zoom) {
+        BufferedImage bi = new BufferedImage(map.getWidth() * zoom, map.getHeight() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
-        draw(map, zoom, g2d);
+        map.drawMapLevel1(0,0, zoom, g2d);
+        //map.drawMapLevel2(0,0, zoom, g2d);
         return bi;
     }
 
-    public static void draw(BlockField[][] map, int zoom, Graphics2D g2d) {
-        drawTo(0, 0, map, zoom, g2d);
-    }
 
-    public static void drawTo(int userx, int usery, BlockField[][] map, int zoom, Graphics2D g2d) {
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y].isImpassable()) {
-                    g2d.setColor(new Color(0, 0, 0, 255));
-                } else {
-                    g2d.setColor(map[x][y].getItem().getMinimapColor());
-                }
-                //this is aligning it with console and debugger output of [][]
-                int coordx = y * zoom + userx;
-                int coordy = x * zoom + usery;
-                g2d.fillRect(coordx, coordy, zoom, zoom);
-                if (zoom > 2) {
-                    g2d.setColor(new Color(255, 0, 0, 255));
-                    g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
-                }
-            }
-        }
-    }
 
-    public static BufferedImage toImage(BaseBlock[][] map, int zoom, BaseConfig config) {
-        BufferedImage bi = new BufferedImage(map[0].length * config.getBaseSize() * zoom, map.length * config.getBaseSize() * zoom, BufferedImage.TYPE_INT_ARGB);
+
+    public static BufferedImage toImage(Maze maze, int zoom, BaseConfig config) {
+        BufferedImage bi = new BufferedImage(maze.getWidth() * config.getBaseSize() * zoom, maze.getHeight() * config.getBaseSize() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
-        draw(map, zoom, config, g2d);
+        maze.drawMapLevel1(0,0, zoom, config, g2d);
+        //maze.drawMapLevel2(0,0, zoom, config, g2d);
         return bi;
     }
 
-    public static void draw(BaseBlock[][] map, int zoom, BaseConfig config, Graphics2D g2d) {
-        drawTo(0, 0, map, zoom, config, g2d);
-    }
 
-    public static void drawTo(int userx, int usery, BaseBlock[][] map, int zoom, BaseConfig config, Graphics2D g2d) {
-        for (int x = 0; x < map.length; x++) {
-            for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y] != null) {
-                    int coordx = y * config.getBaseSize() * zoom + userx;
-                    int coordy = x * config.getBaseSize() * zoom + usery;
-                    //g2d.drawImage(map[x][y].toImage(zoom), coordx, coordy, null);
-                    map[x][y].drawTo(g2d, zoom, coordx, coordy);
-                }
 
-            }
-        }
-    }
 }

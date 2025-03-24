@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -139,11 +140,35 @@ public class BaseBlock {
     }
 
     public BufferedImage toImage(int zoom) {
-        return Utils.toImage(map, zoom);
+        return Utils.toImage(this, zoom);
     }
 
-    public void drawTo(Graphics2D g2d, int zoom, int userx, int usery) {
-        Utils.drawTo(userx, usery, map, zoom, g2d);
+    //map will most likely not honour the levels, but final drawing will
+    public void drawMapLevel1(int userx, int usery, int zoom, Graphics2D g2d) {
+        for (int x = 0; x < map.length; x++) {
+            for (int y = 0; y < map[x].length; y++) {
+                if (map[x][y].isImpassable()) {
+                    g2d.setColor(new Color(0, 0, 0, 255));
+                } else {
+                    g2d.setColor(map[x][y].getItem().getMinimapColor());
+                }
+                //this is aligning it with console and debugger output of [][]
+                int coordx = y * zoom + userx;
+                int coordy = x * zoom + usery;
+                g2d.fillRect(coordx, coordy, zoom, zoom);
+                if (zoom > 2) {
+                    g2d.setColor(new Color(255, 0, 0, 255));
+                    g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
+                }
+            }
+        }
     }
 
+    public int getWidth() {
+        return map[0].length;
+    }
+
+    public int getHeight() {
+        return map.length;
+    }
 }

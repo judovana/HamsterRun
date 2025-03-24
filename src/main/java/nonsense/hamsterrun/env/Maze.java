@@ -108,11 +108,23 @@ public class Maze {
     }
 
     public BufferedImage toImage(int zoom, BaseConfig config) {
-        return Utils.toImage(maze, zoom, config);
+        return Utils.toImage(this, zoom, config);
     }
 
-    public void drawTo(Graphics2D g2d, int zoom, BaseConfig config, int userx, int usery) {
-        Utils.drawTo(userx, usery, maze, zoom, config,  g2d);
+
+    //map will most likely not honour the levels, but final drawing will
+    public void drawMapLevel1(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d) {
+        for (int x = 0; x < maze.length; x++) {
+            for (int y = 0; y < maze[x].length; y++) {
+                if (maze[x][y] != null) {
+                    int coordx = y * config.getBaseSize() * zoom + userx;
+                    int coordy = x * config.getBaseSize() * zoom + usery;
+                    //g2d.drawImage(map[x][y].toImage(zoom), coordx, coordy, null);
+                    maze[x][y].drawMapLevel1(coordx, coordy, zoom, g2d);
+                }
+
+            }
+        }
     }
 
 
@@ -125,5 +137,13 @@ public class Maze {
                 (x<config.getGridSize()-1)?maze[x+1][y]:null
                 );
 
+    }
+
+    public int getWidth() {
+        return maze[0].length;
+    }
+
+    public int getHeight() {
+        return maze.length;
     }
 }

@@ -79,7 +79,7 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        maze.drawTo(g2d, xyz[2], config, xyz[0] * xyz[2], xyz[1] * xyz[2]);
+                        maze.drawMapLevel1(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d);
                     }
                 };
                 view.setBackground(Color.BLACK);
