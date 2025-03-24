@@ -2,6 +2,7 @@ package nonsense.hamsterrun;
 
 import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.Maze;
+import nonsense.hamsterrun.env.World;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -71,6 +72,7 @@ public class Main {
 
     private static void frameDemo(BaseConfig config) {
         final Maze maze = Maze.generate(config);
+        World world = new World(maze);
         final int[] xyz = new int[]{1, 5, 20};
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -80,6 +82,7 @@ public class Main {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
                         maze.drawMapLevel1(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d);
+                        world.draw(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], g2d);
                     }
                 };
                 view.setBackground(Color.BLACK);
