@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        BaseConfig config = BaseConfig.baseConfig;
+        BaseConfig config = BaseConfig.getConfig();
         for (int x = 0; x < args.length; x++) {
             if (args[x].startsWith("-")) {
                 String sanitized = args[x].replaceAll("^-+", "").toLowerCase();
@@ -63,16 +63,68 @@ public class Main {
         config.summUp();
         config.verify();
 
-        frameDemo(config);
+        worldDemo();
+        //frameDemo(config);
         //mazeDemo(config);
         //baseBlockDemo(config);
 
         System.out.println("bye");
     }
 
+    private static void worldDemo() {
+        final World world = new World(Maze.generate(BaseConfig.getConfig()));
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JPanel view = new JPanel() {
+                    public void paint(Graphics g) {
+                        super.paint(g);
+                        Graphics2D g2d = (Graphics2D) g;
+                        world.draw(g2d);
+                    }
+                };
+                view.setBackground(Color.BLACK);
+                JFrame f = new JFrame();
+                f.add(view);
+                f.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        System.out.println(e.getKeyCode() + "");
+                        if (e.getKeyCode() == 37/*leftarrow*/) {
+                            world.moveMyMouseLeft();
+                        }
+                        if (e.getKeyCode() == 38/*uparrow*/) {
+                            world.moveMyMouseUp();
+                        }
+                        if (e.getKeyCode() == 39/*rightarrow*/) {
+                            world.moveMyMouseRight();
+                        }
+                        if (e.getKeyCode() == 40/*downarrow*/) {
+                            world.moveMyMouseDown();
+                        }
+                        if (e.getKeyChar() == '+') {
+                            world.zoomIn();
+                        }
+                        if (e.getKeyChar() == '-') {
+                            world.zoomOut();
+                        }
+                        if (e.getKeyCode() >= 97 && e.getKeyCode() <= 105) {
+                            int numlock = e.getKeyCode() - 97; //1 is zero for our needs;
+                            world.regenerateBlock(numlock / 3, numlock % 3);
+                        }
+                        f.repaint();
+                    }
+                });
+                f.setSize(800, 800);
+                f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                f.setVisible(true);
+            }
+        });
+
+    }
+
     private static void frameDemo(BaseConfig config) {
         final Maze maze = Maze.generate(config);
-        World world = new World(maze);
         final int[] xyz = new int[]{1, 5, 20};
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -82,11 +134,10 @@ public class Main {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
                         maze.drawMapLevel1(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d);
-                        world.draw(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], g2d);
                     }
                 };
                 view.setBackground(Color.BLACK);
-                JFrame f = new JFrame() ;
+                JFrame f = new JFrame();
                 f.add(view);
                 f.addKeyListener(new KeyAdapter() {
                     @Override

@@ -7,6 +7,7 @@ import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Vegetable;
 
+import java.awt.Point;
 import java.util.Random;
 
 public class BlockField {
@@ -45,7 +46,10 @@ public class BlockField {
         } else if (i == 5) {
             this.item = new InvisibleTrapDoor();
         }
+    }
 
 
+    public boolean isFree() {
+        return item == null;
     }
 }

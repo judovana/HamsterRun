@@ -5,6 +5,7 @@ import nonsense.hamsterrun.Utils;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,5 +171,17 @@ public class BaseBlock {
 
     public int getHeight() {
         return map.length;
+    }
+
+    public Point getRandomSafeSpot() {
+        int x = -1;
+        int y = -1;
+        do {
+            x = seed.nextInt(map.length);
+            y = seed.nextInt(map[x].length);
+        } while (map[x][y] != null && !map[x][y].isPassable() && !map[x][y].isFree());
+        System.out.println("p" + map[x][y].isPassable());
+        System.out.println("f" + map[x][y].isPassable());
+        return new Point(x, y);
     }
 }

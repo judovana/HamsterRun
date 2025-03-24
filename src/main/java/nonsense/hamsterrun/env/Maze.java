@@ -4,10 +4,13 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Maze {
 
+    private static final Random seed = new Random();
 
     private final BaseBlock[][] maze;
 
@@ -131,11 +134,11 @@ public class Maze {
     public void regenerate(int x, int y, BaseConfig config) {
         System.out.println(x + " x " + y);
         maze[x][y] = BaseBlock.generateByNeighbours(config,
-                (y>0)?maze[x][y-1]:null,
-                (y<config.getGridSize()-1)?maze[x][y+1]:null,
-                (x>0)?maze[x-1][y]:null,
-                (x<config.getGridSize()-1)?maze[x+1][y]:null
-                );
+                (y > 0) ? maze[x][y - 1] : null,
+                (y < config.getGridSize() - 1) ? maze[x][y + 1] : null,
+                (x > 0) ? maze[x - 1][y] : null,
+                (x < config.getGridSize() - 1) ? maze[x + 1][y] : null
+        );
 
     }
 
@@ -145,5 +148,25 @@ public class Maze {
 
     public int getHeight() {
         return maze.length;
+    }
+
+    public Point[] getRandomSafeSpot() {
+        int x = -1;
+        int y = -1;
+        do {
+            x = seed.nextInt(maze.length);
+            y = seed.nextInt(maze[x].length);
+        } while (maze[x][y] == null);
+        return getSafeSpotIn(x, y);
+    }
+
+    public Point[] getSafeSpotIn(int x, int y) {
+        return new Point[]{new Point(x, y), maze[x][y].getRandomSafeSpot()};
+    }
+
+    public Point[] getSafeSpotInMiddle() {
+        return new Point[]{
+                new Point(maze.length / 2, maze[maze.length / 2].length / 2),
+                maze[maze.length / 2][maze[maze.length / 2].length / 2].getRandomSafeSpot()};
     }
 }
