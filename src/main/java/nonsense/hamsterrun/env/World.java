@@ -8,17 +8,28 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
-public class World {
+import javax.swing.JComponent;
 
+public class World implements Runnable {
+
+    private static final Random seed = new Random();
+
+    private final Thread repl;
     private final Maze maze;
     private final List<Rat> rats = Arrays.asList(new Rat(), new Rat(), new Rat(), new Rat());
     private int myMouse = -1;
     private int zoom = 20;
 
+    private JComponent repaintListener;
+
     public World(Maze maze) {
         this.maze = maze;
         allRatsSpread(true);
+        this.repl = new Thread(this);
+        repl.setDaemon(true);
+        repl.start();
 
 
     }
@@ -116,5 +127,38 @@ public class World {
 
     public void setMyMouse(int i) {
         myMouse = i;
+    }
+
+    public void setRepaintListener(JComponent repaintListener) {
+        this.repaintListener = repaintListener;
+    }
+
+    public void run() {
+        while(true) {
+            try {
+                Thread.sleep(100);
+                switch (seed.nextInt(6)) {
+                    case 0:
+                        moveMyMouseLeft();
+                        break;
+                    case 1:
+                        moveMyMouseRight();
+                        break;
+                    case 2:
+                        moveMyMouseUp();
+                        break;
+                    case 3:
+                        moveMyMouseDown();
+                        break;
+                    default: //ok
+                }
+                if (repaintListener != null) {
+                    repaintListener.repaint();
+                }
+            }catch (InterruptedException ex){
+                ex.printStackTrace();
+            }
+        }
+
     }
 }

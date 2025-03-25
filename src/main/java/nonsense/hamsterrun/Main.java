@@ -85,6 +85,7 @@ public class Main {
                     }
                 };
                 view.setBackground(Color.BLACK);
+                world.setRepaintListener(view);
                 JFrame f = new JFrame();
                 f.add(view);
                 f.addKeyListener(new KeyAdapter() {
