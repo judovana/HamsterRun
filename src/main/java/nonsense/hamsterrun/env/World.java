@@ -101,28 +101,44 @@ public class World implements Runnable {
         }
     }
 
-    public void moveMyMouseRight() {
-        if (myMouse >= 0 && myMouse < rats.size()) {
-            rats.get(myMouse).moveMouseRight();
+    public void moveMouseUp(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).moveMouseUp();
         }
+    }
+
+    public void moveMouseLeft(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).moveMouseLeft();
+        }
+    }
+
+    public void moveMouseDown(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).moveMouseDown();
+        }
+    }
+
+    public void moveMouseRight(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).moveMouseRight();
+        }
+    }
+
+    public void moveMyMouseRight() {
+        moveMouseRight(myMouse);
     }
 
     public void moveMyMouseUp() {
-        if (myMouse >= 0 && myMouse < rats.size()) {
-            rats.get(myMouse).moveMouseUp();
-        }
+        moveMouseUp(myMouse);
     }
 
     public void moveMyMouseLeft() {
-        if (myMouse >= 0 && myMouse < rats.size()) {
-            rats.get(myMouse).moveMouseLeft();
-        }
+        moveMouseLeft(myMouse);
     }
 
     public void moveMyMouseDown() {
-        if (myMouse >= 0 && myMouse < rats.size()) {
-            rats.get(myMouse).moveMouseDown();
-        }
+        moveMouseDown(myMouse);
     }
 
     public void setMyMouse(int i) {
@@ -137,20 +153,24 @@ public class World implements Runnable {
         while(true) {
             try {
                 Thread.sleep(100);
-                switch (seed.nextInt(6)) {
-                    case 0:
-                        moveMyMouseLeft();
-                        break;
-                    case 1:
-                        moveMyMouseRight();
-                        break;
-                    case 2:
-                        moveMyMouseUp();
-                        break;
-                    case 3:
-                        moveMyMouseDown();
-                        break;
-                    default: //ok
+                for (int m = 0 ; m < rats.size(); m++) {
+                    if (m!=myMouse) {
+                        switch (seed.nextInt(6)) {
+                            case 0:
+                                moveMouseLeft(m);
+                                break;
+                            case 1:
+                                moveMouseRight(m);
+                                break;
+                            case 2:
+                                moveMouseUp(m);
+                                break;
+                            case 3:
+                                moveMouseDown(m);
+                                break;
+                            default: //ok
+                        }
+                    }
                 }
                 if (repaintListener != null) {
                     repaintListener.repaint();
