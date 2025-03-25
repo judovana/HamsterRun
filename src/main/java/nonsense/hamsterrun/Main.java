@@ -12,6 +12,7 @@ import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -80,7 +81,7 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.draw(g2d);
+                        world.draw(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2));
                     }
                 };
                 view.setBackground(Color.BLACK);
@@ -92,26 +93,27 @@ public class Main {
                         System.out.println(e.getKeyCode() + "");
                         if (e.getKeyCode() == 37/*leftarrow*/) {
                             world.moveMyMouseLeft();
-                        }
-                        if (e.getKeyCode() == 38/*uparrow*/) {
+                        } else if (e.getKeyCode() == 38/*uparrow*/) {
                             world.moveMyMouseUp();
-                        }
-                        if (e.getKeyCode() == 39/*rightarrow*/) {
+                        } else if (e.getKeyCode() == 39/*rightarrow*/) {
                             world.moveMyMouseRight();
-                        }
-                        if (e.getKeyCode() == 40/*downarrow*/) {
+                        } else if (e.getKeyCode() == 40/*downarrow*/) {
                             world.moveMyMouseDown();
-                        }
-                        if (e.getKeyChar() == '+') {
+                        } else if (e.getKeyChar() == '+') {
                             world.zoomIn();
-                        }
-                        if (e.getKeyChar() == '-') {
+                        } else if (e.getKeyChar() == '-') {
                             world.zoomOut();
-                        }
-                        if (e.getKeyCode() >= 97 && e.getKeyCode() <= 105) {
+                        } else if (e.getKeyCode() >= 97 && e.getKeyCode() <= 105) {
                             int numlock = e.getKeyCode() - 97; //1 is zero for our needs;
                             world.regenerateBlock(numlock / 3, numlock % 3);
+                        } else if (e.getKeyCode() == 16) {
+                            world.allRatsSpread(true);
+                        } else if (e.getKeyCode() == 20) {
+                            world.allRatsSpread(false);
+                        } else {
+                            world.setMyMouse(e.getKeyCode() - 65);
                         }
+
                         f.repaint();
                     }
                 });

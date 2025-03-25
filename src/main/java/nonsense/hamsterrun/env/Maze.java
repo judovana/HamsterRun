@@ -150,6 +150,14 @@ public class Maze {
         return maze.length;
     }
 
+    public int getWidthInUnits(BaseConfig cfg) {
+        return getWidth()*cfg.getBaseSize();
+    }
+
+    public int getHeightInUnits(BaseConfig cfg) {
+        return getHeight()*cfg.getBaseSize();
+    }
+
     public Point[] getRandomSafeSpot() {
         int x = -1;
         int y = -1;
