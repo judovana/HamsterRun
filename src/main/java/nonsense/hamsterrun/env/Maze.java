@@ -151,11 +151,11 @@ public class Maze {
     }
 
     public int getWidthInUnits(BaseConfig cfg) {
-        return getWidth()*cfg.getBaseSize();
+        return getWidth() * cfg.getBaseSize();
     }
 
     public int getHeightInUnits(BaseConfig cfg) {
-        return getHeight()*cfg.getBaseSize();
+        return getHeight() * cfg.getBaseSize();
     }
 
     public Point[] getRandomSafeSpot() {
@@ -176,5 +176,19 @@ public class Maze {
         return new Point[]{
                 new Point(maze.length / 2, maze[maze.length / 2].length / 2),
                 maze[maze.length / 2][maze[maze.length / 2].length / 2].getRandomSafeSpot()};
+    }
+
+    public BlockField getByUniversalCoord(Point coord) {
+        int x1 = coord.y / BaseConfig.getConfig().getBaseSize();
+        int y1 = coord.x / BaseConfig.getConfig().getBaseSize();
+        if (x1 < 0 || x1 >= maze.length) {
+            return null;
+        }
+        if (y1 < 0 || y1 >= maze[0].length) {
+            return null;
+        }
+        int x2 = coord.y % BaseConfig.getConfig().getBaseSize();
+        int y2 = coord.x % BaseConfig.getConfig().getBaseSize();
+        return maze[x1][y1].get(x2, y2);
     }
 }

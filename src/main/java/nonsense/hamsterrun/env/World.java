@@ -103,25 +103,33 @@ public class World implements Runnable {
 
     public void moveMouseUp(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).moveMouseUp();
+            if (isEnterable(rats.get(i).getUniversalCoords(), 0, -1)) {
+                rats.get(i).moveMouseUp();
+            }
         }
     }
 
     public void moveMouseLeft(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).moveMouseLeft();
+            if (isEnterable(rats.get(i).getUniversalCoords(), -1, 0)) {
+                rats.get(i).moveMouseLeft();
+            }
         }
     }
 
     public void moveMouseDown(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).moveMouseDown();
+            if (isEnterable(rats.get(i).getUniversalCoords(), 0, 1)) {
+                rats.get(i).moveMouseDown();
+            }
         }
     }
 
     public void moveMouseRight(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).moveMouseRight();
+            if (isEnterable(rats.get(i).getUniversalCoords(), 1, 0)) {
+                rats.get(i).moveMouseRight();
+            }
         }
     }
 
@@ -149,12 +157,38 @@ public class World implements Runnable {
         this.repaintListener = repaintListener;
     }
 
+    private boolean isEnterable(Point coord, int vx, int vy) {
+        return isEnterable(coord.x + vx, coord.y + vy);
+    }
+
+    private boolean isEnterable(int x, int y) {
+        return isEnterable(new Point(x, y));
+    }
+
+    private boolean isEnterable(Point coord) {
+        BlockField bl = getMazeStatus(coord);
+        if (bl == null || bl.isImpassable()) {
+            return false;
+        }
+        for (Rat rat : rats) {
+            if (rat.getUniversalCoords().equals(coord)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private BlockField getMazeStatus(Point coord) {
+        BlockField bl = maze.getByUniversalCoord(coord);
+        return bl;
+    }
+
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 Thread.sleep(100);
-                for (int m = 0 ; m < rats.size(); m++) {
-                    if (m!=myMouse) {
+                for (int m = 0; m < rats.size(); m++) {
+                    if (m != myMouse) {
                         switch (seed.nextInt(6)) {
                             case 0:
                                 moveMouseLeft(m);
@@ -175,7 +209,7 @@ public class World implements Runnable {
                 if (repaintListener != null) {
                     repaintListener.repaint();
                 }
-            }catch (InterruptedException ex){
+            } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         }

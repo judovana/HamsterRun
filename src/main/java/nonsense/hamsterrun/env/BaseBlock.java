@@ -184,4 +184,14 @@ public class BaseBlock {
         System.out.println("f" + map[x][y].isPassable());
         return new Point(x, y);
     }
+
+    public BlockField get(int x, int y) {
+        if (x < 0 || x >= map[0].length) {
+            return null;
+        }
+        if (y < 0 || y >= map.length) {
+            return null;
+        }
+        return map[x][y];
+    }
 }
