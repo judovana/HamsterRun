@@ -93,13 +93,13 @@ public class Main {
                     public void keyPressed(KeyEvent e) {
                         System.out.println(e.getKeyCode() + "");
                         if (e.getKeyCode() == 37/*leftarrow*/) {
-                            world.moveMyMouseLeft();
+                            world.setMyMouseLeft();
                         } else if (e.getKeyCode() == 38/*uparrow*/) {
-                            world.moveMyMouseUp();
+                            world.setMyMouseUp();
                         } else if (e.getKeyCode() == 39/*rightarrow*/) {
-                            world.moveMyMouseRight();
+                            world.setMyMouseRight();
                         } else if (e.getKeyCode() == 40/*downarrow*/) {
-                            world.moveMyMouseDown();
+                            world.setMyMouseDown();
                         } else if (e.getKeyChar() == '+') {
                             world.zoomIn();
                         } else if (e.getKeyChar() == '-') {

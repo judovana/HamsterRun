@@ -101,71 +101,63 @@ public class World implements Runnable {
         }
     }
 
-    public void moveMouseUp(int i) {
-        if (i >= 0 && i < rats.size()) {
-            if (isEnterable(rats.get(i).getUniversalCoords(), 0, -1)) {
-                rats.get(i).moveMouseUp();
-            }
-        }
+    public void setMyMouseRight() {
+        setMouseRight(myMouse);
     }
 
-    public void moveMouseLeft(int i) {
-        if (i >= 0 && i < rats.size()) {
-            if (isEnterable(rats.get(i).getUniversalCoords(), -1, 0)) {
-                rats.get(i).moveMouseLeft();
-            }
-        }
+    public void setMyMouseUp() {
+        setMouseUp(myMouse);
     }
 
-    public void moveMouseDown(int i) {
-        if (i >= 0 && i < rats.size()) {
-            if (isEnterable(rats.get(i).getUniversalCoords(), 0, 1)) {
-                rats.get(i).moveMouseDown();
-            }
-        }
+    public void setMyMouseLeft() {
+        setMouseLeft(myMouse);
     }
 
-    public void moveMouseRight(int i) {
-        if (i >= 0 && i < rats.size()) {
-            if (isEnterable(rats.get(i).getUniversalCoords(), 1, 0)) {
-                rats.get(i).moveMouseRight();
-            }
-        }
-    }
-
-    public void moveMyMouseRight() {
-        moveMouseRight(myMouse);
-    }
-
-    public void moveMyMouseUp() {
-        moveMouseUp(myMouse);
-    }
-
-    public void moveMyMouseLeft() {
-        moveMouseLeft(myMouse);
-    }
-
-    public void moveMyMouseDown() {
-        moveMouseDown(myMouse);
+    public void setMyMouseDown() {
+        setMouseDown(myMouse);
     }
 
     public void setMyMouse(int i) {
         myMouse = i;
     }
 
+    public void setMouseUp(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).setAction(this, Rat.Actions.UP_NORMAL);
+        }
+    }
+
+    public void setMouseLeft(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).setAction(this, Rat.Actions.LEFT_NORMAL);
+        }
+    }
+
+    public void setMouseDown(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).setAction(this, Rat.Actions.DOWN_NORMAL);
+        }
+    }
+
+    public void setMouseRight(int i) {
+        if (i >= 0 && i < rats.size()) {
+            rats.get(i).setAction(this, Rat.Actions.RIGHT_NORMAL);
+        }
+    }
+
     public void setRepaintListener(JComponent repaintListener) {
         this.repaintListener = repaintListener;
     }
 
-    private boolean isEnterable(Point coord, int vx, int vy) {
+    boolean isEnterable(Point coord, int vx, int vy) {
         return isEnterable(coord.x + vx, coord.y + vy);
     }
 
-    private boolean isEnterable(int x, int y) {
+    boolean isEnterable(int x, int y) {
         return isEnterable(new Point(x, y));
     }
 
-    private boolean isEnterable(Point coord) {
+    boolean isEnterable(Point coord) {
         BlockField bl = getMazeStatus(coord);
         if (bl == null || bl.isImpassable()) {
             return false;
@@ -189,21 +181,24 @@ public class World implements Runnable {
                 Thread.sleep(100);
                 for (int m = 0; m < rats.size(); m++) {
                     if (m != myMouse) {
-                        switch (seed.nextInt(6)) {
+                        switch (seed.nextInt(8)) {
                             case 0:
-                                moveMouseLeft(m);
+                                setMouseLeft(m);
                                 break;
                             case 1:
-                                moveMouseRight(m);
+                                setMouseRight(m);
                                 break;
                             case 2:
-                                moveMouseUp(m);
+                                setMouseUp(m);
                                 break;
                             case 3:
-                                moveMouseDown(m);
+                                setMouseDown(m);
                                 break;
                             default: //ok
                         }
+                    }
+                    if (m >= 0 && m < rats.size()) {
+                        rats.get(m).act(this);
                     }
                 }
                 if (repaintListener != null) {
