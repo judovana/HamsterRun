@@ -8,11 +8,6 @@ import nonsense.hamsterrun.BaseConfig;
 
 public class Rat {
 
-    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean b) {
-        Point coord = getUniversalCoords();
-        g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom, leftUpCornerOfMaze.y + coord.y * zoom, zoom, zoom);
-    }
-
     public enum Actions {
         STAY/*FIXME needs stay left, right, up....*/, LEFT_NORMAL, RIGHT_NORMAL, UP_NORMAL, DOWN_NORMAL
 
@@ -21,6 +16,7 @@ public class Rat {
     private Point coordsInBaseBlock = new Point(-1, -1);
     private Point coordsInMaze = new Point(-1, -1);
     private Actions action = Actions.STAY;
+    private Point relativeCoordInSquare = new Point(0, 0);
 
     public Rat() {
     }
@@ -65,8 +61,6 @@ public class Rat {
     }
 
 
-    //FIXME wrong - the mouse must move in VISIBLE susbteps, and only if they reach soem value,
-    // it will reset anfd the mouse will move to the next square
     private void forceMouseRight() {
         coordsInBaseBlock.x++;
     }
@@ -83,29 +77,59 @@ public class Rat {
         coordsInBaseBlock.y++;
     }
 
-    public void moveMouseUp(World world) {
+    private void reallyMoveMouseRight(World world) {
+        if (world.isEnterable(getUniversalCoords(), 1, 0)) {
+            forceMouseRight();
+        }
+    }
+
+    private void reallyMoveMouseUp(World world) {
         if (world.isEnterable(getUniversalCoords(), 0, -1)) {
             forceMouseUp();
         }
     }
 
-    public void moveMouseLeft(World world) {
+    private void reallyMoveMouseLeft(World world) {
         if (world.isEnterable(getUniversalCoords(), -1, 0)) {
             forceMouseLeft();
         }
     }
 
-    public void moveMouseDown(World world) {
+    private void reallyMoveMouseDown(World world) {
         if (world.isEnterable(getUniversalCoords(), 0, 1)) {
             forceMouseDown();
         }
     }
 
-    public void moveMouseRight(World world) {
-        if (world.isEnterable(getUniversalCoords(), 1, 0)) {
-            forceMouseRight();
-        }
+
+    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement) {
+        Point coord = getUniversalCoords();
+        g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom, leftUpCornerOfMaze.y + coord.y * zoom, zoom, zoom);
     }
+
+        private void moveMouseRight(World world) {
+            relativeCoordInSquare.x++;
+            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+            reallyMoveMouseRight(world);
+        }
+
+        private void moveMouseUp(World world) {
+            relativeCoordInSquare.y--;
+            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+            reallyMoveMouseUp(world);
+        }
+
+        private void moveMouseLeft(World world) {
+            relativeCoordInSquare.x--;
+            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+            reallyMoveMouseLeft(world);
+        }
+
+        private void moveMouseDown(World world) {
+            relativeCoordInSquare.y++;
+            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+            reallyMoveMouseDown(world);
+        }
 
     public void setAction(World world, Actions action) {
         this.action = action;
