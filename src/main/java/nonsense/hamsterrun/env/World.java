@@ -72,8 +72,7 @@ public class World implements Runnable {
         for (Rat rat : rats) {
             i++;
             g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
-            Point coord = rat.getUniversalCoords();
-            g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom, leftUpCornerOfMaze.y + coord.y * zoom, zoom, zoom);
+            rat.draw(g2d, leftUpCornerOfMaze, zoom, true);
         }
     }
 

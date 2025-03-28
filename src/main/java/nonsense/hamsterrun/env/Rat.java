@@ -1,11 +1,17 @@
 package nonsense.hamsterrun.env;
 
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 import nonsense.hamsterrun.BaseConfig;
 
 public class Rat {
+
+    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean b) {
+        Point coord = getUniversalCoords();
+        g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom, leftUpCornerOfMaze.y + coord.y * zoom, zoom, zoom);
+    }
 
     public enum Actions {
         STAY/*FIXME needs stay left, right, up....*/, LEFT_NORMAL, RIGHT_NORMAL, UP_NORMAL, DOWN_NORMAL
