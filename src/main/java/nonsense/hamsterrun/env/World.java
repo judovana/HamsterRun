@@ -59,22 +59,15 @@ public class World implements Runnable {
     }
 
     public void draw(Graphics2D g2d, Point center) {
-        if (myMouse < 0 || myMouse >= rats.size()) {
+        {
             Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoom,
                     center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoom);
-            maze.drawMapLevel1(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d);
-            int i = -1;
-            for (Rat rat : rats) {
-                i++;
-                g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
-                Point coord = rat.getUniversalCoords();
-                g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom, leftUpCornerOfMaze.y + coord.y * zoom, zoom, zoom);
+            if (myMouse >= 0 && myMouse < rats.size()) {
+                Point selectedMouse = rats.get(myMouse).getUniversalCoords();
+                int xShift = -center.x + selectedMouse.x * zoom;
+                int yShift = -center.y + selectedMouse.y * zoom;
+                leftUpCornerOfMaze = new Point(-xShift, -yShift);
             }
-        } else {
-            Point selectedMouse = rats.get(myMouse).getUniversalCoords();
-            int xShift = -center.x + selectedMouse.x * zoom;
-            int yShift = -center.y + selectedMouse.y * zoom;
-            Point leftUpCornerOfMaze = new Point(-xShift, -yShift);
             maze.drawMapLevel1(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d);
             int i = -1;
             for (Rat rat : rats) {
