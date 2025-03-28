@@ -58,7 +58,7 @@ public class World implements Runnable {
         }
     }
 
-    public void draw(Graphics2D g2d, Point center) {
+    public void drawMap(Graphics2D g2d, Point center) {
         Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoom,
                 center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoom);
         if (myMouse >= 0 && myMouse < rats.size()) {
