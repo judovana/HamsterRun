@@ -129,7 +129,7 @@ public class Rat {
     }
 
     private BufferedImage getImageForAction() {
-        if (RatActions.isStay(action)) {
+        if (RatActions.isStay(action) || action == RatActions.EAT) {
             return Rats.ratSprites.getSit(direction.getSprite(), 0);
         } else if (RatActions.isWalk(action)) {
             return Rats.ratSprites.getRun(direction.getSprite(), anim % 2);
@@ -194,8 +194,12 @@ public class Rat {
         }
     }
 
-    private void stop() {
-        this.action = RatActions.STAY;
+    private void stop(World world) {
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
+            this.action = RatActions.EAT;
+        } else {
+            this.action = RatActions.STAY;
+        }
     }
 
     public void setActionDirection(World world, RatActions action, RatActions.Direction direction) {
@@ -210,11 +214,11 @@ public class Rat {
             anim = 0;
         }
         int chanceToStop = 40;
-        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable){
-            chanceToStop=10;
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
+            chanceToStop = 10;
         }
         if (seed.nextInt(chanceToStop) == 0 && this.action.isInterruptible()) {
-            this.stop();
+            this.stop(world);
         }
         switch (action) {
             case WALK:
@@ -233,6 +237,23 @@ public class Rat {
                         break;
                 }
                 break;
+            case EAT:
+                eat(world);
+                break;
+        }
+    }
+
+    private void eat(World world) {
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
+            if (anim % 3 == 0) {
+                direction = direction.rotateCW();
+                boolean eaten = ((Vegetable) world.getBlockField(getUniversalCoords()).getItem()).eat();
+                if (eaten) {
+                    world.getBlockField(getUniversalCoords()).clear();
+                }
+            }
+        } else {
+            action = RatActions.STAY;
         }
     }
 

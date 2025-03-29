@@ -52,4 +52,8 @@ public class BlockField {
     public boolean isFree() {
         return item == null;
     }
+
+    public void clear() {
+        this.item = new Empty();
+    }
 }

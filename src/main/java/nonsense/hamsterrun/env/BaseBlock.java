@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Random;
 
 public class BaseBlock {
-    //TODO replace int by object Field
     private final BlockField[][] map;
     private static final Random seed = new Random();
     private final int sizex;
