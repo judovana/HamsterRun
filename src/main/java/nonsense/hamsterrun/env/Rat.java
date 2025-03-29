@@ -7,13 +7,16 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.traps.AnimationCounrer;
+import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
+import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.sprites.Rats;
 
 public class Rat {
 
     private static final Random seed = new Random();
-    private int anim;
+    private AnimationCounrer anim = new AnimationCounrer();
 
     private Point coordsInBaseBlock = new Point(-1, -1);
     private Point coordsInMaze = new Point(-1, -1);
@@ -130,9 +133,9 @@ public class Rat {
 
     private BufferedImage getImageForAction() {
         if (RatActions.isStay(action) || action == RatActions.EAT) {
-            return Rats.ratSprites.getSit(direction.getSprite(), 0);
+            return Rats.ratSprites.getSit(direction.getSprite(), anim.ignore());
         } else if (RatActions.isWalk(action)) {
-            return Rats.ratSprites.getRun(direction.getSprite(), anim % 2);
+            return Rats.ratSprites.getRun(direction.getSprite(), anim.everyOdd());
         } else {
             throw new RuntimeException("Unknown acction " + action);
         }
@@ -209,10 +212,7 @@ public class Rat {
     }
 
     public void act(World world) {
-        this.anim++;
-        if (anim >= 10) {
-            anim = 0;
-        }
+       anim.addLimited();
         int chanceToStop = 40;
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
             chanceToStop = 10;
@@ -220,32 +220,42 @@ public class Rat {
         if (seed.nextInt(chanceToStop) == 0 && this.action.isInterruptible()) {
             this.stop(world);
         }
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor) {
+            this.action = RatActions.FALLING;
+        }
         switch (action) {
             case WALK:
-                switch (direction) {
-                    case DOWN:
-                        moveMouseDown(world);
-                        break;
-                    case UP:
-                        moveMouseUp(world);
-                        break;
-                    case LEFT:
-                        moveMouseLeft(world);
-                        break;
-                    case RIGHT:
-                        moveMouseRight(world);
-                        break;
-                }
+                moveInDirection(world);
                 break;
             case EAT:
                 eat(world);
+                break;
+            case FALLING:
+                fall(world);
+                break;
+        }
+    }
+
+    private void moveInDirection(World world) {
+        switch (direction) {
+            case DOWN:
+                moveMouseDown(world);
+                break;
+            case UP:
+                moveMouseUp(world);
+                break;
+            case LEFT:
+                moveMouseLeft(world);
+                break;
+            case RIGHT:
+                moveMouseRight(world);
                 break;
         }
     }
 
     private void eat(World world) {
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
-            if (anim % 3 == 0) {
+            if (anim.everyThird()) {
                 direction = direction.rotateCW();
                 boolean eaten = ((Vegetable) world.getBlockField(getUniversalCoords()).getItem()).eat();
                 if (eaten) {
@@ -255,6 +265,11 @@ public class Rat {
         } else {
             action = RatActions.STAY;
         }
+    }
+
+    private void fall(World world) {
+        world.teleportMouse(this, false,  true);
+        action = RatActions.STAY;
     }
 
 }

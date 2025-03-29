@@ -2,7 +2,7 @@ package nonsense.hamsterrun.env;
 
 public enum RatActions {
 
-    STAY, WALK, EAT;
+    STAY, WALK, EAT, FALLING;
 
     public enum Direction {
         UP(0), RIGHT(1), DOWN(2), LEFT(3);

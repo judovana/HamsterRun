@@ -6,7 +6,9 @@ import nonsense.hamsterrun.BaseConfig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -35,28 +37,67 @@ public class World implements Runnable {
 
     }
 
+    public void teleportMouse(Rat rat, boolean center, boolean regenerate) {
+        //FIXME if regenerate will be true, remote corner must be found first, regenerated
+        //and only if no remote corner is found, an existing one is picked up
+        if (regenerate) {
+            Point found = getSquareWithoutRatInNeigbrhood();
+
+        }
+        Point[] start;
+        while (true) {
+            start = center ? maze.getSafeSpotInMiddle() : maze.getRandomSafeSpot();
+            boolean mouseOccupied = isMouseOcupied(rat, start);
+            if (!mouseOccupied) {
+                break;
+            }
+        }
+        rat.setCoordsInMaze(start[0].y, start[0].x);
+        rat.setCoordsInBaseBlock(start[1].y, start[1].x);
+        System.out.println(rat.getCoordsInMaze() + " " + rat.getCoordsInBaseBlock());
+    }
+
+    private Point getSquareWithoutRatInNeigbrhood() {
+        List<Integer> xs = new ArrayList<>(maze.getWidth());
+        for (int x = 0; x < maze.getWidth(); x++) {
+            xs.add(x);
+
+        }
+        List<Integer> ys = new ArrayList<>(maze.getHeight());
+        for (int y = 0; y < maze.getWidth(); y++) {
+            ys.add(y);
+        }
+        Collections.shuffle(xs);
+        Collections.shuffle(ys);
+        for (int x : xs) {
+            for (int y : ys) {
+                System.out.println(x + " " + y);
+                //if no baseblock on sides or no mouses on sides.. lets use the first one
+            }
+        }
+        return null;
+    }
+
     public void allRatsSpread(boolean center) {
         for (int x = 0; x < rats.size(); x++) {
-            Point[] start = center ? maze.getSafeSpotInMiddle() : maze.getRandomSafeSpot();
-            boolean mouseOcupied = false;
-            for (int y = 0; y < rats.size(); y++) {
-                if (y != x) {
-                    if (new Point(start[0].y, start[0].x).equals(rats.get(y).getCoordsInMaze()) && new Point(start[1].y,
-                            start[1].x).equals(rats.get(y).getCoordsInBaseBlock())) {
-                        mouseOcupied = true;
-                        System.out.println("Mouse clash!");
-                        System.out.println(rats.get(y).getCoordsInMaze() + " " + rats.get(y).getCoordsInBaseBlock());
-                    }
+            teleportMouse(rats.get(x), center, false);
+        }
+    }
+
+    private boolean isMouseOcupied(Rat currentMouse, Point[] start) {
+        boolean mouseOcupied = false;
+        for (int y = 0; y < rats.size(); y++) {
+            //really ==
+            if (rats.get(y) == currentMouse) {
+                if (new Point(start[0].y, start[0].x).equals(rats.get(y).getCoordsInMaze()) && new Point(start[1].y,
+                        start[1].x).equals(rats.get(y).getCoordsInBaseBlock())) {
+                    mouseOcupied = true;
+                    System.out.println("Mouse clash!");
+                    System.out.println(rats.get(y).getCoordsInMaze() + " " + rats.get(y).getCoordsInBaseBlock());
                 }
             }
-            if (mouseOcupied) {
-                x--;
-                continue;
-            }
-            rats.get(x).setCoordsInMaze(start[0].y, start[0].x);
-            rats.get(x).setCoordsInBaseBlock(start[1].y, start[1].x);
-            System.out.println(rats.get(x).getCoordsInMaze() + " " + rats.get(x).getCoordsInBaseBlock());
         }
+        return mouseOcupied;
     }
 
     public void drawMap(Graphics2D g2d, Point center) {
