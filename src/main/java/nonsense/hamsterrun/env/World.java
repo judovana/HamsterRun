@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 public class World implements Runnable {
 
     private static final Random seed = new Random();
+    private static final int delayMs =50;
 
     private final Thread repl;
     private final Maze maze;
@@ -168,7 +169,7 @@ public class World implements Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(50);
+                Thread.sleep(delayMs);
                 for (int m = 0; m < rats.size(); m++) {
                     if (m != myMouse) {
                         switch (seed.nextInt(8)) {
