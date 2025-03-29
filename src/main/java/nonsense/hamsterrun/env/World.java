@@ -168,7 +168,7 @@ public class World implements Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
                 for (int m = 0; m < rats.size(); m++) {
                     if (m != myMouse) {
                         switch (seed.nextInt(8)) {

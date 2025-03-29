@@ -17,6 +17,7 @@ public class Rat {
     private Point coordsInMaze = new Point(-1, -1);
     private Actions action = Actions.STAY;
     private Point relativeCoordInSquare = new Point(0, 0);
+    private static final int relativeSizes = 5;
 
     public Rat() {
     }
@@ -101,35 +102,81 @@ public class Rat {
         }
     }
 
-
+    //useInplaceSubMovement - in map false, in game true
     public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement) {
         Point coord = getUniversalCoords();
-        g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom, leftUpCornerOfMaze.y + coord.y * zoom, zoom, zoom);
+        Point relativeShift = new Point(0, 0);
+        if (useInplaceSubMovement) {
+            //it goes from (relativeSizes..0...-relativeSizes) (without the edges)
+            //so for relativeSizes 1 the total to walk is 0
+            //so for relativeSizes 2 the total to walk is 3 (1,0,-1)...
+            //so for relativeSizes 5 the total to walk is 9 (4,3,2,1,0,-1,-2,-3,-4)...
+            float relativeSizesCalc = relativeSizes * 2 - 1;
+            float step = zoom / relativeSizesCalc;
+            //so for relativeSizes 5 the it goes from 1 to 9 inclusive
+            float relativeX = (relativeCoordInSquare.x) * step;
+            float relativeY = (relativeCoordInSquare.y) * step;
+            relativeShift.x = (int) relativeX;
+            relativeShift.y = (int) relativeY;
+        }
+        g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
     }
 
-        private void moveMouseRight(World world) {
-            relativeCoordInSquare.x++;
-            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+    private void moveMouseRight(World world) {
+        relativeCoordInSquare.x++;
+        if (relativeCoordInSquare.y < 0) {
+            relativeCoordInSquare.y++;
+        }
+        if (relativeCoordInSquare.y > 0) {
+            relativeCoordInSquare.y--;
+        }
+        if (relativeCoordInSquare.x >= relativeSizes) {
+            relativeCoordInSquare.x = -relativeSizes;
             reallyMoveMouseRight(world);
         }
+    }
 
-        private void moveMouseUp(World world) {
-            relativeCoordInSquare.y--;
-            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+    private void moveMouseUp(World world) {
+        relativeCoordInSquare.y--;
+        if (relativeCoordInSquare.x < 0) {
+            relativeCoordInSquare.x++;
+        }
+        if (relativeCoordInSquare.x > 0) {
+            relativeCoordInSquare.x--;
+        }
+        if (relativeCoordInSquare.y <= -relativeSizes) {
+            relativeCoordInSquare.y = relativeSizes;
             reallyMoveMouseUp(world);
         }
+    }
 
-        private void moveMouseLeft(World world) {
-            relativeCoordInSquare.x--;
-            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+    private void moveMouseLeft(World world) {
+        relativeCoordInSquare.x--;
+        if (relativeCoordInSquare.y < 0) {
+            relativeCoordInSquare.y++;
+        }
+        if (relativeCoordInSquare.y > 0) {
+            relativeCoordInSquare.y--;
+        }
+        if (relativeCoordInSquare.x <= -relativeSizes) {
+            relativeCoordInSquare.x = relativeSizes;
             reallyMoveMouseLeft(world);
         }
+    }
 
-        private void moveMouseDown(World world) {
-            relativeCoordInSquare.y++;
-            //if run out of (-5 5) tenn  force and reset  relativeCoordInSquare
+    private void moveMouseDown(World world) {
+        relativeCoordInSquare.y++;
+        if (relativeCoordInSquare.x < 0) {
+            relativeCoordInSquare.x++;
+        }
+        if (relativeCoordInSquare.x > 0) {
+            relativeCoordInSquare.x--;
+        }
+        if (relativeCoordInSquare.y >= relativeSizes) {
+            relativeCoordInSquare.y = -relativeSizes;
             reallyMoveMouseDown(world);
         }
+    }
 
     public void setAction(World world, Actions action) {
         this.action = action;
