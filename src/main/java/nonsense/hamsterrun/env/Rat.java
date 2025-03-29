@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.sprites.Rats;
 
 public class Rat {
@@ -208,7 +209,11 @@ public class Rat {
         if (anim >= 10) {
             anim = 0;
         }
-        if (seed.nextInt(40) == 0 && this.action.isInterruptible()) {
+        int chanceToStop = 40;
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable){
+            chanceToStop=10;
+        }
+        if (seed.nextInt(chanceToStop) == 0 && this.action.isInterruptible()) {
             this.stop();
         }
         switch (action) {

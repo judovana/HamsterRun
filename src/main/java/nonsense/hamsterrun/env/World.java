@@ -161,6 +161,14 @@ public class World implements Runnable {
         return true;
     }
 
+    public BlockField getBlockField(Point coord) {
+        BlockField bl = getMazeStatus(coord);
+        if (bl == null) {
+            return new BlockField(true);
+        }
+        return bl;
+    }
+
     private BlockField getMazeStatus(Point coord) {
         BlockField bl = maze.getByUniversalCoord(coord);
         return bl;
