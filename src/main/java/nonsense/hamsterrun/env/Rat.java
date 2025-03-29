@@ -14,23 +14,10 @@ public class Rat {
     private static final Random seed = new Random();
     private int anim;
 
-    public enum Actions {
-        STAY()/*FIXME needs stay left, right, up....*/, LEFT_NORMAL(3), RIGHT_NORMAL(1), UP_NORMAL(0), DOWN_NORMAL(2);
-
-        private final int sprite;
-
-        Actions() {
-            sprite = 0;
-        }
-
-        Actions(int i) {
-            sprite = i;
-        }
-    }
-
     private Point coordsInBaseBlock = new Point(-1, -1);
     private Point coordsInMaze = new Point(-1, -1);
-    private Actions action = Actions.STAY;
+    private RatActions action = RatActions.STAY;
+    private RatActions.Direction direction = RatActions.Direction.UP;
     private Point relativeCoordInSquare = new Point(0, 0);
     private static final int relativeSizes = 5;
 
@@ -141,10 +128,12 @@ public class Rat {
     }
 
     private BufferedImage getImageForAction() {
-        if (action == Actions.STAY) {
-            return Rats.ratSprites.getSit();
+        if (RatActions.isStay(action)) {
+            return Rats.ratSprites.getSit(direction.getSprite(), 0);
+        } else if (RatActions.isWalk(action)) {
+            return Rats.ratSprites.getRun(direction.getSprite(), anim % 2);
         } else {
-            return Rats.ratSprites.getRun(action.sprite, anim % 2);
+            throw new RuntimeException("Unknown acction " + action);
         }
     }
 
@@ -205,12 +194,12 @@ public class Rat {
     }
 
     private void stop() {
-        //todo honoour previous direction
-        this.action = Actions.STAY;
+        this.action = RatActions.STAY;
     }
 
-    public void setAction(World world, Actions action) {
+    public void setActionDirection(World world, RatActions action, RatActions.Direction direction) {
         this.action = action;
+        this.direction = direction;
 
     }
 
@@ -219,23 +208,26 @@ public class Rat {
         if (anim >= 10) {
             anim = 0;
         }
-        if (seed.nextInt(50) == 0) {
+        if (seed.nextInt(40) == 0 && this.action.isInterruptible()) {
             this.stop();
         }
         switch (action) {
-            case DOWN_NORMAL:
-                moveMouseDown(world);
+            case WALK:
+                switch (direction) {
+                    case DOWN:
+                        moveMouseDown(world);
+                        break;
+                    case UP:
+                        moveMouseUp(world);
+                        break;
+                    case LEFT:
+                        moveMouseLeft(world);
+                        break;
+                    case RIGHT:
+                        moveMouseRight(world);
+                        break;
+                }
                 break;
-            case UP_NORMAL:
-                moveMouseUp(world);
-                break;
-            case LEFT_NORMAL:
-                moveMouseLeft(world);
-                break;
-            case RIGHT_NORMAL:
-                moveMouseRight(world);
-                break;
-            //TODO there must be also STAY (to eg eat or so... Or maybe resolve it in stop?
         }
     }
 

@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 public class World implements Runnable {
 
     private static final Random seed = new Random();
-    private static final int delayMs =50;
+    private static final int delayMs = 50;
 
     private final Thread repl;
     private final Maze maze;
@@ -114,25 +114,25 @@ public class World implements Runnable {
 
     public void setMouseUp(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).setAction(this, Rat.Actions.UP_NORMAL);
+            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.UP);
         }
     }
 
     public void setMouseLeft(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).setAction(this, Rat.Actions.LEFT_NORMAL);
+            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.LEFT);
         }
     }
 
     public void setMouseDown(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).setAction(this, Rat.Actions.DOWN_NORMAL);
+            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.DOWN);
         }
     }
 
     public void setMouseRight(int i) {
         if (i >= 0 && i < rats.size()) {
-            rats.get(i).setAction(this, Rat.Actions.RIGHT_NORMAL);
+            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.RIGHT);
         }
     }
 
