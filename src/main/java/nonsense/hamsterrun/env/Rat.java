@@ -3,14 +3,29 @@ package nonsense.hamsterrun.env;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.sprites.Rats;
 
 public class Rat {
 
-    public enum Actions {
-        STAY/*FIXME needs stay left, right, up....*/, LEFT_NORMAL, RIGHT_NORMAL, UP_NORMAL, DOWN_NORMAL
+    private static final Random seed = new Random();
+    private int anim;
 
+    public enum Actions {
+        STAY()/*FIXME needs stay left, right, up....*/, LEFT_NORMAL(3), RIGHT_NORMAL(1), UP_NORMAL(0), DOWN_NORMAL(2);
+
+        private final int sprite;
+
+        Actions() {
+            sprite = 0;
+        }
+
+        Actions(int i) {
+            sprite = i;
+        }
     }
 
     private Point coordsInBaseBlock = new Point(-1, -1);
@@ -118,8 +133,19 @@ public class Rat {
             float relativeY = (relativeCoordInSquare.y) * step;
             relativeShift.x = (int) relativeX;
             relativeShift.y = (int) relativeY;
+            BufferedImage img = getImageForAction();
+            g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom, null);
+        } else {
+            g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
         }
-        g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
+    }
+
+    private BufferedImage getImageForAction() {
+        if (action == Actions.STAY) {
+            return Rats.ratSprites.getSit();
+        } else {
+            return Rats.ratSprites.getRun(action.sprite, anim % 2);
+        }
     }
 
     private void moveMouseRight(World world) {
@@ -178,12 +204,24 @@ public class Rat {
         }
     }
 
+    private void stop() {
+        //todo honoour previous direction
+        this.action = Actions.STAY;
+    }
+
     public void setAction(World world, Actions action) {
         this.action = action;
 
     }
 
     public void act(World world) {
+        this.anim++;
+        if (anim >= 10) {
+            anim = 0;
+        }
+        if (seed.nextInt(50) == 0) {
+            this.stop();
+        }
         switch (action) {
             case DOWN_NORMAL:
                 moveMouseDown(world);
@@ -197,6 +235,8 @@ public class Rat {
             case RIGHT_NORMAL:
                 moveMouseRight(world);
                 break;
+            //TODO there must be also STAY (to eg eat or so... Or maybe resolve it in stop?
         }
     }
+
 }
