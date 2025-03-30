@@ -10,6 +10,7 @@ public class Rats {
 
     private static final List<String> KNOWN_RATS= List.of("rat");
     public static SpriteSet ratSprites;
+    public static BufferedImage wall;
 
     public static void load() throws IOException {
         for (String rat: KNOWN_RATS) {
@@ -22,7 +23,7 @@ public class Rats {
             ratSprites = new SpriteSet(run1, run2, sit);
         }
         URL wall1u = Rats.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");
-        BufferedImage wall = ImageIO.read(wall1u);
+        wall = ImageIO.read(wall1u);
     }
 
 }

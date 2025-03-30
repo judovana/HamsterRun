@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
+import nonsense.hamsterrun.sprites.Rats;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -168,6 +169,10 @@ public class BaseBlock {
                 if (zoom > 2 && level == 1) {
                     g2d.setColor(new Color(255, 0, 0, 255));
                     g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
+                    //warning second draw is not visible, because left neigbour black rectanghle is overriding it
+                    //however the balck neigbour is necessary, to overwrite original content as it animates/regeneratesd
+                    g2d.drawImage(Rats.wall, coordx-(zoom/6), coordy, zoom/6 - 1, zoom - 1, null);
+                    g2d.drawImage(Rats.wall, coordx+zoom, coordy, zoom/6 - 1, zoom - 1, null);
                 }
             }
         }
