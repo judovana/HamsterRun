@@ -112,10 +112,6 @@ public class BaseConfig {
         return gridConnectivityMax;
     }
 
-    public static BaseConfig getBaseConfig() {
-        return baseConfig;
-    }
-
     private static int getBaseConfigRandom(int min, int max) {
         return seed.nextInt(max - min + 1) + min;
     }

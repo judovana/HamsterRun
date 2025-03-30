@@ -6,11 +6,11 @@ import nonsense.hamsterrun.BaseConfig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JComponent;
 
@@ -24,6 +24,7 @@ public class World implements Runnable {
     private final List<Rat> rats = Arrays.asList(new Rat(), new Rat(), new Rat(), new Rat());
     private int myMouse = -1;
     private int zoom = 20;
+    private int worldAnim = 0;
 
     private JComponent repaintListener;
 
@@ -37,16 +38,14 @@ public class World implements Runnable {
 
     }
 
-    public void teleportMouse(Rat rat, boolean center, boolean regenerate) {
-        //FIXME if regenerate will be true, remote corner must be found first, regenerated
-        //and only if no remote corner is found, an existing one is picked up
-        if (regenerate) {
-            Point found = getSquareWithoutRatInNeigbrhood();
-
-        }
+    public void teleportMouse(Rat rat, boolean center) {
         Point[] start;
         while (true) {
             start = center ? maze.getSafeSpotInMiddle() : maze.getRandomSafeSpot();
+            if (start[0].equals(rat.getCoordsInMaze())){
+                //necessary?
+                continue;
+            }
             boolean mouseOccupied = isMouseOcupied(rat, start);
             if (!mouseOccupied) {
                 break;
@@ -57,30 +56,43 @@ public class World implements Runnable {
         System.out.println(rat.getCoordsInMaze() + " " + rat.getCoordsInBaseBlock());
     }
 
-    private Point getSquareWithoutRatInNeigbrhood() {
-        List<Integer> xs = new ArrayList<>(maze.getWidth());
-        for (int x = 0; x < maze.getWidth(); x++) {
-            xs.add(x);
-
-        }
-        List<Integer> ys = new ArrayList<>(maze.getHeight());
-        for (int y = 0; y < maze.getWidth(); y++) {
-            ys.add(y);
-        }
-        Collections.shuffle(xs);
-        Collections.shuffle(ys);
-        for (int x : xs) {
-            for (int y : ys) {
-                System.out.println(x + " " + y);
-                //if no baseblock on sides or no mouses on sides.. lets use the first one
+    private Set<Point> getSquaresWithoutRatInNeighbourhood() {
+        Set<Point> result = new HashSet<>();
+        for (int x = 0; x < maze.getHeight(); x++) {
+            for (int y = 0; y < maze.getWidth(); y++) {
+                boolean haveRat = false;
+                for (Rat rat : rats) {
+                    if (rat.getCoordsInMaze().equals(new Point(x, y))) {
+                        haveRat = true;
+                        break;
+                    }
+                }
+                if (!haveRat) {
+                    boolean haveRatOnNeighbour = false;
+                    List<Point> neighbours = maze.getDirectNeighbours(x, y);
+                    for (Point point : neighbours) {
+                        for (Rat rat : rats) {
+                            if (rat.getCoordsInMaze().equals(point)) {
+                                haveRatOnNeighbour = true;
+                                break;
+                            }
+                        }
+                        if (haveRatOnNeighbour) {
+                           break;
+                        }
+                    }
+                    if (!haveRatOnNeighbour){
+                        result.add(new Point(x,y));
+                    }
+                }
             }
         }
-        return null;
+        return result;
     }
 
     public void allRatsSpread(boolean center) {
         for (int x = 0; x < rats.size(); x++) {
-            teleportMouse(rats.get(x), center, false);
+            teleportMouse(rats.get(x), center);
         }
     }
 
@@ -218,6 +230,14 @@ public class World implements Runnable {
     public void run() {
         while (true) {
             try {
+                worldAnim++;
+                if (worldAnim % 5 == 0) {
+                    worldAnim = 0;
+                    Set<Point> sqWithoutN = getSquaresWithoutRatInNeighbourhood();
+                    for(Point p: sqWithoutN){
+                        maze.regenerate(p.y, p.x, BaseConfig.getConfig());
+                    }
+                }
                 Thread.sleep(delayMs);
                 for (int m = 0; m < rats.size(); m++) {
                     if (m != myMouse) {

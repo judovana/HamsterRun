@@ -228,7 +228,7 @@ public class Rat {
     }
 
     public void act(World world) {
-       anim.addLimited();
+        anim.addLimited();
         int chanceToStop = 40;
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
             chanceToStop = 10;
@@ -284,7 +284,7 @@ public class Rat {
     }
 
     private void fall(World world) {
-        world.teleportMouse(this, false,  true);
+        world.teleportMouse(this, false);
         action = RatActions.STAY;
     }
 

@@ -6,6 +6,8 @@ import nonsense.hamsterrun.Utils;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Maze {
@@ -190,5 +192,22 @@ public class Maze {
         int x2 = coord.y % BaseConfig.getConfig().getBaseSize();
         int y2 = coord.x % BaseConfig.getConfig().getBaseSize();
         return maze[x1][y1].get(x2, y2);
+    }
+
+    public List<Point> getDirectNeighbours(int x, int y) {
+        List<Point> result = new ArrayList<>();
+        if (x > 0) {
+            result.add(new Point(x - 1, y));
+        }
+        if (x < getHeight() - 1) {
+            result.add(new Point(x + 1, y));
+        }
+        if (y > 0) {
+            result.add(new Point(x, y - 1));
+        }
+        if (y < getWidth() - 1) {
+            result.add(new Point(x, y + 1));
+        }
+        return result;
     }
 }
