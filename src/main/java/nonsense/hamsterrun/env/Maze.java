@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -117,8 +118,12 @@ public class Maze {
     }
 
 
-    //map will most likely not honour the levels, but final drawing will
-    public void drawMap(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d,int level) {
+    public void drawMap(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d, int level) {
+        //delete all
+        if (level == 1) {
+            g2d.setColor(new Color(0, 0, 0, 255));
+            g2d.fillRect(userx - zoom, usery - zoom, zoom * maze[0].length * BaseConfig.getConfig().getBaseSize() + 2 * zoom, zoom * maze.length * BaseConfig.getConfig().getBaseSize() + 2 * zoom);
+        }
         for (int x = 0; x < maze.length; x++) {
             for (int y = 0; y < maze[x].length; y++) {
                 if (maze[x][y] != null) {

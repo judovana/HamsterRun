@@ -144,35 +144,25 @@ public class BaseBlock {
         return Utils.toImage(this, zoom);
     }
 
-
-    public void drawMapLevel2(int userx, int usery, int zoom, Graphics2D g2d) {
-        drawMap(userx, usery,zoom,g2d, 2);
-    }
-    public void drawMapLevel1(int userx, int usery, int zoom, Graphics2D g2d) {
-        drawMap(userx, usery,zoom,g2d, 1);
-    }
-
     public void drawMap(int userx, int usery, int zoom, Graphics2D g2d, int level) {
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y].isImpassable()) {
-                    g2d.setColor(new Color(0, 0, 0, 255));
-                } else {
+                if (map[x][y].isPassable()) {
                     g2d.setColor(map[x][y].getItem().getMinimapColor());
-                }
-                //this is aligning it with console and debugger output of [][]
-                int coordx = y * zoom + userx;
-                int coordy = x * zoom + usery;
-                if (level == (map[x][y].getItem().getLevel())) {
-                    g2d.fillRect(coordx, coordy, zoom, zoom);
-                }
-                if (zoom > 2 && level == 1) {
-                    g2d.setColor(new Color(255, 0, 0, 255));
-                    g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
-                    //warning second draw is not visible, because left neigbour black rectanghle is overriding it
-                    //however the balck neigbour is necessary, to overwrite original content as it animates/regeneratesd
-                    g2d.drawImage(Rats.wall, coordx-(zoom/6), coordy, zoom/6 - 1, zoom - 1, null);
-                    g2d.drawImage(Rats.wall, coordx+zoom, coordy, zoom/6 - 1, zoom - 1, null);
+                    //this is aligning it with console and debugger output of [][]
+                    int coordx = y * zoom + userx;
+                    int coordy = x * zoom + usery;
+                    if (level == (map[x][y].getItem().getLevel())) {
+                        g2d.fillRect(coordx, coordy, zoom, zoom);
+                    }
+                    if (zoom > 2 && level == 1) {
+                        g2d.setColor(new Color(255, 0, 0, 255));
+                        g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
+                        //warning second draw is not visible, because left neigbour black rectanghle is overriding it
+                        //however the balck neigbour is necessary, to overwrite original content as it animates/regeneratesd
+                        g2d.drawImage(Rats.wall, coordx - (zoom / 6), coordy, zoom / 6 - 1, zoom - 1, null);
+                        g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / 6 - 1, zoom - 1, null);
+                    }
                 }
             }
         }
