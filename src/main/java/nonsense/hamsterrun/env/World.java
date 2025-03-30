@@ -6,7 +6,9 @@ import nonsense.hamsterrun.BaseConfig;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -38,11 +40,26 @@ public class World implements Runnable {
 
     }
 
-    public void teleportMouse(Rat rat, boolean center) {
+    public void teleportMouse(Rat rat, boolean center, boolean forceAlone) {
         Point[] start;
+        int aloneAttempts = 10;
         while (true) {
-            start = center ? maze.getSafeSpotInMiddle() : maze.getRandomSafeSpot();
-            if (start[0].equals(rat.getCoordsInMaze())){
+            if (aloneAttempts <= 0) {
+                forceAlone = false;
+            }
+            if (forceAlone) {
+                aloneAttempts--;
+                List<Point> remotes = new ArrayList<>(getSquaresWithoutRatInNeighbourhood());
+                if (remotes.isEmpty()) {
+                    start = center ? maze.getSafeSpotInMiddle() : maze.getRandomSafeSpot();
+                } else {
+                    Collections.shuffle(remotes);
+                    start = maze.getSafeSpotIn(remotes.get(0).y, remotes.get(0).x);
+                }
+            } else {
+                start = center ? maze.getSafeSpotInMiddle() : maze.getRandomSafeSpot();
+            }
+            if (start[0].equals(rat.getCoordsInMaze())) {
                 //necessary?
                 continue;
             }
@@ -78,11 +95,11 @@ public class World implements Runnable {
                             }
                         }
                         if (haveRatOnNeighbour) {
-                           break;
+                            break;
                         }
                     }
-                    if (!haveRatOnNeighbour){
-                        result.add(new Point(x,y));
+                    if (!haveRatOnNeighbour) {
+                        result.add(new Point(x, y));
                     }
                 }
             }
@@ -92,7 +109,7 @@ public class World implements Runnable {
 
     public void allRatsSpread(boolean center) {
         for (int x = 0; x < rats.size(); x++) {
-            teleportMouse(rats.get(x), center);
+            teleportMouse(rats.get(x), center, false);
         }
     }
 
@@ -234,7 +251,7 @@ public class World implements Runnable {
                 if (worldAnim % 5 == 0) {
                     worldAnim = 0;
                     Set<Point> sqWithoutN = getSquaresWithoutRatInNeighbourhood();
-                    for(Point p: sqWithoutN){
+                    for (Point p : sqWithoutN) {
                         maze.regenerate(p.y, p.x, BaseConfig.getConfig());
                     }
                 }

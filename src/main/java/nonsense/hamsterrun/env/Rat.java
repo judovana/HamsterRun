@@ -284,7 +284,7 @@ public class Rat {
     }
 
     private void fall(World world) {
-        world.teleportMouse(this, false);
+        world.teleportMouse(this, false, true);
         action = RatActions.STAY;
     }
 
