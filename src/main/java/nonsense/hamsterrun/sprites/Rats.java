@@ -21,7 +21,8 @@ public class Rats {
             BufferedImage sit = ImageIO.read(situ);
             ratSprites = new SpriteSet(run1, run2, sit);
         }
-
+        URL wall1u = Rats.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");
+        BufferedImage wall = ImageIO.read(wall1u);
     }
 
 }
