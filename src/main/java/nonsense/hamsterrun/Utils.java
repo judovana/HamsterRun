@@ -82,7 +82,7 @@ public class Utils {
         BufferedImage bi = new BufferedImage(map.getWidth() * zoom, map.getHeight() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
         map.drawMapLevel1(0,0, zoom, g2d);
-        //map.drawMapLevel2(0,0, zoom, g2d);
+        map.drawMapLevel2(0,0, zoom, g2d);
         return bi;
     }
 
@@ -92,8 +92,8 @@ public class Utils {
     public static BufferedImage toImage(Maze maze, int zoom, BaseConfig config) {
         BufferedImage bi = new BufferedImage(maze.getWidth() * config.getBaseSize() * zoom, maze.getHeight() * config.getBaseSize() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
-        maze.drawMapLevel1(0,0, zoom, config, g2d);
-        //maze.drawMapLevel2(0,0, zoom, config, g2d);
+        maze.drawMap(0,0, zoom, config, g2d, 1);
+        maze.drawMap(0,0, zoom, config, g2d, 2);
         return bi;
     }
 

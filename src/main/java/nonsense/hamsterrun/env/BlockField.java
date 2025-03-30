@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
+import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Vegetable;
@@ -35,7 +36,7 @@ public class BlockField {
     }
 
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(6);
+        int i = seed.nextInt(8);
         if (i < 3) {
             this.item = new Vegetable();
         } else if (i == 3) {
@@ -44,6 +45,8 @@ public class BlockField {
             this.item = new TrapDoor();
         } else if (i == 5) {
             this.item = new InvisibleTrapDoor();
+        } else if (i == 6 || i == 7) {
+        this.item = new Tunnel();
         }
     }
 

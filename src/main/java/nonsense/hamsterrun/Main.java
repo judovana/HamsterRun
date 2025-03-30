@@ -137,7 +137,8 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        maze.drawMapLevel1(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d);
+                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 1);
+                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 2);
                     }
                 };
                 view.setBackground(Color.BLACK);

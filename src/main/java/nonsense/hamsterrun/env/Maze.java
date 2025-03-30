@@ -118,14 +118,13 @@ public class Maze {
 
 
     //map will most likely not honour the levels, but final drawing will
-    public void drawMapLevel1(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d) {
+    public void drawMap(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d,int level) {
         for (int x = 0; x < maze.length; x++) {
             for (int y = 0; y < maze[x].length; y++) {
                 if (maze[x][y] != null) {
                     int coordx = y * config.getBaseSize() * zoom + userx;
                     int coordy = x * config.getBaseSize() * zoom + usery;
-                    //g2d.drawImage(map[x][y].toImage(zoom), coordx, coordy, null);
-                    maze[x][y].drawMapLevel1(coordx, coordy, zoom, g2d);
+                    maze[x][y].drawMap(coordx, coordy, zoom, g2d, level);
                 }
 
             }

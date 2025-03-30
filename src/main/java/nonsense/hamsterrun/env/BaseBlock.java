@@ -143,8 +143,15 @@ public class BaseBlock {
         return Utils.toImage(this, zoom);
     }
 
-    //map will most likely not honour the levels, but final drawing will
+
+    public void drawMapLevel2(int userx, int usery, int zoom, Graphics2D g2d) {
+        drawMap(userx, usery,zoom,g2d, 2);
+    }
     public void drawMapLevel1(int userx, int usery, int zoom, Graphics2D g2d) {
+        drawMap(userx, usery,zoom,g2d, 1);
+    }
+
+    public void drawMap(int userx, int usery, int zoom, Graphics2D g2d, int level) {
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y].isImpassable()) {
@@ -155,8 +162,10 @@ public class BaseBlock {
                 //this is aligning it with console and debugger output of [][]
                 int coordx = y * zoom + userx;
                 int coordy = x * zoom + usery;
-                g2d.fillRect(coordx, coordy, zoom, zoom);
-                if (zoom > 2) {
+                if (level == (map[x][y].getItem().getLevel())) {
+                    g2d.fillRect(coordx, coordy, zoom, zoom);
+                }
+                if (zoom > 2 && level == 1) {
                     g2d.setColor(new Color(255, 0, 0, 255));
                     g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
                 }
