@@ -10,6 +10,7 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.TrapDoor;
+import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.sprites.Rats;
 
@@ -253,6 +254,11 @@ public class Rat {
     }
 
     private void moveInDirection(World world) {
+        if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel){
+            if (seed.nextInt(20) == 0){
+                direction = RatActions.Direction.getRandom();
+            }
+        }
         switch (direction) {
             case DOWN:
                 moveMouseDown(world);

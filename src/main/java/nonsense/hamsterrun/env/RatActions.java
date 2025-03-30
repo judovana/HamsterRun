@@ -1,5 +1,7 @@
 package nonsense.hamsterrun.env;
 
+import java.util.Random;
+
 public enum RatActions {
 
     STAY, WALK, EAT, FALLING(false);
@@ -7,10 +9,16 @@ public enum RatActions {
     public enum Direction {
         UP(0), RIGHT(1), DOWN(2), LEFT(3);
 
+        private static final Random seed = new Random();
         private final int sprite;
 
         Direction(int sprite) {
             this.sprite = sprite;
+        }
+
+        public static Direction getRandom() {
+            int random = seed.nextInt(4);
+            return Direction.values()[random];
         }
 
         public int getSprite() {
