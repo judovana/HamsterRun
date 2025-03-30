@@ -70,18 +70,34 @@ public class Rat {
 
     private void forceMouseRight() {
         coordsInBaseBlock.x++;
+        if (coordsInBaseBlock.x >= BaseConfig.getConfig().getBaseSize()) {
+            coordsInMaze.x++;
+            coordsInBaseBlock.x = 0;
+        }
     }
 
     private void forceMouseUp() {
         coordsInBaseBlock.y--;
+        if (coordsInBaseBlock.y < 0) {
+            coordsInMaze.y--;
+            coordsInBaseBlock.y = BaseConfig.getConfig().getBaseSize() - 1;
+        }
     }
 
     private void forceMouseLeft() {
         coordsInBaseBlock.x--;
+        if (coordsInBaseBlock.x < 0) {
+            coordsInMaze.x--;
+            coordsInBaseBlock.x = BaseConfig.getConfig().getBaseSize() - 1;
+        }
     }
 
     private void forceMouseDown() {
         coordsInBaseBlock.y++;
+        if (coordsInBaseBlock.y >= BaseConfig.getConfig().getBaseSize()) {
+            coordsInMaze.y++;
+            coordsInBaseBlock.y = 0;
+        }
     }
 
     private void reallyMoveMouseRight(World world) {
