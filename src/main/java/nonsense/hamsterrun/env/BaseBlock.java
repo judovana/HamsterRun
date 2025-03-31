@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BaseBlock {
+    public static final int WALL_WIDTH = 6;
     private final BlockField[][] map;
     private static final Random seed = new Random();
     private final int sizex;
@@ -167,20 +168,21 @@ public class BaseBlock {
                         } else {
                             //FIXME is ignoring surrounding BaseBlocks!
                             //left wall
+
                             if (y == 0 || map[x][y - 1].isImpassable()) {
-                                g2d.drawImage(Rats.wall, coordx - (zoom / 6), coordy, zoom / 6 - 1, zoom - 1, null);
+                                g2d.drawImage(Rats.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
                             //right wall
                             if (y == map[0].length - 1 || map[x][y + 1].isImpassable()) {
-                                g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / 6 - 1, zoom - 1, null);
+                                g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
                             //up wall
                             if (x == 0 || map[x - 1][y].isImpassable()) {
-                                g2d.drawImage(Rats.wall, coordx, coordy - (zoom / 6), zoom - 1, zoom / 6 - 1, null);
+                                g2d.drawImage(Rats.wall, coordx, coordy - (zoom / WALL_WIDTH), zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                             //down wall
                             if (x == map.length - 1 || map[x + 1][y].isImpassable()) {
-                                g2d.drawImage(Rats.wall, coordx, coordy + zoom, zoom - 1, zoom / 6 - 1, null);
+                                g2d.drawImage(Rats.wall, coordx, coordy + zoom, zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                         }
                     }
