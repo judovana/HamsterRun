@@ -140,28 +140,49 @@ public class BaseBlock {
         return Utils.toString(map, null, null);
     }
 
-    public BufferedImage toImage(int zoom) {
-        return Utils.toImage(this, zoom);
+    public BufferedImage toImage(int zoom, boolean map) {
+        return Utils.toImage(this, zoom, map);
     }
 
-    public void drawMap(int userx, int usery, int zoom, Graphics2D g2d, int level) {
+    public void drawMap(int userx, int usery, int zoom, Graphics2D g2d, int level, boolean mapOnly) {
+        mapOnly = false;
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y].isPassable()) {
-                    g2d.setColor(map[x][y].getItem().getMinimapColor());
                     //this is aligning it with console and debugger output of [][]
                     int coordx = y * zoom + userx;
                     int coordy = x * zoom + usery;
-                    if (level == (map[x][y].getItem().getLevel())) {
-                        g2d.fillRect(coordx, coordy, zoom, zoom);
+                    if (mapOnly) {
+                        g2d.setColor(map[x][y].getItem().getMinimapColor());
+                        if (level == (map[x][y].getItem().getLevel())) {
+                            g2d.fillRect(coordx, coordy, zoom, zoom);
+                        }
+                    } else {
+                        //g2d.setColor(map[x][y].getItem().drawInto(g2d, coordx, coordy);
                     }
                     if (zoom > 2 && level == 1) {
-                        g2d.setColor(new Color(255, 0, 0, 255));
-                        g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
-                        //warning second draw is not visible, because left neigbour black rectanghle is overriding it
-                        //however the balck neigbour is necessary, to overwrite original content as it animates/regeneratesd
-                        g2d.drawImage(Rats.wall, coordx - (zoom / 6), coordy, zoom / 6 - 1, zoom - 1, null);
-                        g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / 6 - 1, zoom - 1, null);
+                        if (mapOnly) {
+                            g2d.setColor(new Color(255, 0, 0, 255));
+                            g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
+                        } else {
+                            //FIXME is ignoring surrounding BaseBlocks!
+                            //left wall
+                            if (y == 0 || map[x][y - 1].isImpassable()) {
+                                g2d.drawImage(Rats.wall, coordx - (zoom / 6), coordy, zoom / 6 - 1, zoom - 1, null);
+                            }
+                            //right wall
+                            if (y == map[0].length - 1 || map[x][y + 1].isImpassable()) {
+                                g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / 6 - 1, zoom - 1, null);
+                            }
+                            //up wall
+                            if (x == 0 || map[x - 1][y].isImpassable()) {
+                                g2d.drawImage(Rats.wall, coordx, coordy - (zoom / 6), zoom - 1, zoom / 6 - 1, null);
+                            }
+                            //down wall
+                            if (x == map.length - 1 || map[x + 1][y].isImpassable()) {
+                                g2d.drawImage(Rats.wall, coordx, coordy + zoom, zoom - 1, zoom / 6 - 1, null);
+                            }
+                        }
                     }
                 }
             }

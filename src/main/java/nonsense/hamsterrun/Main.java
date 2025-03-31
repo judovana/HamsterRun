@@ -82,7 +82,7 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2));
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true);
                     }
                 };
                 view.setBackground(Color.BLACK);
@@ -137,8 +137,8 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 1);
-                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 2);
+                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 1, true);
+                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 2, true);
                     }
                 };
                 view.setBackground(Color.BLACK);
@@ -183,7 +183,7 @@ public class Main {
 
     private static void mazeDemo(BaseConfig config) throws IOException {
         Maze maze = Maze.generate(config);
-        BufferedImage bi = maze.toImage(10, config);
+        BufferedImage bi = maze.toImage(10, config, true);
         File f = new File("/tmp/mazr.png");
         ImageIO.write(bi, "png", f);
         ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
@@ -218,7 +218,7 @@ public class Main {
         System.out.println(middle.toString());
         System.out.println("------- end " + id + " end -------");
         File f = new File("/tmp/" + id + "block.png");
-        ImageIO.write(middle.toImage(20), "png", f);
+        ImageIO.write(middle.toImage(20, true), "png", f);
         ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
         pb.start();
     }

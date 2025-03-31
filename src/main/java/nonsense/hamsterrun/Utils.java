@@ -78,20 +78,20 @@ public class Utils {
     02 ...
     ...
      */
-    public static BufferedImage toImage(BaseBlock map, int zoom) {
+    public static BufferedImage toImage(BaseBlock map, int zoom, boolean mapOnly) {
         BufferedImage bi = new BufferedImage(map.getWidth() * zoom, map.getHeight() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
-        map.drawMap(0, 0, zoom, g2d, 1);
-        map.drawMap(0, 0, zoom, g2d, 2);
+        map.drawMap(0, 0, zoom, g2d, 1, mapOnly);
+        map.drawMap(0, 0, zoom, g2d, 2, mapOnly);
         return bi;
     }
 
 
-    public static BufferedImage toImage(Maze maze, int zoom, BaseConfig config) {
+    public static BufferedImage toImage(Maze maze, int zoom, BaseConfig config, boolean map) {
         BufferedImage bi = new BufferedImage(maze.getWidth() * config.getBaseSize() * zoom, maze.getHeight() * config.getBaseSize() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
-        maze.drawMap(0, 0, zoom, config, g2d, 1);
-        maze.drawMap(0, 0, zoom, config, g2d, 2);
+        maze.drawMap(0, 0, zoom, config, g2d, 1, map);
+        maze.drawMap(0, 0, zoom, config, g2d, 2, map);
         return bi;
     }
 

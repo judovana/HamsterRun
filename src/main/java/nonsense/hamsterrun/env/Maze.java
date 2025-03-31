@@ -113,12 +113,12 @@ public class Maze {
         return maze;
     }
 
-    public BufferedImage toImage(int zoom, BaseConfig config) {
-        return Utils.toImage(this, zoom, config);
+    public BufferedImage toImage(int zoom, BaseConfig config, boolean map) {
+        return Utils.toImage(this, zoom, config, map);
     }
 
 
-    public void drawMap(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d, int level) {
+    public void drawMap(int userx, int usery, int zoom, BaseConfig config, Graphics2D g2d, int level, boolean map) {
         //delete all
         if (level == 1) {
             g2d.setColor(new Color(0, 0, 0, 255));
@@ -129,7 +129,7 @@ public class Maze {
                 if (maze[x][y] != null) {
                     int coordx = y * config.getBaseSize() * zoom + userx;
                     int coordy = x * config.getBaseSize() * zoom + usery;
-                    maze[x][y].drawMap(coordx, coordy, zoom, g2d, level);
+                    maze[x][y].drawMap(coordx, coordy, zoom, g2d, level, map);
                 }
 
             }
