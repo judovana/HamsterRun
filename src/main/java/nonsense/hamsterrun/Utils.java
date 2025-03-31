@@ -54,13 +54,13 @@ public class Utils {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y].isImpassable()) {
                     if (ch1 == null) {
-                        line.append("" + map[x][y]);
+                        line.append("" + (map[x][y].isPassable()?"0":"X"));
                     } else {
                         line.append("" + ch1);
                     }
                 } else {
                     if (ch2 == null) {
-                        line.append("" + map[x][y]);
+                        line.append("" + (map[x][y].isPassable()?"0":"X"));
                     } else {
                         line.append("" + ch2);
                     }
@@ -81,8 +81,8 @@ public class Utils {
     public static BufferedImage toImage(BaseBlock map, int zoom, boolean mapOnly) {
         BufferedImage bi = new BufferedImage(map.getWidth() * zoom, map.getHeight() * zoom, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bi.createGraphics();
-        map.drawMap(0, 0, zoom, g2d, 1, mapOnly);
-        map.drawMap(0, 0, zoom, g2d, 2, mapOnly);
+        map.drawMap(0, 0, zoom, g2d, 1, mapOnly, null);
+        map.drawMap(0, 0, zoom, g2d, 2, mapOnly, null);
         return bi;
     }
 

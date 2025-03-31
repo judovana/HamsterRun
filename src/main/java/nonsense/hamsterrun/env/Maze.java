@@ -129,7 +129,20 @@ public class Maze {
                 if (maze[x][y] != null) {
                     int coordx = y * config.getBaseSize() * zoom + userx;
                     int coordy = x * config.getBaseSize() * zoom + usery;
-                    maze[x][y].drawMap(coordx, coordy, zoom, g2d, level, map);
+                    BaseBlockNeigbours neighbours = new BaseBlockNeigbours(x,y, maze[x][y] );
+                    if(x>0) {
+                        neighbours.up = maze[x-1][y];
+                    }
+                    if(x<maze.length-1) {
+                        neighbours.down = maze[x+1][y];
+                    }
+                    if(y>0) {
+                        neighbours.left = maze[x][y-1];
+                    }
+                    if(y<maze[0].length-1) {
+                        neighbours.right = maze[x][y+1];
+                    }
+                    maze[x][y].drawMap(coordx, coordy, zoom, g2d, level, map, neighbours);
                 }
 
             }
