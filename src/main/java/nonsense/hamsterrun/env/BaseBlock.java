@@ -151,9 +151,7 @@ public class BaseBlock {
     }
 
     public void drawMap(int userx, int usery, int zoom, Graphics2D g2d, int level, boolean mapOnly, BaseBlockNeigbours neigbours) {
-        mapOnly = true;
-        System.out.println(neigbours.toString());
-        System.out.println();
+        mapOnly = false;
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y].isPassable()) {
@@ -174,21 +172,76 @@ public class BaseBlock {
                             g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
                         } else {
                             //TODO walls really level 1 only? And zoom >2?
-                            //FIXME is ignoring surrounding BaseBlocks!
                             //left wall
-                            if (y == 0 || map[x][y - 1].isImpassable() || (neigbours!=null || neigbours.left!=null || neigbours.left.map[x][BaseConfig.getConfig().getBaseSize()-1].isImpassable())) {
+                            boolean draw = false;
+                            if (y == 0) {
+                                if (neigbours == null) {
+                                    draw = true;
+                                } else if (neigbours.left == null) {
+                                    draw = true;
+                                } else if (neigbours.left.map[x][BaseConfig.getConfig().getBaseSize() - 1].isImpassable()) {
+                                    draw = true;
+                                }
+                            } else {
+                                if (map[x][y - 1].isImpassable()) {
+                                    draw = true;
+                                }
+                            }
+                            if (draw) {
                                 g2d.drawImage(Rats.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
                             //right wall
-                            if (y == map[0].length - 1 || map[x][y + 1].isImpassable()) {
+                            draw = false;
+                            if (y == map[0].length - 1) {
+                                if (neigbours == null) {
+                                    draw = true;
+                                } else if (neigbours.right == null) {
+                                    draw = true;
+                                } else if (neigbours.right.map[x][0].isImpassable()) {
+                                    draw = true;
+                                }
+                            } else {
+                                if (map[x][y + 1].isImpassable()) {
+                                    draw = true;
+                                }
+                            }
+                            if (draw) {
                                 g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
                             //up wall
-                            if (x == 0 || map[x - 1][y].isImpassable()) {
+                            draw = false;
+                            if (x == 0) {
+                                if (neigbours == null) {
+                                    draw = true;
+                                } else if (neigbours.up == null) {
+                                    draw = true;
+                                } else if (neigbours.up.map[BaseConfig.getConfig().getBaseSize() - 1][y].isImpassable()) {
+                                    draw = true;
+                                }
+                            } else {
+                                if (map[x - 1][y].isImpassable()) {
+                                    draw = true;
+                                }
+                            }
+                            if (draw) {
                                 g2d.drawImage(Rats.wall, coordx, coordy - (zoom / WALL_WIDTH), zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                             //down wall
-                            if (x == map.length - 1 || map[x + 1][y].isImpassable()) {
+                            draw = false;
+                            if (x == map.length - 1) {
+                                if (neigbours == null) {
+                                    draw = true;
+                                } else if (neigbours.down == null) {
+                                    draw = true;
+                                } else if (neigbours.down.map[0][y].isImpassable()) {
+                                    draw = true;
+                                }
+                            } else {
+                                if (map[x + 1][y].isImpassable()) {
+                                    draw = true;
+                                }
+                            }
+                            if (draw) {
                                 g2d.drawImage(Rats.wall, coordx, coordy + zoom, zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                         }
