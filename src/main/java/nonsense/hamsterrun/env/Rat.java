@@ -152,6 +152,9 @@ public class Rat {
             return SpritesProvider.ratSprites.getSit(direction.getSprite(), anim.ignore());
         } else if (RatActions.isWalk(action)) {
             return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.everyOdd());
+        } else if (action == RatActions.FALLING) {
+            System.err.println("PLACEHOLDER! Msut have longer duration...");
+            return SpritesProvider.okurka;
         } else {
             throw new RuntimeException("Unknown acction " + action);
         }
