@@ -296,10 +296,12 @@ public class Rat {
     private void fall(World world) {
         if (anim.anim == 10) {
             anim.reset();
+            ((InvisibleTrapDoor)world.getBlockField(getUniversalCoords()).getItem()).close();
             world.teleportMouse(this, false, true);
             direction = RatActions.Direction.getRandom();
             action = RatActions.STAY;
         } else {
+            ((InvisibleTrapDoor)world.getBlockField(getUniversalCoords()).getItem()).open();
             if (relativeCoordInSquare.x > 0) {
                 relativeCoordInSquare.x--;
             }

@@ -13,7 +13,12 @@ public class TrapDoor extends InvisibleTrapDoor implements Item {
 
     @Override
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, BaseBlockNeigbours neigbours) {
-        g2d.setColor(new Color(20, 20, 20));
-        g2d.fillRect(coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2);
+        if (closed) {
+            g2d.setColor(new Color(0, 200, 100));
+            g2d.fillRect(coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2);
+        } else {
+            g2d.setColor(new Color(20, 20, 20));
+            g2d.fillRect(coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2);
+        }
     }
 }
