@@ -2,7 +2,7 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
-import nonsense.hamsterrun.sprites.Rats;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -188,7 +188,7 @@ public class BaseBlock {
                                 }
                             }
                             if (draw) {
-                                g2d.drawImage(Rats.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
+                                g2d.drawImage(SpritesProvider.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
                             //right wall
                             draw = false;
@@ -206,7 +206,7 @@ public class BaseBlock {
                                 }
                             }
                             if (draw) {
-                                g2d.drawImage(Rats.wall, coordx + zoom, coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
+                                g2d.drawImage(SpritesProvider.wall, coordx + zoom, coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
                             //up wall
                             draw = false;
@@ -224,7 +224,7 @@ public class BaseBlock {
                                 }
                             }
                             if (draw) {
-                                g2d.drawImage(Rats.wall, coordx, coordy - (zoom / WALL_WIDTH), zoom - 1, zoom / WALL_WIDTH - 1, null);
+                                g2d.drawImage(SpritesProvider.wall, coordx, coordy - (zoom / WALL_WIDTH), zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                             //down wall
                             draw = false;
@@ -242,7 +242,7 @@ public class BaseBlock {
                                 }
                             }
                             if (draw) {
-                                g2d.drawImage(Rats.wall, coordx, coordy + zoom, zoom - 1, zoom / WALL_WIDTH - 1, null);
+                                g2d.drawImage(SpritesProvider.wall, coordx, coordy + zoom, zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                         }
                     }

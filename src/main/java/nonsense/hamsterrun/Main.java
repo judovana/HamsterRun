@@ -3,7 +3,7 @@ package nonsense.hamsterrun;
 import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.World;
-import nonsense.hamsterrun.sprites.Rats;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -61,7 +61,7 @@ public class Main {
                 }
             }
         }
-        Rats.load();
+        SpritesProvider.load();
         config.summUp();
         config.verify();
 

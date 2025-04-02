@@ -9,10 +9,9 @@ import java.util.Random;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
-import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.Vegetable;
-import nonsense.hamsterrun.sprites.Rats;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 public class Rat {
 
@@ -150,9 +149,9 @@ public class Rat {
 
     private BufferedImage getImageForAction() {
         if (RatActions.isStay(action) || action == RatActions.EAT) {
-            return Rats.ratSprites.getSit(direction.getSprite(), anim.ignore());
+            return SpritesProvider.ratSprites.getSit(direction.getSprite(), anim.ignore());
         } else if (RatActions.isWalk(action)) {
-            return Rats.ratSprites.getRun(direction.getSprite(), anim.everyOdd());
+            return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.everyOdd());
         } else {
             throw new RuntimeException("Unknown acction " + action);
         }
