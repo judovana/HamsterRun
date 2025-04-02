@@ -167,12 +167,18 @@ public class BaseBlock {
                         if (level == 1) {
                             g2d.drawImage(SpritesProvider.getFloor(zoom), coordx, coordy, zoom, zoom, null);
                         }
+                        if (level == (map[x][y].getItem().getLevel())) {
+                            map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, neigbours);
+                        }
                     }
-                    if (zoom > 2 && level == 1) {
+                    if (zoom > 2 && level == 2) {
                         if (mapOnly) {
                             g2d.setColor(new Color(255, 0, 0, 255));
                             g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
-                        } else {
+                        }
+                    }
+                    if (zoom > 2 && level == 1) {
+                        if (!mapOnly) {
                             //TODO walls really only  zoom >2?
                             //left wall
                             boolean draw = false;

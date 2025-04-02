@@ -54,13 +54,13 @@ public class Utils {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y].isImpassable()) {
                     if (ch1 == null) {
-                        line.append("" + (map[x][y].isPassable()?"0":"X"));
+                        line.append("" + (map[x][y].isPassable() ? "0" : "X"));
                     } else {
                         line.append("" + ch1);
                     }
                 } else {
                     if (ch2 == null) {
-                        line.append("" + (map[x][y].isPassable()?"0":"X"));
+                        line.append("" + (map[x][y].isPassable() ? "0" : "X"));
                     } else {
                         line.append("" + ch2);
                     }
@@ -83,6 +83,7 @@ public class Utils {
         Graphics2D g2d = bi.createGraphics();
         map.drawMap(0, 0, zoom, g2d, 1, mapOnly, null);
         map.drawMap(0, 0, zoom, g2d, 2, mapOnly, null);
+        map.drawMap(0, 0, zoom, g2d, 3, mapOnly, null);
         return bi;
     }
 
@@ -92,6 +93,7 @@ public class Utils {
         Graphics2D g2d = bi.createGraphics();
         maze.drawMap(0, 0, zoom, config, g2d, 1, map);
         maze.drawMap(0, 0, zoom, config, g2d, 2, map);
+        maze.drawMap(0, 0, zoom, config, g2d, 3, map);
         return bi;
     }
 

@@ -139,13 +139,14 @@ public class World implements Runnable {
             leftUpCornerOfMaze = new Point(-xShift, -yShift);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 1, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 2, map);
         int i = -1;
         for (Rat rat : rats) {
             i++;
             g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
             rat.draw(g2d, leftUpCornerOfMaze, zoom, true);
         }
-        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 2, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 3, map);
     }
 
     public void regenerateBlock(int x, int y) {

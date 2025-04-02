@@ -13,6 +13,7 @@ public class SpritesProvider {
     private static final List<String> KNOWN_RATS = List.of("rat");
     public static RatSpriteSet ratSprites;
     public static BufferedImage wall;
+    public static BufferedImage okurka;
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
@@ -27,6 +28,8 @@ public class SpritesProvider {
         }
         URL wall1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");
         wall = ImageIO.read(wall1u);
+        URL okurkaU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/okurka.png");
+        okurka = ImageIO.read(okurkaU);
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);
         for (int z = 1; z < 10; z++) {
