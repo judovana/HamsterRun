@@ -46,6 +46,7 @@ public class RatSpriteSet {
     }
 
     public BufferedImage getFall(int direction, int anim) {
+        System.out.println("   -   " + anim);
         return falls[direction][anim];
     }
 

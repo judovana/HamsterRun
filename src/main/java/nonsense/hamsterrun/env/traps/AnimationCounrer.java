@@ -18,7 +18,7 @@ public class AnimationCounrer {
 
     public void addLimited() {
         this.anim++;
-        if (anim >= 10) {
+        if (anim >= 12) {
             anim = 0;
         }
     }

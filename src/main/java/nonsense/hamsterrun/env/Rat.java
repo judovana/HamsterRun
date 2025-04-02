@@ -294,10 +294,24 @@ public class Rat {
     }
 
     private void fall(World world) {
-        if (anim.anim == 9) {
+        if (anim.anim == 10) {
             anim.reset();
             world.teleportMouse(this, false, true);
+            direction = RatActions.Direction.getRandom();
             action = RatActions.STAY;
+        } else {
+            if (relativeCoordInSquare.x > 0) {
+                relativeCoordInSquare.x--;
+            }
+            if (relativeCoordInSquare.x < 0) {
+                relativeCoordInSquare.x++;
+            }
+            if (relativeCoordInSquare.y > 0) {
+                relativeCoordInSquare.y--;
+            }
+            if (relativeCoordInSquare.y < 0) {
+                relativeCoordInSquare.y++;
+            }
         }
     }
 
