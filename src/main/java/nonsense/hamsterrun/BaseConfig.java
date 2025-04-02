@@ -11,7 +11,7 @@ public class BaseConfig {
     int gridConnectivityMax = 4;
     private static final Random seed = new Random();
 
-    private BaseConfig() {
+    BaseConfig() {
     }
 
     public BaseConfig(int baseSize, int baseDensityMin, int baseDensityMax, int gridSize, int gridConnectivityMin, int gridConnectivityMax) {
