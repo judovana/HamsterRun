@@ -17,14 +17,22 @@ public class SpritesProvider {
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
+
         for (String rat : KNOWN_RATS) {
-            URL run1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/run1.png");
-            BufferedImage run1 = ImageIO.read(run1u);
-            URL run2u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/run2.png");
-            BufferedImage run2 = ImageIO.read(run2u);
+            BufferedImage[] runBase = new BufferedImage[2];
+            for (int x = 1; x <= 2; x++) {
+                URL runUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/run" + x + ".png");
+                runBase[x - 1] = ImageIO.read(runUrl);
+            }
+            BufferedImage[] fallBase = new BufferedImage[10];
+            for (int x = 1; x <= 10; x++) {
+                URL fallUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/fall" + x + ".png");
+                fallBase[x - 1] = ImageIO.read(fallUrl);
+            }
+
             URL situ = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/sit.png");
             BufferedImage sit = ImageIO.read(situ);
-            ratSprites = new RatSpriteSet(run1, run2, sit);
+            ratSprites = new RatSpriteSet(runBase, sit, fallBase);
         }
         URL wall1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");
         wall = ImageIO.read(wall1u);

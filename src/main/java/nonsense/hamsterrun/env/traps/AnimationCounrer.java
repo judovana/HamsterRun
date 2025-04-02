@@ -8,6 +8,10 @@ public class AnimationCounrer {
         return anim % 2;
     }
 
+    public int every10() {
+        return anim % 10;
+    }
+
     public int ignore() {
         return 0;
     }
@@ -21,5 +25,9 @@ public class AnimationCounrer {
 
     public boolean everyThird() {
         return anim % 3 == 0;
+    }
+
+    public void reset() {
+        anim = 0;
     }
 }

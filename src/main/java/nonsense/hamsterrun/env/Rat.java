@@ -153,8 +153,7 @@ public class Rat {
         } else if (RatActions.isWalk(action)) {
             return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.everyOdd());
         } else if (action == RatActions.FALLING) {
-            System.err.println("PLACEHOLDER! Msut have longer duration...");
-            return SpritesProvider.okurka;
+            return SpritesProvider.ratSprites.getFall(direction.getSprite(), anim.every10());
         } else {
             throw new RuntimeException("Unknown acction " + action);
         }
@@ -240,7 +239,10 @@ public class Rat {
             this.stop(world);
         }
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor) {
-            this.action = RatActions.FALLING;
+            if (this.action != RatActions.FALLING) {
+                this.anim.reset();
+                this.action = RatActions.FALLING;
+            }
         }
         switch (action) {
             case WALK:
@@ -256,8 +258,8 @@ public class Rat {
     }
 
     private void moveInDirection(World world) {
-        if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel){
-            if (seed.nextInt(20) == 0){
+        if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel) {
+            if (seed.nextInt(20) == 0) {
                 direction = RatActions.Direction.getRandom();
             }
         }
@@ -292,8 +294,11 @@ public class Rat {
     }
 
     private void fall(World world) {
-        world.teleportMouse(this, false, true);
-        action = RatActions.STAY;
+        if (anim.anim == 9) {
+            anim.reset();
+            world.teleportMouse(this, false, true);
+            action = RatActions.STAY;
+        }
     }
 
 }
