@@ -25,7 +25,7 @@ public class World implements Runnable {
     private final Maze maze;
     private final List<Rat> rats = Arrays.asList(new Rat(), new Rat(), new Rat(), new Rat());
     private int myMouse = -1;
-    private int zoom = 20;
+    private int zoom = 64;
     private int worldAnim = 0;
 
     private JComponent repaintListener;
@@ -138,14 +138,14 @@ public class World implements Runnable {
             int yShift = -center.y + selectedMouse.y * zoom;
             leftUpCornerOfMaze = new Point(-xShift, -yShift);
         }
-        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d,1, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 1, map);
         int i = -1;
         for (Rat rat : rats) {
             i++;
             g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
             rat.draw(g2d, leftUpCornerOfMaze, zoom, true);
         }
-        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d,2, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 2, map);
     }
 
     public void regenerateBlock(int x, int y) {
@@ -153,11 +153,11 @@ public class World implements Runnable {
     }
 
     public void zoomIn() {
-        zoom++;
+        zoom = zoom + Math.max(zoom / 2, 1);
     }
 
     public void zoomOut() {
-        zoom--;
+        zoom = zoom - Math.max(1, zoom / 2);
         if (zoom <= 0) {
             zoom = 1;
         }

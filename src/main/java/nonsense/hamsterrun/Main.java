@@ -129,7 +129,7 @@ public class Main {
 
     private static void frameDemo(BaseConfig config) {
         final Maze maze = Maze.generate(config);
-        final int[] xyz = new int[]{1, 5, 20};
+        final int[] xyz = new int[]{1, 5, 16};
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -183,7 +183,7 @@ public class Main {
 
     private static void mazeDemo(BaseConfig config) throws IOException {
         Maze maze = Maze.generate(config);
-        BufferedImage bi = maze.toImage(10, config, true);
+        BufferedImage bi = maze.toImage(8, config, true);
         File f = new File("/tmp/mazr.png");
         ImageIO.write(bi, "png", f);
         ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
@@ -218,7 +218,7 @@ public class Main {
         System.out.println(middle.toString());
         System.out.println("------- end " + id + " end -------");
         File f = new File("/tmp/" + id + "block.png");
-        ImageIO.write(middle.toImage(20, true), "png", f);
+        ImageIO.write(middle.toImage(16, true), "png", f);
         ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
         pb.start();
     }
