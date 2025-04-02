@@ -164,14 +164,16 @@ public class BaseBlock {
                             g2d.fillRect(coordx, coordy, zoom, zoom);
                         }
                     } else {
-                        //g2d.setColor(map[x][y].getItem().drawInto(g2d, coordx, coordy);
+                        if (level == 1) {
+                            g2d.drawImage(SpritesProvider.getFloor(zoom), coordx, coordy, zoom, zoom, null);
+                        }
                     }
                     if (zoom > 2 && level == 1) {
                         if (mapOnly) {
                             g2d.setColor(new Color(255, 0, 0, 255));
                             g2d.drawRect(coordx, coordy, zoom - 1, zoom - 1);
                         } else {
-                            //TODO walls really level 1 only? And zoom >2?
+                            //TODO walls really only  zoom >2?
                             //left wall
                             boolean draw = false;
                             if (y == 0) {
