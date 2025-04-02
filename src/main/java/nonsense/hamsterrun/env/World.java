@@ -23,7 +23,7 @@ public class World implements Runnable {
 
     private final Thread repl;
     private final Maze maze;
-    private final List<Rat> rats = Arrays.asList(new Rat());//, new Rat(), new Rat(), new Rat());
+    private final List<Rat> rats = Arrays.asList(new Rat(), new Rat(), new Rat(), new Rat());
     private int myMouse = -1;
     private int zoom = 64;
     private int worldAnim = 0;
