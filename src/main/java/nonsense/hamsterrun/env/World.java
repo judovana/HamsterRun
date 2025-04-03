@@ -144,7 +144,7 @@ public class World implements Runnable {
         for (Rat rat : rats) {
             i++;
             g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
-            rat.draw(g2d, leftUpCornerOfMaze, zoom, true);
+            rat.draw(g2d, leftUpCornerOfMaze, zoom, !map);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 3, map);
     }

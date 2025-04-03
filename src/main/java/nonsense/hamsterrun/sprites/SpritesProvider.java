@@ -14,6 +14,7 @@ public class SpritesProvider {
     public static RatSpriteSet ratSprites;
     public static BufferedImage wall;
     public static BufferedImage okurka;
+    public static BufferedImage[] trapdoor;
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
@@ -38,6 +39,9 @@ public class SpritesProvider {
         wall = ImageIO.read(wall1u);
         URL okurkaU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/okurka.png");
         okurka = ImageIO.read(okurkaU);
+        URL trapDoorUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor1.png");
+        URL trapDoorUrl2 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor2.png");
+        trapdoor = new BufferedImage[] {ImageIO.read(trapDoorUrl1), ImageIO.read(trapDoorUrl2)};
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);
         for (int z = 1; z < 10; z++) {

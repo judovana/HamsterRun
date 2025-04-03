@@ -141,7 +141,11 @@ public class Rat {
             relativeShift.x = (int) relativeX;
             relativeShift.y = (int) relativeY;
             BufferedImage img = getImageForAction();
-            g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom, null);
+            int usedZoom = zoom;
+            if (action == RatActions.FALLING) {
+                usedZoom=Math.max(1, zoom-(zoom/50+1)*anim.anim);
+            }
+            g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, usedZoom, usedZoom, null);
         } else {
             g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
         }

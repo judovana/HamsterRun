@@ -82,7 +82,7 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true);
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false);
                     }
                 };
                 view.setBackground(Color.BLACK);
