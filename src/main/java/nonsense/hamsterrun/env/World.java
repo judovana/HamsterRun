@@ -28,7 +28,7 @@ public class World implements Runnable {
     private int zoom = 64;
     private int worldAnim = 0;
 
-    private JComponent repaintListener;
+    private final List<JComponent> repaintListeners = new ArrayList<>(2);
 
     public World(Maze maze) {
         this.maze = maze;
@@ -130,23 +130,26 @@ public class World implements Runnable {
     }
 
     public void drawMap(Graphics2D g2d, Point center, boolean map) {
-        Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoom,
-                center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoom);
+        drawMap(g2d, center, map, this.zoom);
+    }
+    public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride) {
+        Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoomOverride,
+                center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoomOverride);
         if (myMouse >= 0 && myMouse < rats.size()) {
             Point selectedMouse = rats.get(myMouse).getUniversalCoords();
-            int xShift = -center.x + selectedMouse.x * zoom;
-            int yShift = -center.y + selectedMouse.y * zoom;
+            int xShift = -center.x + selectedMouse.x * zoomOverride;
+            int yShift = -center.y + selectedMouse.y * zoomOverride;
             leftUpCornerOfMaze = new Point(-xShift, -yShift);
         }
-        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 1, map);
-        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 2, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 1, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 2, map);
         int i = -1;
         for (Rat rat : rats) {
             i++;
             g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
-            rat.draw(g2d, leftUpCornerOfMaze, zoom, !map);
+            rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map);
         }
-        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoom, BaseConfig.getConfig(), g2d, 3, map);
+        maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
     }
 
     public void regenerateBlock(int x, int y) {
@@ -208,8 +211,8 @@ public class World implements Runnable {
         }
     }
 
-    public void setRepaintListener(JComponent repaintListener) {
-        this.repaintListener = repaintListener;
+    public void addRepaintListener(JComponent repaintListener) {
+        this.repaintListeners.add(repaintListener);
     }
 
     boolean isEnterable(Point coord, int vx, int vy) {
@@ -280,7 +283,7 @@ public class World implements Runnable {
                         rats.get(m).act(this);
                     }
                 }
-                if (repaintListener != null) {
+                for(JComponent repaintListener: repaintListeners) {
                     repaintListener.repaint();
                 }
             } catch (InterruptedException ex) {

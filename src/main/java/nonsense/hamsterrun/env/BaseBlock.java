@@ -151,7 +151,6 @@ public class BaseBlock {
     }
 
     public void drawMap(int userx, int usery, int zoom, Graphics2D g2d, int level, boolean mapOnly, BaseBlockNeigbours neigbours) {
-        mapOnly = false;
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y].isPassable()) {
@@ -160,16 +159,15 @@ public class BaseBlock {
                     int coordy = x * zoom + usery;
                     if (mapOnly) {
                         g2d.setColor(map[x][y].getItem().getMinimapColor());
-                        if (level == (map[x][y].getItem().getLevel())) {
+                        //on maps, all items are drawn before rats
+                        if (level == 2) {
                             g2d.fillRect(coordx, coordy, zoom, zoom);
                         }
                     } else {
                         if (level == 1) {
                             g2d.drawImage(SpritesProvider.getFloor(zoom), coordx, coordy, zoom, zoom, null);
                         }
-                        if (level == (map[x][y].getItem().getLevel())) {
-                            map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, neigbours);
-                        }
+                        map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, level , neigbours);
                     }
                     if (zoom > 2 && level == 2) {
                         if (mapOnly) {

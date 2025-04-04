@@ -5,7 +5,6 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Random;
 
 public class Vegetable implements Item {
 
@@ -17,9 +16,11 @@ public class Vegetable implements Item {
     }
 
     @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, BaseBlockNeigbours neigbours) {
-        int finalSize = (int) ((float) energy / maxEnergy * (float) zoom);
-        g2d.drawImage(SpritesProvider.okurka, coordx + (zoom - finalSize) / 2, coordy + (zoom - finalSize) / 2, finalSize, finalSize, null);
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
+        if (level == 2) {
+            int finalSize = (int) ((float) energy / maxEnergy * (float) zoom);
+            g2d.drawImage(SpritesProvider.okurka, coordx + (zoom - finalSize) / 2, coordy + (zoom - finalSize) / 2, finalSize, finalSize, null);
+        }
     }
 
     public boolean eat() {

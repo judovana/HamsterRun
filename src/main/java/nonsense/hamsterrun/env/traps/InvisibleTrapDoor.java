@@ -18,14 +18,16 @@ public class InvisibleTrapDoor implements Item {
     }
 
     @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, BaseBlockNeigbours neigbours) {
-        g2d.setColor(new Color(20, 20, 20));
-        if (closed) {
-            g2d.drawLine(coordx + zoom / 4, coordy + zoom / 4, coordx + zoom - zoom / 4, coordy + zoom - zoom / 4);
-            g2d.drawLine(coordx + zoom / 4, coordy + zoom - zoom / 4, coordx +zoom - zoom/4, coordy + zoom/4);
-            //g2d.drawLine(coordx, coordy + zoom, coordx + zoom, coordy);
-        } else {
-            g2d.fillRect(coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2);
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
+        if (level == 2) {
+            g2d.setColor(new Color(20, 20, 20));
+            if (closed) {
+                g2d.drawLine(coordx + zoom / 4, coordy + zoom / 4, coordx + zoom - zoom / 4, coordy + zoom - zoom / 4);
+                g2d.drawLine(coordx + zoom / 4, coordy + zoom - zoom / 4, coordx + zoom - zoom / 4, coordy + zoom / 4);
+                //g2d.drawLine(coordx, coordy + zoom, coordx + zoom, coordy);
+            } else {
+                g2d.fillRect(coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2);
+            }
         }
     }
 

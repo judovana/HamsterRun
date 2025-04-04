@@ -14,15 +14,14 @@ public class Tunnel implements Item {
         return new Color(20, 20, 20);
     }
 
-    public int getLevel() {
-        return 3; //after rats
-    }
 
     @Override
     //fixme honour neigbours
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, BaseBlockNeigbours neigbours) {
-        g2d.setColor(getMinimapColor());
-        g2d.fillRect(coordx, coordy, zoom, zoom);
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
+        if (level == 3) {
+            g2d.setColor(getMinimapColor());
+            g2d.fillRect(coordx, coordy, zoom, zoom);
+        }
     }
 
 }

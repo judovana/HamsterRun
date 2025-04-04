@@ -12,9 +12,7 @@ public interface Item {
 
     Color getMinimapColor();
 
-    default int getLevel() {
-        return 2;//1 floor, 2 before rats, rats, 3 over rats
-    }
 
-    void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, BaseBlockNeigbours neigbours);
+    //level: 1 floor, 2 before rats, rats, 3 over rats
+    void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours);
 }

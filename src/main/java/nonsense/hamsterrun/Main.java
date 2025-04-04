@@ -78,6 +78,13 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                JPanel mapPanel = new JPanel() {
+                    public void paint(Graphics g) {
+                        super.paint(g);
+                        Graphics2D g2d = (Graphics2D) g;
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16);
+                    }
+                };
                 JPanel view = new JPanel() {
                     public void paint(Graphics g) {
                         super.paint(g);
@@ -85,11 +92,15 @@ public class Main {
                         world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false);
                     }
                 };
+                mapPanel.setBackground(Color.BLACK);
                 view.setBackground(Color.BLACK);
-                world.setRepaintListener(view);
-                JFrame f = new JFrame();
-                f.add(view);
-                f.addKeyListener(new KeyAdapter() {
+                world.addRepaintListener(mapPanel);
+                world.addRepaintListener(view);
+                JFrame mapFrame = new JFrame();
+                mapFrame.add(mapPanel);
+                JFrame gameView = new JFrame();
+                gameView.add(view);
+                gameView.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
                         System.out.println(e.getKeyCode() + "");
@@ -116,12 +127,15 @@ public class Main {
                             world.setMyMouse(e.getKeyCode() - 65);
                         }
 
-                        f.repaint();
+                        gameView.repaint();
                     }
                 });
-                f.setSize(800, 800);
-                f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                f.setVisible(true);
+                mapFrame.setSize(800, 800);
+                mapFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                mapFrame.setVisible(true);
+                gameView.setSize(800, 800);
+                gameView.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                gameView.setVisible(true);
             }
         });
 

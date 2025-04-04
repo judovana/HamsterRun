@@ -1,12 +1,12 @@
 package nonsense.hamsterrun.env.traps;
 
-import nonsense.hamsterrun.env.BaseBlockNeigbours;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-//most ikely more shapes as in trapdoor
-public class Torturer implements Item {
+import nonsense.hamsterrun.env.BaseBlockNeigbours;
+
+//will try to turn rat to oposite direction and will be taking energy away
+public class Fire implements Item {
     //will remove energy on passing through
     public Color getMinimapColor() {
         return Color.red;

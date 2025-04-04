@@ -14,7 +14,7 @@ public class OneWayTeleport implements Item {
     }
 
     @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, BaseBlockNeigbours neigbours) {
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
 
     }
 
