@@ -2,6 +2,7 @@ package nonsense.hamsterrun.sprites;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -15,6 +16,7 @@ public class SpritesProvider {
     public static BufferedImage wall;
     public static BufferedImage okurka;
     public static BufferedImage[] trapdoor;
+    public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
@@ -42,6 +44,10 @@ public class SpritesProvider {
         URL trapDoorUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor1.png");
         URL trapDoorUrl2 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor2.png");
         trapdoor = new BufferedImage[] {ImageIO.read(trapDoorUrl1), ImageIO.read(trapDoorUrl2)};
+        for (int x = 1; x <= 5; x++) {
+            URL teleUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/twoWayTeleport" + x + ".png");
+            twoWayTeleport[x - 1] = ImageIO.read(teleUrl);
+        }
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);
         for (int z = 1; z < 10; z++) {
@@ -93,4 +99,7 @@ public class SpritesProvider {
         return bimg;
     }
 
+    public static Image getTeleport(int i) {
+        return SpritesProvider.twoWayTeleport[i];
+    }
 }

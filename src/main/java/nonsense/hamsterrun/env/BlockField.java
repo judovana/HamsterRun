@@ -36,7 +36,7 @@ public class BlockField {
     }
 
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(8);
+        int i = seed.nextInt(9);
         if (i < 3) {
             this.item = new Vegetable();
         } else if (i == 3) {
@@ -46,7 +46,9 @@ public class BlockField {
         } else if (i == 5) {
             this.item = new InvisibleTrapDoor();
         } else if (i == 6 || i == 7) {
-        this.item = new Tunnel();
+            this.item = new Tunnel();
+        } else if (i == 8) {
+            this.item = new TwoWayTeleport();
         }
     }
 
