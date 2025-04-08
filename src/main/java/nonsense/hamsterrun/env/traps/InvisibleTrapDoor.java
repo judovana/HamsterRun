@@ -6,13 +6,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class InvisibleTrapDoor implements Item {
-    protected boolean closed = true;
+    // will always lead to random space
 
-    //will NOT bound to exact coords. will always spit to random place
-    //will regenerate the block if possible
-    //if it is impossible to regenerate, maybe not fall through?
-    //will remain stay
-    //should lead to exact known stile spot?
+    protected boolean closed = true;
     public Color getMinimapColor() {
         return new Color(200, 200, 200);
     }

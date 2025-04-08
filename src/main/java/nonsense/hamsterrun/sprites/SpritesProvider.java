@@ -18,6 +18,10 @@ public class SpritesProvider {
     public static BufferedImage[] trapdoor;
     public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
     public static BufferedImage[] oneWayTeleport = new BufferedImage[6];
+    public static BufferedImage[] fire = new BufferedImage[6];
+    public static BufferedImage[] glow = new BufferedImage[6];
+    public static BufferedImage[] whirlStay = new BufferedImage[2];
+    public static BufferedImage[] whirlMove = new BufferedImage[2];
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
@@ -50,6 +54,14 @@ public class SpritesProvider {
             twoWayTeleport[x - 1] = ImageIO.read(teleUrl1);
             URL teleUrl2 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/oneWayTeleport" + x + ".png");
             oneWayTeleport[x - 1] = ImageIO.read(teleUrl2);
+        }
+        for (int x = 1; x <= 6; x++) {
+            URL fireUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/fire" + x + ".png");
+            fire[x - 1] = ImageIO.read(fireUrl);
+        }
+        for (int x = 1; x <= 4; x++) {
+            URL glowUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/glow" + x + ".png");
+            glow[x - 1] = ImageIO.read(glowUrl  );
         }
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);

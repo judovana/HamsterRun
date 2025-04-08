@@ -8,9 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 public class OneWayTeleport  extends  TwoWayTeleport {
-    //wil bound to exact coords as gateway, if they exists. if not, will find new one
-    //will continue walking
-    //should lead to random spot?
+    //wil drop the  mouse to one bound space. If the space no longer exists (is impassable)
+    //will move pick up new random spot
+
     public Color getMinimapColor() {
         return new Color(230, 255, 0);
     }

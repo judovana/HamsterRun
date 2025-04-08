@@ -9,11 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 public class TwoWayTeleport implements Item {
-    //wil bound to exact coords as gateway, if they exists. if not, will find new one
-    //will create back door on landing
-    //they will be defunct for some short time
-    //will continue walking
-    //must lead to output gate
+    //will drop the mouse to unassigned  gate. the gate willbeocme assigned
+    //if all gates are assigned, then to random one
 
     int anim = seed.nextInt(48);
 
@@ -33,7 +30,7 @@ public class TwoWayTeleport implements Item {
                 anim = 0;
             }
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-            g2d.drawImage(getSprite(anim/10+1), coordx, coordy, zoom, zoom, null);
+            g2d.drawImage(getSprite(anim/10+1), coordx-zoom/2, coordy-zoom/2, zoom+zoom, zoom+zoom, null);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         }
     }

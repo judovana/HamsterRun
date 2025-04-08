@@ -252,7 +252,7 @@ public class Rat {
         if (seed.nextInt(chanceToStop) == 0 && this.action.isInterruptible()) {
             this.stop(world);
         }
-        if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor) {
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor && seed.nextInt(6) + 1 > speed) {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;

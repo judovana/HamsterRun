@@ -1,9 +1,11 @@
 package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.env.traps.Empty;
+import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
 import nonsense.hamsterrun.env.traps.OneWayTeleport;
+import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.TrapDoor;
@@ -37,20 +39,25 @@ public class BlockField {
     }
 
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(9);
-        if (i < 3) {
+        int i = seed.nextInt(15);
+        if (i < 5) {
             this.item = new Vegetable();
-        } else if (i == 3) {
+        } else if (i == 6) {
             this.item = new TwoWayTeleport();
-        } else if (i == 4) {
+        } else if (i == 7) {
             this.item = new TrapDoor();
-        } else if (i == 5) {
-            this.item = new InvisibleTrapDoor();
-        } else if (i == 6 || i == 7) {
-            this.item = new Tunnel();
         } else if (i == 8) {
+            this.item = new InvisibleTrapDoor();
+        } else if (i == 9 || i == 10 || i == 11) {
+            this.item = new Tunnel();
+        } else if (i == 12) {
             this.item = new OneWayTeleport();
+        } else if (i == 13) {
+            this.item = new Fire();
+        } else if (i == 14) {
+            this.item = new Torturer();
         }
+
     }
 
 
