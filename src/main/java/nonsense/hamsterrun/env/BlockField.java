@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
+import nonsense.hamsterrun.env.traps.OneWayTeleport;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.TrapDoor;
@@ -48,7 +49,7 @@ public class BlockField {
         } else if (i == 6 || i == 7) {
             this.item = new Tunnel();
         } else if (i == 8) {
-            this.item = new TwoWayTeleport();
+            this.item = new OneWayTeleport();
         }
     }
 
