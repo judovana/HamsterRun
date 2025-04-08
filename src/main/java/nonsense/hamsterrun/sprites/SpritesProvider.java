@@ -61,7 +61,15 @@ public class SpritesProvider {
         }
         for (int x = 1; x <= 4; x++) {
             URL glowUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/glow" + x + ".png");
-            glow[x - 1] = ImageIO.read(glowUrl  );
+            glow[x - 1] = ImageIO.read(glowUrl);
+        }
+        for (int x = 1; x <= 2; x++) {
+            URL bladeUrl0 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/blades0" + x + ".png");
+            whirlStay[x - 1] = ImageIO.read(bladeUrl0);
+        }
+        for (int x = 1; x <= 2; x++) {
+            URL bladeUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/blades1" + x + ".png");
+            whirlMove[x - 1] = ImageIO.read(bladeUrl1);
         }
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);
