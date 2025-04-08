@@ -43,7 +43,13 @@ public class BlockField {
         if (i < 5) {
             this.item = new Vegetable();
         } else if (i == 6) {
-            this.item = new TwoWayTeleport();
+            if (seed.nextBoolean()) {
+                this.item = new TwoWayTeleport();
+            } else {
+                if (seed.nextBoolean()) {
+                    item = new Vegetable();
+                }
+            }
         } else if (i == 7) {
             this.item = new TrapDoor();
         } else if (i == 8) {
@@ -51,7 +57,13 @@ public class BlockField {
         } else if (i == 9 || i == 10 || i == 11) {
             this.item = new Tunnel();
         } else if (i == 12) {
-            this.item = new OneWayTeleport();
+            if (seed.nextInt(3) == 0) {
+                this.item = new OneWayTeleport();
+            } else {
+                if (seed.nextBoolean()) {
+                    this.item = new Vegetable();
+                }
+            }
         } else if (i == 13) {
             this.item = new Fire();
         } else if (i == 14) {
