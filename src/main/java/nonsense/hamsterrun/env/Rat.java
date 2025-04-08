@@ -16,14 +16,15 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 public class Rat {
 
     private static final Random seed = new Random();
-    private AnimationCounrer anim = new AnimationCounrer();
 
+    private AnimationCounrer anim = new AnimationCounrer();
     private Point coordsInBaseBlock = new Point(-1, -1);
     private Point coordsInMaze = new Point(-1, -1);
     private RatActions action = RatActions.STAY;
     private RatActions.Direction direction = RatActions.Direction.UP;
     private Point relativeCoordInSquare = new Point(0, 0);
     private static final int relativeSizes = 5;
+    private int speed = 1; //can not go over relativeSizes*2
 
     public Rat() {
     }
@@ -143,7 +144,7 @@ public class Rat {
             BufferedImage img = getImageForAction();
             int usedZoom = zoom;
             if (action == RatActions.FALLING) {
-                usedZoom=Math.max(1, zoom-(zoom/50+1)*anim.anim);
+                usedZoom = Math.max(1, zoom - (zoom / 50 + 1) * anim.anim);
             }
             g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, usedZoom, usedZoom, null);
         } else {
@@ -164,7 +165,7 @@ public class Rat {
     }
 
     private void moveMouseRight(World world) {
-        relativeCoordInSquare.x++;
+        relativeCoordInSquare.x += speed;
         if (relativeCoordInSquare.y < 0) {
             relativeCoordInSquare.y++;
         }
@@ -178,7 +179,7 @@ public class Rat {
     }
 
     private void moveMouseUp(World world) {
-        relativeCoordInSquare.y--;
+        relativeCoordInSquare.y -= speed;
         if (relativeCoordInSquare.x < 0) {
             relativeCoordInSquare.x++;
         }
@@ -192,7 +193,7 @@ public class Rat {
     }
 
     private void moveMouseLeft(World world) {
-        relativeCoordInSquare.x--;
+        relativeCoordInSquare.x -= speed;
         if (relativeCoordInSquare.y < 0) {
             relativeCoordInSquare.y++;
         }
@@ -206,7 +207,7 @@ public class Rat {
     }
 
     private void moveMouseDown(World world) {
-        relativeCoordInSquare.y++;
+        relativeCoordInSquare.y += speed;
         if (relativeCoordInSquare.x < 0) {
             relativeCoordInSquare.x++;
         }
@@ -220,6 +221,7 @@ public class Rat {
     }
 
     private void stop(World world) {
+        speed = 1;
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
             this.action = RatActions.EAT;
         } else {
@@ -228,6 +230,14 @@ public class Rat {
     }
 
     public void setActionDirection(World world, RatActions action, RatActions.Direction direction) {
+        if (this.action == RatActions.WALK && this.direction == direction) {
+            speed++;
+            if (speed >= relativeSizes * 2) {
+                speed = relativeSizes * 2;
+            }
+        } else {
+            speed = 1;
+        }
         this.action = action;
         this.direction = direction;
 
@@ -284,6 +294,7 @@ public class Rat {
     }
 
     private void eat(World world) {
+        speed = 1;
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
             if (anim.everyThird()) {
                 direction = direction.rotateCW();
@@ -298,14 +309,15 @@ public class Rat {
     }
 
     private void fall(World world) {
+        speed = 1;
         if (anim.anim == 10) {
             anim.reset();
-            ((InvisibleTrapDoor)world.getBlockField(getUniversalCoords()).getItem()).close();
+            ((InvisibleTrapDoor) world.getBlockField(getUniversalCoords()).getItem()).close();
             world.teleportMouse(this, false, true);
             direction = RatActions.Direction.getRandom();
             action = RatActions.STAY;
         } else {
-            ((InvisibleTrapDoor)world.getBlockField(getUniversalCoords()).getItem()).open();
+            ((InvisibleTrapDoor) world.getBlockField(getUniversalCoords()).getItem()).open();
             if (relativeCoordInSquare.x > 0) {
                 relativeCoordInSquare.x--;
             }
