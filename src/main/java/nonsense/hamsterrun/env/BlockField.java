@@ -48,6 +48,8 @@ public class BlockField {
             } else {
                 if (seed.nextBoolean()) {
                     item = new Vegetable();
+                } else {
+                    item = new Tunnel();
                 }
             }
         } else if (i == 7) {
