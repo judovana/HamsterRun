@@ -19,7 +19,7 @@ public class TwoWayTeleport implements Item {
     }
 
     @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 2) {
             g2d.drawImage(getSprite(0), coordx, coordy, zoom, zoom, null);
         }

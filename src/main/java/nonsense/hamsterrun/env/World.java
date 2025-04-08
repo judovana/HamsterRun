@@ -251,6 +251,7 @@ public class World implements Runnable {
 
     public void run() {
         while (true) {
+            //FIXME try catch all
             try {
                 worldAnim++;
                 if (worldAnim % 5 == 0) {

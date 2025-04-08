@@ -14,6 +14,8 @@ public class SpritesProvider {
     private static final List<String> KNOWN_RATS = List.of("rat");
     public static RatSpriteSet ratSprites;
     public static BufferedImage wall;
+    public static BufferedImage tunnelOpened;
+    public static BufferedImage[] tunnelClosed = new BufferedImage[4];
     public static BufferedImage okurka;
     public static BufferedImage[] trapdoor;
     public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
@@ -42,6 +44,13 @@ public class SpritesProvider {
             BufferedImage sit = ImageIO.read(situ);
             ratSprites = new RatSpriteSet(runBase, sit, fallBase);
         }
+        URL tunnelCloseU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/tunnel1off.png");
+        tunnelClosed[0] = ImageIO.read(tunnelCloseU);
+        tunnelClosed[1] = rotate(tunnelClosed[0], 90);
+        tunnelClosed[2] = rotate(tunnelClosed[0], 180);
+        tunnelClosed[3] = rotate(tunnelClosed[0], 270);
+        URL tunnelU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/tunnelComposed.png");
+        tunnelOpened = ImageIO.read(tunnelU);
         URL wall1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");
         wall = ImageIO.read(wall1u);
         URL okurkaU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/okurka.png");

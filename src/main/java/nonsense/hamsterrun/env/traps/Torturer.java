@@ -3,7 +3,6 @@ package nonsense.hamsterrun.env.traps;
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -20,7 +19,7 @@ public class Torturer implements Item {
     }
 
     @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int xx, int yy) {
         if (level == 2) {
             anim++;
             if (anim > 20) {

@@ -1,5 +1,7 @@
 package nonsense.hamsterrun.env;
 
+import nonsense.hamsterrun.BaseConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,8 +13,8 @@ public class BaseBlockNeigbours {
     BaseBlock up, right, down, left;
 
     public BaseBlockNeigbours(int originX, int originY, BaseBlock center) {
-        this.middleX=originX;
-        this.middleY=originY;
+        this.middleX = originX;
+        this.middleY = originY;
         this.center = center;
     }
 
@@ -23,10 +25,10 @@ public class BaseBlockNeigbours {
         if (w == -1 || h == -1) {
             return "NaN";
         }
-        List<String> result = new ArrayList<>(h*3+1);
-        result.add( middleX + " x " + middleY+" :");
+        List<String> result = new ArrayList<>(h * 3 + 1);
+        result.add(middleX + " x " + middleY + " :");
         topAndBottom(up, result, w, h);
-        for(int x = 0; x< h; x++){
+        for (int x = 0; x < h; x++) {
             StringBuilder sb = new StringBuilder();
             sides(left, sb, w, x);
             sides(center, sb, w, x);
@@ -47,12 +49,12 @@ public class BaseBlockNeigbours {
 
     private static void topAndBottom(BaseBlock unit, List<String> result, int w, int h) {
         if (unit == null) {
-            for(int x = 0; x< h; x++){
-                result.add(".".repeat(w *3));
+            for (int x = 0; x < h; x++) {
+                result.add(".".repeat(w * 3));
             }
         } else {
             List<String> lines = unit.toStrings();
-            for (String line: lines) {
+            for (String line : lines) {
                 StringBuilder sb = new StringBuilder(".".repeat(w));
                 sb.append(line);
                 sb.append(".".repeat(w));
@@ -81,5 +83,82 @@ public class BaseBlockNeigbours {
             }
         }
         return -1;
+    }
+
+    public int getMiddleX() {
+        return middleX;
+    }
+
+    public int getMiddleY() {
+        return middleY;
+    }
+
+    public BaseBlock getCenter() {
+        return center;
+    }
+
+    public BaseBlock getUp() {
+        return up;
+    }
+
+    public BaseBlock getRight() {
+        return right;
+    }
+
+    public BaseBlock getDown() {
+        return down;
+    }
+
+    public BaseBlock getLeft() {
+        return left;
+    }
+
+
+    public BlockField getLeftField(int x, int y) {
+        if (y == 0) {
+            if (left == null) {
+                return null;
+            } else {
+                return left.get(x, BaseConfig.getConfig().getBaseSize() - 1);
+            }
+        } else {
+            return center.get(x, y - 1);
+        }
+    }
+
+    public BlockField getRightField(int x, int y) {
+        if (y == BaseConfig.getConfig().getBaseSize() - 1) {
+            if (right == null) {
+                return null;
+            } else {
+                return right.get(x, 0);
+            }
+        } else {
+            return center.get(x, y + 1);
+        }
+    }
+
+    public BlockField getDownField(int x, int y) {
+        if (x == BaseConfig.getConfig().getBaseSize() - 1) {
+            if (down == null) {
+                return null;
+            } else {
+                return down.get(0, y);
+            }
+        } else {
+            return center.get(x + 1, y);
+        }
+    }
+
+    public BlockField getUpField(int x, int y) {
+        if (x == 0) {
+            if (up == null) {
+                return null;
+            } else {
+                return up.get(BaseConfig.getConfig().getBaseSize() - 1, y);
+            }
+        } else {
+            return center.get(x - 1, y);
+        }
     }
 }

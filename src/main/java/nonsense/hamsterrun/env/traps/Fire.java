@@ -9,6 +9,7 @@ import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 //will try to turn rat to oposite direction and will be taking energy away
+//burns - a bit, on neighbour fields
 public class Fire implements Item {
     //will remove energy on passing through
 
@@ -21,7 +22,7 @@ public class Fire implements Item {
 
 
     @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours) {
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 2) {
             anim2++;
             if (anim2>5) {

@@ -167,7 +167,7 @@ public class BaseBlock {
                         if (level == 1) {
                             g2d.drawImage(SpritesProvider.getFloor(zoom), coordx, coordy, zoom, zoom, null);
                         }
-                        map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, level , neigbours);
+                        map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, level , neigbours, x, y);
                     }
                     if (zoom > 2 && level == 2) {
                         if (mapOnly) {
@@ -178,76 +178,20 @@ public class BaseBlock {
                     if (zoom > 2 && level == 1) {
                         if (!mapOnly) {
                             //TODO walls really only  zoom >2?
-                            //left wall
-                            boolean draw = false;
-                            if (y == 0) {
-                                if (neigbours == null) {
-                                    draw = true;
-                                } else if (neigbours.left == null) {
-                                    draw = true;
-                                } else if (neigbours.left.map[x][BaseConfig.getConfig().getBaseSize() - 1].isImpassable()) {
-                                    draw = true;
-                                }
-                            } else {
-                                if (map[x][y - 1].isImpassable()) {
-                                    draw = true;
-                                }
-                            }
-                            if (draw) {
+                            BlockField lb = neigbours.getLeftField(x, y);
+                            if (lb == null || lb.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
-                            //right wall
-                            draw = false;
-                            if (y == map[0].length - 1) {
-                                if (neigbours == null) {
-                                    draw = true;
-                                } else if (neigbours.right == null) {
-                                    draw = true;
-                                } else if (neigbours.right.map[x][0].isImpassable()) {
-                                    draw = true;
-                                }
-                            } else {
-                                if (map[x][y + 1].isImpassable()) {
-                                    draw = true;
-                                }
-                            }
-                            if (draw) {
+                            BlockField rb = neigbours.getRightField(x,y);
+                            if (rb == null || rb.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx + zoom, coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
-                            //up wall
-                            draw = false;
-                            if (x == 0) {
-                                if (neigbours == null) {
-                                    draw = true;
-                                } else if (neigbours.up == null) {
-                                    draw = true;
-                                } else if (neigbours.up.map[BaseConfig.getConfig().getBaseSize() - 1][y].isImpassable()) {
-                                    draw = true;
-                                }
-                            } else {
-                                if (map[x - 1][y].isImpassable()) {
-                                    draw = true;
-                                }
-                            }
-                            if (draw) {
+                            BlockField ub = neigbours.getUpField(x, y);
+                            if (ub == null || ub.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx, coordy - (zoom / WALL_WIDTH), zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
-                            //down wall
-                            draw = false;
-                            if (x == map.length - 1) {
-                                if (neigbours == null) {
-                                    draw = true;
-                                } else if (neigbours.down == null) {
-                                    draw = true;
-                                } else if (neigbours.down.map[0][y].isImpassable()) {
-                                    draw = true;
-                                }
-                            } else {
-                                if (map[x + 1][y].isImpassable()) {
-                                    draw = true;
-                                }
-                            }
-                            if (draw) {
+                            BlockField db = neigbours.getDownField(x, y);
+                            if (db == null || db.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx, coordy + zoom, zoom - 1, zoom / WALL_WIDTH - 1, null);
                             }
                         }
