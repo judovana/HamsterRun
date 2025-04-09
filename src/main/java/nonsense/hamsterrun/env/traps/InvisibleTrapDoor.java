@@ -1,6 +1,8 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
+import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.World;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -32,5 +34,14 @@ public class InvisibleTrapDoor implements Item, Relocator {
     }
     public void open() {
         this.closed=false;
+    }
+
+    @Override
+    public void relocate(World world, Rat rat) {
+        randomAloneSpot(world, rat);
+    }
+    
+    public static void randomAloneSpot(World world, Rat rat) {
+        world.teleportMouse(rat, false, true);
     }
 }

@@ -28,13 +28,13 @@ public class OneWayTeleport extends TwoWayTeleport {
     @Override
     public void relocate(World world, Rat rat) {
         if (target == null) {
-            super.relocate(world, rat);
+            InvisibleTrapDoor.randomAloneSpot(world, rat);
             target = rat.getUniversalCoords();
         } else {
             if (world.getBlockField(target).isPassable()) {
                 rat.setUniversalCoords(target);
             } else {
-                super.relocate(world, rat);
+                InvisibleTrapDoor.randomAloneSpot(world, rat);
                 target = rat.getUniversalCoords();
             }
         }

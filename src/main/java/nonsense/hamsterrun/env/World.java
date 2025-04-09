@@ -132,6 +132,14 @@ public class World implements Runnable {
     public void drawMap(Graphics2D g2d, Point center, boolean map) {
         drawMap(g2d, center, map, this.zoom);
     }
+
+    public  BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
+        return maze.getBaseBlockNeigbours(x, y);
+    }
+    public  BaseBlockNeigbours getBaseBlockNeigboursByUniversal(Point p) {
+        return maze.getBaseBlockNeigbours(p.x/BaseConfig.getConfig().getBaseSize(), p.y/BaseConfig.getConfig().getBaseSize());
+    }
+
     public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride) {
         Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoomOverride,
                 center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoomOverride);

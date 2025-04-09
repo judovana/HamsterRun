@@ -1,6 +1,8 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
+import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
@@ -26,4 +28,5 @@ public class TrapDoor extends InvisibleTrapDoor implements Item {
             }
         }
     }
+
 }
