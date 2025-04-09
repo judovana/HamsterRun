@@ -73,7 +73,7 @@ public class World implements Runnable {
         System.out.println(rat.getCoordsInMaze() + " " + rat.getCoordsInBaseBlock());
     }
 
-    private Set<Point> getSquaresWithoutRatInNeighbourhood() {
+    public Set<Point> getSquaresWithoutRatInNeighbourhood() {
         Set<Point> result = new HashSet<>();
         for (int x = 0; x < maze.getHeight(); x++) {
             for (int y = 0; y < maze.getWidth(); y++) {

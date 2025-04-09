@@ -71,6 +71,13 @@ public class Rat {
                 coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
     }
 
+    public void setUniversalCoords(Point target) {
+        coordsInMaze.x = target.x / BaseConfig.getConfig().getBaseSize();
+        coordsInMaze.y = target.y / BaseConfig.getConfig().getBaseSize();
+        coordsInBaseBlock.x = target.x % BaseConfig.getConfig().getBaseSize();
+        coordsInBaseBlock.y = target.y % BaseConfig.getConfig().getBaseSize();
+    }
+
 
     private void forceMouseRight() {
         coordsInBaseBlock.x++;
