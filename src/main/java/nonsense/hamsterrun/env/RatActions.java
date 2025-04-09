@@ -1,10 +1,18 @@
 package nonsense.hamsterrun.env;
 
+import java.awt.Point;
 import java.util.Random;
 
 public enum RatActions {
 
     STAY, WALK, EAT, FALLING(false);
+
+    public static class OptionalmetaData {
+        Point universalCoord;
+        Point mainCoord;
+        Point subCoord;
+        BaseBlock block;
+    }
 
     public enum Direction {
         UP(0), RIGHT(1), DOWN(2), LEFT(3);

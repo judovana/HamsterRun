@@ -8,8 +8,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class TwoWayTeleport implements Item {
-    //will drop the mouse to unassigned  gate. the gate willbeocme assigned
+public class TwoWayTeleport implements Item, Relocator {
+    //will drop the mouse to unassigned  gate. the gate will beocme assigned
+    //it MUST drop it NEXT to it, otherwise it will cause endless loop
     //if all gates are assigned, then to random one
 
     int anim = seed.nextInt(48);

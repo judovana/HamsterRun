@@ -5,7 +5,7 @@ import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class InvisibleTrapDoor implements Item {
+public class InvisibleTrapDoor implements Item, Relocator {
     // will always lead to random space
 
     protected boolean closed = true;

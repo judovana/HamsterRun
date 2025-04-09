@@ -9,7 +9,9 @@ import java.util.Random;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
+import nonsense.hamsterrun.env.traps.Relocator;
 import nonsense.hamsterrun.env.traps.Tunnel;
+import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
@@ -21,6 +23,7 @@ public class Rat {
     private Point coordsInBaseBlock = new Point(-1, -1);
     private Point coordsInMaze = new Point(-1, -1);
     private RatActions action = RatActions.STAY;
+    private RatActions.OptionalmetaData actionMetaData = null;
     private RatActions.Direction direction = RatActions.Direction.UP;
     private Point relativeCoordInSquare = new Point(0, 0);
     private static final int relativeSizes = 5;
@@ -258,6 +261,12 @@ public class Rat {
                 this.action = RatActions.FALLING;
             }
         }
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof TwoWayTeleport && seed.nextInt(6) + 1 > speed) {
+            if (this.action != RatActions.FALLING) {
+                this.anim.reset();
+                this.action = RatActions.FALLING;
+            }
+        }
         switch (action) {
             case WALK:
                 moveInDirection(world);
@@ -312,12 +321,18 @@ public class Rat {
         speed = 1;
         if (anim.anim == 10) {
             anim.reset();
-            ((InvisibleTrapDoor) world.getBlockField(getUniversalCoords()).getItem()).close();
-            world.teleportMouse(this, false, true);
+            if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor) {
+                ((InvisibleTrapDoor) world.getBlockField(getUniversalCoords()).getItem()).close();
+            }
+            if (world.getBlockField(getUniversalCoords()).getItem() instanceof Relocator) {
+                ((Relocator) world.getBlockField(getUniversalCoords()).getItem()).relocate(world, this);
+            }
             direction = RatActions.Direction.getRandom();
             action = RatActions.STAY;
         } else {
-            ((InvisibleTrapDoor) world.getBlockField(getUniversalCoords()).getItem()).open();
+            if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor) {
+                ((InvisibleTrapDoor) world.getBlockField(getUniversalCoords()).getItem()).open();
+            }
             if (relativeCoordInSquare.x > 0) {
                 relativeCoordInSquare.x--;
             }
