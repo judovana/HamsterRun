@@ -156,7 +156,6 @@ public class Maze {
 
 
     public void regenerate(int x, int y, BaseConfig config) {
-        System.out.println(x + " x " + y);
         maze[x][y] = BaseBlock.generateByNeighbours(config,
                 (y > 0) ? maze[x][y - 1] : null,
                 (y < config.getGridSize() - 1) ? maze[x][y + 1] : null,
