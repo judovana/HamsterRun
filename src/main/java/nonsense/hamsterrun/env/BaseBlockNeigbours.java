@@ -10,7 +10,7 @@ public class BaseBlockNeigbours {
     private final int middleX;
     private final int middleY;
     private final BaseBlock center;
-    BaseBlock up, right, down, left;
+    private BaseBlock up, right, down, left;
 
     public BaseBlockNeigbours(int originX, int originY, BaseBlock center) {
         this.middleX = originX;
@@ -113,6 +113,25 @@ public class BaseBlockNeigbours {
         return left;
     }
 
+    public void setUp(BaseBlock up, int x, int y) {
+        up.setLastNeighborhoodCords(x,y);
+        this.up = up;
+    }
+
+    public void setRight(BaseBlock right, int x, int y) {
+        right.setLastNeighborhoodCords(x,y);
+        this.right = right;
+    }
+
+    public void setDown(BaseBlock down, int x, int y) {
+        down.setLastNeighborhoodCords(x,y);
+        this.down = down;
+    }
+
+    public void setLeft(BaseBlock left, int x, int y) {
+        left.setLastNeighborhoodCords(x,y);
+        this.left = left;
+    }
 
     public BlockField getLeftField(int x, int y) {
         if (y == 0) {

@@ -44,7 +44,7 @@ public abstract class Teleport implements Item, Relocator {
         }
     }
 
-    abstract protected BufferedImage getSprite(int id) ;
+    abstract protected BufferedImage getSprite(int id);
 
     @Override
     public void relocate(World world, Rat rat) {
@@ -64,17 +64,32 @@ public abstract class Teleport implements Item, Relocator {
         }
         Collections.shuffle(twoWayTeleports);
         Point w = twoWayTeleports.get(0);
-        System.out.println("Moving from " + rat.getUniversalCoords() + " to " + w);
+        System.out.println("Moving from " + rat.getUniversalCoords() + " nextto " + w);
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w);
 
         List<Point> freeSidePoints = new ArrayList<>(4);
-        //FIXME this is buggy. A coordinates must be returned with uf, otherwise it is highly imprecisse
-        BlockField uf = neighBase.getUpField(w.x % BaseConfig.getConfig().getBaseSize(), w.y % BaseConfig.getConfig().getBaseSize());
+        BlockField df = neighBase.getDownField(rat.getCoordsInBaseBlock().x, rat.getCoordsInBaseBlock().y);
+        if (df != null && df.isPassable()) {
+            if (neighBase.getDown() == null) {
+                freeSidePoints.add(
+                        Rat.toUniversalCoords(neighBase.getCenter().getCoordsInNeigbrhood(), df.getCoordsInNeigbrhood()));
+            } else {
+                freeSidePoints.add(
+                        Rat.toUniversalCoords(neighBase.getDown().getCoordsInNeigbrhood(), df.getCoordsInNeigbrhood()));
+            }
+        }
+        BlockField uf = neighBase.getUpField(rat.getCoordsInBaseBlock().x, rat.getCoordsInBaseBlock().y);
         if (uf != null && uf.isPassable()) {
-            freeSidePoints.add(new Point(w.x, w.y - 1));
+            if (neighBase.getUp() == null) {
+                freeSidePoints.add(
+                        Rat.toUniversalCoords(neighBase.getCenter().getCoordsInNeigbrhood(), uf.getCoordsInNeigbrhood()));
+            } else {
+                freeSidePoints.add(
+                        Rat.toUniversalCoords(neighBase.getUp().getCoordsInNeigbrhood(), uf.getCoordsInNeigbrhood()));
+            }
         }
 
-        if (freeSidePoints.isEmpty()){
+        if (freeSidePoints.isEmpty()) {
             rat.setUniversalCoords(w);
         } else {
             Collections.shuffle(freeSidePoints);

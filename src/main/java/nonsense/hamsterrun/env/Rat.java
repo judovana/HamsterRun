@@ -68,6 +68,10 @@ public class Rat {
     }
 
     public Point getUniversalCoords() {
+        return toUniversalCoords(coordsInMaze, coordsInBaseBlock);
+    }
+
+    public static Point toUniversalCoords(Point coordsInMaze, Point coordsInBaseBlock) {
         return new Point(coordsInMaze.x * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.x,
                 coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
     }

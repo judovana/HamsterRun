@@ -12,12 +12,16 @@ import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Vegetable;
 
+import java.awt.Point;
 import java.util.Random;
 
 public class BlockField {
 
     private boolean passable;
     private Item item = new Empty();
+    //this is nothing to relay on it is usually set only  if the block is part of neigbrho.
+    //still each call to set it, should be identical
+    private Point coordsInNeigbrhood;
 
     public BlockField(boolean passable) {
         this.passable = passable;
@@ -85,5 +89,19 @@ public class BlockField {
 
     public void clear() {
         this.item = new Empty();
+    }
+
+    public void setLastNeighborhoodCords(int x, int y) {
+        if (coordsInNeigbrhood == null) {
+            coordsInNeigbrhood = new Point(x, y);
+        } else {
+            if (!coordsInNeigbrhood.equals(new Point(x, y))) {
+                throw new RuntimeException("Field with set coords of " + coordsInNeigbrhood + " is being chnaged to " + new Point(x, y));
+            }
+        }
+    }
+
+    public Point getCoordsInNeigbrhood() {
+        return coordsInNeigbrhood;
     }
 }

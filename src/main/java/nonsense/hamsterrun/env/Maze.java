@@ -137,19 +137,19 @@ public class Maze {
         }
     }
 
-    public  BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
-        BaseBlockNeigbours neighbours = new BaseBlockNeigbours(x, y, maze[x][y] );
-        if(x >0) {
-            neighbours.up = maze[x -1][y];
+    public BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
+        BaseBlockNeigbours neighbours = new BaseBlockNeigbours(x, y, maze[x][y]);
+        if (x > 0) {
+            neighbours.setUp(maze[x - 1][y], x - 1, y);
         }
-        if(x <maze.length-1) {
-            neighbours.down = maze[x +1][y];
+        if (x < maze.length - 1) {
+            neighbours.setDown(maze[x + 1][y], x + 1, y);
         }
-        if(y >0) {
-            neighbours.left = maze[x][y -1];
+        if (y > 0) {
+            neighbours.setLeft(maze[x][y - 1], x, y - 1);
         }
-        if(y <maze[0].length-1) {
-            neighbours.right = maze[x][y +1];
+        if (y < maze[0].length - 1) {
+            neighbours.setRight(maze[x][y + 1], x, y + 1);
         }
         return neighbours;
     }

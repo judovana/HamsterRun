@@ -20,6 +20,9 @@ public class BaseBlock {
     private final int sizex;
     private final int sizey;
     private final int baseSize;
+    //this is nothing to relay on it is usually set only  if the block is part of neigbrho.
+    //still each call to set it, should be identical
+    private Point coordsInNeigbrhood;
 
     public BaseBlock(int baseSize) {
         this.sizex = baseSize;
@@ -167,7 +170,7 @@ public class BaseBlock {
                         if (level == 1) {
                             g2d.drawImage(SpritesProvider.getFloor(zoom), coordx, coordy, zoom, zoom, null);
                         }
-                        map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, level , neigbours, x, y);
+                        map[x][y].getItem().drawInto(g2d, coordx, coordy, zoom, level, neigbours, x, y);
                     }
                     if (zoom > 2 && level == 2) {
                         if (mapOnly) {
@@ -182,7 +185,7 @@ public class BaseBlock {
                             if (lb == null || lb.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
-                            BlockField rb = neigbours.getRightField(x,y);
+                            BlockField rb = neigbours.getRightField(x, y);
                             if (rb == null || rb.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx + zoom, coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);
                             }
@@ -228,6 +231,21 @@ public class BaseBlock {
         if (y < 0 || y >= map.length) {
             return null;
         }
+        map[x][y].setLastNeighborhoodCords(x,y);
         return map[x][y];
+    }
+
+    public void setLastNeighborhoodCords(int x, int y) {
+        if (coordsInNeigbrhood == null) {
+            coordsInNeigbrhood = new Point(x, y);
+        } else {
+            if (!coordsInNeigbrhood.equals(new Point(x, y))) {
+                throw new RuntimeException("Neighbour with set coords of " + coordsInNeigbrhood + " is being chnaged to " + new Point(x, y));
+            }
+        }
+    }
+
+    public Point getCoordsInNeigbrhood() {
+        return coordsInNeigbrhood;
     }
 }
