@@ -1,5 +1,6 @@
 package nonsense.hamsterrun.env;
 
+import nonsense.hamsterrun.env.traps.AllWayTeleport;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
@@ -39,18 +40,29 @@ public class BlockField {
     }
 
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(15);
+        int i = seed.nextInt(14);
         if (i < 5) {
             this.item = new Vegetable();
         } else if (i == 6) {
-            if (seed.nextBoolean()) {
-                this.item = new TwoWayTeleport();
-            } else {
-                if (seed.nextBoolean()) {
-                    item = new Vegetable();
-                } else {
-                    item = new Tunnel();
-                }
+            int subseed = seed.nextInt(6);
+            switch (subseed) {
+                case 0:
+                    this.item = new OneWayTeleport();
+                    break;
+                case 1:
+                case 2:
+                    this.item = new TwoWayTeleport();
+                    break;
+                case 3:
+                case 4:
+                    this.item = new AllWayTeleport();
+                    break;
+                default:
+                    if (seed.nextBoolean()) {
+                        item = new Vegetable();
+                    } else {
+                        item = new Tunnel();
+                    }
             }
         } else if (i == 7) {
             this.item = new TrapDoor();
@@ -59,16 +71,8 @@ public class BlockField {
         } else if (i == 9 || i == 10 || i == 11) {
             this.item = new Tunnel();
         } else if (i == 12) {
-            if (seed.nextInt(3) == 0) {
-                this.item = new OneWayTeleport();
-            } else {
-                if (seed.nextBoolean()) {
-                    this.item = new Vegetable();
-                }
-            }
-        } else if (i == 13) {
             this.item = new Fire();
-        } else if (i == 14) {
+        } else if (i == 13) {
             this.item = new Torturer();
         }
 

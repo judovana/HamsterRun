@@ -52,7 +52,7 @@ public abstract class Teleport implements Item, Relocator {
         for (int x = 0; x < BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(); x++) {
             for (int y = 0; y < BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(); y++) {
                 Item item = world.getBlockField(new Point(x, y)).getItem();
-                if (item.getClass().equals(TwoWayTeleport.class)) {
+                if (item instanceof TwoWayTeleport || item instanceof AllWayTeleport) {
                     System.out.println("Found teleport at " + x + ":" + y + "; rat is at " + rat.getUniversalCoords());
                     twoWayTeleports.add(new Point(x, y));
                 }
