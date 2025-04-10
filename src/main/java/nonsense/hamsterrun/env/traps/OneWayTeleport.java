@@ -10,7 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-public class OneWayTeleport extends TwoWayTeleport {
+public class OneWayTeleport extends Teleport {
     //wil drop the  mouse to one bound space. If the space no longer exists (is impassable)
     //will move pick up new random spot
 

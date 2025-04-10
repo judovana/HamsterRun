@@ -10,6 +10,7 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Relocator;
+import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Vegetable;
@@ -268,7 +269,7 @@ public class Rat {
                 this.action = RatActions.FALLING;
             }
         }
-        if (world.getBlockField(getUniversalCoords()).getItem() instanceof TwoWayTeleport && seed.nextInt(6) + 1 > speed) {
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Teleport && seed.nextInt(6) + 1 > speed) {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
