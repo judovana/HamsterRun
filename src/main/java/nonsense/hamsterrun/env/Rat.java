@@ -166,7 +166,7 @@ public class Rat {
             g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
             if (higlight) {
                 g2d.setColor(Color.red);
-                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x-anim.anim, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y-anim.anim, zoom+2*anim.anim, zoom+2*+anim.anim);
+                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x - anim.anim, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y - anim.anim, zoom + 2 * anim.anim, zoom + 2 * +anim.anim);
 
             }
         }

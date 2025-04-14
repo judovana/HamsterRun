@@ -81,7 +81,7 @@ public abstract class Teleport implements Item, Relocator {
                         neighBase.getUpField(xx, yy)));
         for (BlockField block : possibleFields) {
             if (block != null && block.isPassable()) {
-                freeSidePoints.add(Rat.toUniversalCoords(block.getParent().getCoordsInNeigbrhood(), block.getCoordsInNeigbrhood()));
+                freeSidePoints.add(Rat.toUniversalCoords(block.getParent().getCoords(), block.getCoords()));
             }
         }
 

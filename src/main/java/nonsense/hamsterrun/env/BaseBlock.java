@@ -24,22 +24,21 @@ public class BaseBlock {
     private final int sizex;
     private final int sizey;
     private final int baseSize;
-    //this is nothing to relay on it is usually set only  if the block is part of neigbrho.
-    //still each call to set it, should be identical
-    private Point coordsInNeigbrhood;
+    private final Point coords;
 
-    public BaseBlock(int baseSize) {
+    public BaseBlock(int baseSize, Point coords) {
         this.sizex = baseSize;
         this.sizey = baseSize; //relict for ancient times when non-square rectangle was allowed
         this.baseSize = baseSize;
+        this.coords = coords;
         this.map = new BlockField[sizex][sizey];
         reset();
     }
 
-    public static BaseBlock generateByNeighbours(BaseConfig config, BaseBlock west, BaseBlock east, BaseBlock north, BaseBlock south) {
+    public static BaseBlock generateByNeighbours(BaseConfig config, BaseBlock west, BaseBlock east, BaseBlock north, BaseBlock south, Point coord) {
         int vcon = config.getConnectivity();
         int hcon = config.getConnectivity();
-        BaseBlock block = new BaseBlock(config.getBaseSize());
+        BaseBlock block = new BaseBlock(config.getBaseSize(), coord);
         if (west != null || east != null) {
             while (block.getRows().size() < hcon) {
                 setConnectingRow(west, block);
@@ -91,11 +90,11 @@ public class BaseBlock {
     }
 
     private void reset() {
-        Utils.clear(map, false);
+        Utils.clear(map, this, false);
     }
 
-    public static BaseBlock generateMiddle(BaseConfig config) {
-        return generateByNeighbours(config, null, null, null, null);
+    public static BaseBlock generateMiddle(BaseConfig config, Point coord) {
+        return generateByNeighbours(config, null, null, null, null, coord);
     }
 
     private List<Integer> getRows() {
@@ -148,12 +147,13 @@ public class BaseBlock {
     public String toString() {
         return toString(null, null);
     }
+
     public String toString(Character ch1, Character ch2) {
         List<String> l = toStrings(ch1, ch2);
         return l.stream().collect(Collectors.joining("\n"));
     }
 
-    public  List<String> toStrings() {
+    public List<String> toStrings() {
         return toStrings(null, null);
     }
 
@@ -165,18 +165,18 @@ public class BaseBlock {
     with rotation it is even wirder
      */
 
-    public  List<String> toStrings(Character ch1, Character ch2) {
+    public List<String> toStrings(Character ch1, Character ch2) {
         List<String> sb = new ArrayList<>(map.length);
         for (int xop = 0; xop < map.length; xop++) {
             StringBuilder line = new StringBuilder();
             for (int yop = 0; yop < map[xop].length; yop++) {
                 int xcoord, ycoord;
                 if (rotate) {
-                    xcoord=yop;
-                    ycoord=xop;
+                    xcoord = yop;
+                    ycoord = xop;
                 } else {
-                    xcoord=xop;
-                    ycoord=yop;
+                    xcoord = xop;
+                    ycoord = yop;
                 }
                 if (map[xcoord][ycoord].isImpassable()) {
                     if (ch1 == null) {
@@ -279,21 +279,10 @@ public class BaseBlock {
         if (y < 0 || y >= map.length) {
             return null;
         }
-        map[x][y].setLastNeighborhoodCords(x,y, this);
         return map[x][y];
     }
 
-    public void setLastNeighborhoodCords(int x, int y) {
-        if (coordsInNeigbrhood == null) {
-            coordsInNeigbrhood = new Point(x, y);
-        } else {
-            if (!coordsInNeigbrhood.equals(new Point(x, y))) {
-                throw new RuntimeException("Neighbour with set coords of " + coordsInNeigbrhood + " is being chnaged to " + new Point(x, y));
-            }
-        }
-    }
-
-    public Point getCoordsInNeigbrhood() {
-        return coordsInNeigbrhood;
+    public Point getCoords() {
+        return coords;
     }
 }

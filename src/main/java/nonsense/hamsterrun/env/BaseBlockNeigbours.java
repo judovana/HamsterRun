@@ -44,7 +44,7 @@ public class BaseBlockNeigbours {
             rotated.add(0, middleY + " x " + middleX + " :");
             return rotated.stream().collect(Collectors.joining("\n"));
         } else {
-            rotated =  result;
+            rotated = result;
             rotated.add(0, middleX + " x " + middleY + " :");
             return rotated.stream().collect(Collectors.joining("\n"));
         }
@@ -57,7 +57,7 @@ public class BaseBlockNeigbours {
         }
         for (int x = 0; x < source.size(); x++) {
             for (int y = 0; y < source.get(x).length(); y++) {
-                target.set(y, target.get(y)+source.get(x).charAt(y));
+                target.set(y, target.get(y) + source.get(x).charAt(y));
             }
         }
         return target;
@@ -138,22 +138,18 @@ public class BaseBlockNeigbours {
     }
 
     public void setUp(BaseBlock up, int x, int y) {
-        up.setLastNeighborhoodCords(x,y);
         this.up = up;
     }
 
     public void setRight(BaseBlock right, int x, int y) {
-        right.setLastNeighborhoodCords(x,y);
         this.right = right;
     }
 
     public void setDown(BaseBlock down, int x, int y) {
-        down.setLastNeighborhoodCords(x,y);
         this.down = down;
     }
 
     public void setLeft(BaseBlock left, int x, int y) {
-        left.setLastNeighborhoodCords(x,y);
         this.left = left;
     }
 

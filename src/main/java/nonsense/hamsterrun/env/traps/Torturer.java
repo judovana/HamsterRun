@@ -26,14 +26,14 @@ public class Torturer implements Item {
                 anim = 0;
             }
         }
-        double dz = (double)zoom;
-        for(double x = 0.0; x< 1; x=x+0.68) {
+        double dz = (double) zoom;
+        for (double x = 0.0; x < 1; x = x + 0.68) {
             for (double y = 0.0; y < 1; y = y + 0.68) {
                 if (level == 3) {
-                    g2d.drawImage(SpritesProvider.whirlStay[anim / 10 % 2], coordx+(int)(dz*x), coordy+(int)(dz*y), zoom/3, zoom/3, null);
+                    g2d.drawImage(SpritesProvider.whirlStay[anim / 10 % 2], coordx + (int) (dz * x), coordy + (int) (dz * y), zoom / 3, zoom / 3, null);
                 }
                 if (level == 2) {
-                    g2d.drawImage(getSprite(),  coordx+(int)(dz*x), coordy+(int)(dz*y), zoom/3, zoom/3, null);
+                    g2d.drawImage(getSprite(), coordx + (int) (dz * x), coordy + (int) (dz * y), zoom / 3, zoom / 3, null);
                 }
             }
         }

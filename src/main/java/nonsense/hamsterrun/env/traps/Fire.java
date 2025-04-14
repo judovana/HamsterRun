@@ -25,7 +25,7 @@ public class Fire implements Item {
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 2) {
             anim2++;
-            if (anim2>5) {
+            if (anim2 > 5) {
                 anim2 = 0;
             }
             g2d.drawImage(SpritesProvider.fire[anim2], coordx, coordy, zoom, zoom, null);
@@ -33,11 +33,11 @@ public class Fire implements Item {
         if (level == 3) {
             float opacity = 0.75f;
             anim++;
-            if (anim>49){
+            if (anim > 49) {
                 anim = 0;
             }
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-            g2d.drawImage(getSprite(anim/10+1), coordx-zoom/2, coordy-zoom/2, zoom+zoom, zoom+zoom, null);
+            g2d.drawImage(getSprite(anim / 10 + 1), coordx - zoom / 2, coordy - zoom / 2, zoom + zoom, zoom + zoom, null);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         }
     }

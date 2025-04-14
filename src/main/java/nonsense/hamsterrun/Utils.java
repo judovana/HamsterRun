@@ -5,17 +5,15 @@ import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.Maze;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Utils {
-    public static void clear(BlockField[][] map, boolean passable) {
+    public static void clear(BlockField[][] map, BaseBlock baseBlock, boolean passable) {
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
                 if (map[x][y] == null) {
-                    map[x][y] = new BlockField(passable);
+                    map[x][y] = new BlockField(passable, new Point(x, y), baseBlock);
                 } else {
                     map[x][y].setPassable(passable);
                 }
@@ -34,9 +32,6 @@ public class Utils {
             map[x][y].setPassable(i);
         }
     }
-
-
-
 
 
     /*

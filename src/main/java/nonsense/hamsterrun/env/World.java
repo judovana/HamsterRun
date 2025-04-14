@@ -133,15 +133,16 @@ public class World implements Runnable {
         drawMap(g2d, center, map, this.zoom);
     }
 
-    public  BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
+    public BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
         return maze.getBaseBlockNeigbours(x, y);
     }
-    public  BaseBlockNeigbours getBaseBlockNeigboursByUniversal(Point p) {
+
+    public BaseBlockNeigbours getBaseBlockNeigboursByUniversal(Point p) {
         return getBaseBlockNeigboursByUniversal(p.x, p.y);
     }
 
-    public  BaseBlockNeigbours getBaseBlockNeigboursByUniversal(int x, int y) {
-        return maze.getBaseBlockNeigbours(x/BaseConfig.getConfig().getBaseSize(), y/BaseConfig.getConfig().getBaseSize());
+    public BaseBlockNeigbours getBaseBlockNeigboursByUniversal(int x, int y) {
+        return maze.getBaseBlockNeigbours(x / BaseConfig.getConfig().getBaseSize(), y / BaseConfig.getConfig().getBaseSize());
     }
 
     public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride) {
@@ -262,7 +263,7 @@ public class World implements Runnable {
     public BlockField getBlockField(Point coord) {
         BlockField bl = getMazeStatus(coord);
         if (bl == null) {
-            return new BlockField(true);
+            return new BlockField(true, new Point(-1, -1), null);
         }
         return bl;
     }
@@ -306,12 +307,12 @@ public class World implements Runnable {
                     if (m >= 0 && m < rats.size()) {
                         rats.get(m).act(this);
                         if (rats.get(m) == getMyMouse() && getMyMouse().getAction() == RatActions.WALK) {
-                            BaseBlockNeigbours  bn =  maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x,getMyMouse().getCoordsInMaze().y);
+                            BaseBlockNeigbours bn = maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x, getMyMouse().getCoordsInMaze().y);
                             System.out.println(bn);
                         }
                     }
                 }
-                for(JComponent repaintListener: repaintListeners) {
+                for (JComponent repaintListener : repaintListeners) {
                     repaintListener.repaint();
                 }
             } catch (InterruptedException ex) {

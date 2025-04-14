@@ -58,7 +58,7 @@ public class SpritesProvider {
         okurka = ImageIO.read(okurkaU);
         URL trapDoorUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor1.png");
         URL trapDoorUrl2 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor2.png");
-        trapdoor = new BufferedImage[] {ImageIO.read(trapDoorUrl1), ImageIO.read(trapDoorUrl2)};
+        trapdoor = new BufferedImage[]{ImageIO.read(trapDoorUrl1), ImageIO.read(trapDoorUrl2)};
         for (int x = 1; x <= 5; x++) {
             URL teleUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/twoWayTeleport" + x + ".png");
             twoWayTeleport[x - 1] = ImageIO.read(teleUrl1);

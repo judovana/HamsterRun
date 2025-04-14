@@ -204,36 +204,4 @@ public class Main {
         pb.start();
     }
 
-    private static void baseBlockDemo(BaseConfig config) throws IOException {
-        BaseBlock middle = BaseBlock.generateMiddle(config);
-        BaseBlock right = BaseBlock.generateByNeighbours(config, middle, null, null, null);
-        BaseBlock left = BaseBlock.generateByNeighbours(config, null, middle, null, null);
-        BaseBlock up = BaseBlock.generateByNeighbours(config, null, null, null, middle);
-        BaseBlock down = BaseBlock.generateByNeighbours(config, null, null, middle, null);
-        show(middle, "mid");
-        show(up, "up");
-        show(down, "down");
-        show(left, "left");
-        show(right, "right");
-        BaseBlock newMiddle = BaseBlock.generateByNeighbours(config, left, right, up, down);
-        show(newMiddle, "nwm");
-        BaseBlock leftup = BaseBlock.generateByNeighbours(config, up, null, null, left);
-        show(leftup, "leftup");
-        BaseBlock righttup = BaseBlock.generateByNeighbours(config, null, up, null, right);
-        show(righttup, "righttup");
-        BaseBlock leftdown = BaseBlock.generateByNeighbours(config, down, null, left, null);
-        show(leftdown, "leftdown");
-        BaseBlock rightdown = BaseBlock.generateByNeighbours(config, null, down, right, null);
-        show(rightdown, "rightdown");
-    }
-
-    private static void show(BaseBlock middle, String id) throws IOException {
-        System.out.println("------- start " + id + " start -------");
-        System.out.println(middle.toString());
-        System.out.println("------- end " + id + " end -------");
-        File f = new File("/tmp/" + id + "block.png");
-        ImageIO.write(middle.toImage(16, true), "png", f);
-        ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
-        pb.start();
-    }
 }
