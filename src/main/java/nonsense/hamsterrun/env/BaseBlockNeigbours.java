@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BaseBlockNeigbours {
+    //if rotated then it matches gui, else it matches the internal arrays
+    private static final boolean rotate = false;
     private final int middleX;
     private final int middleY;
     private final BaseBlock center;
@@ -26,7 +28,6 @@ public class BaseBlockNeigbours {
             return "NaN";
         }
         List<String> result = new ArrayList<>(h * 3 + 1);
-        result.add(middleX + " x " + middleY + " :");
         topAndBottom(up, result, w, h);
         for (int x = 0; x < h; x++) {
             StringBuilder sb = new StringBuilder();
@@ -36,7 +37,30 @@ public class BaseBlockNeigbours {
             result.add(sb.toString());
         }
         topAndBottom(down, result, w, h);
-        return result.stream().collect(Collectors.joining("\n"));
+        //rotate it clockwise to se this in same as gui
+        List<String> rotated;
+        if (rotate) {
+            rotated = rotate90(result);
+            rotated.add(0, middleY + " x " + middleX + " :");
+            return rotated.stream().collect(Collectors.joining("\n"));
+        } else {
+            rotated =  result;
+            rotated.add(0, middleX + " x " + middleY + " :");
+            return rotated.stream().collect(Collectors.joining("\n"));
+        }
+    }
+
+    private static List<String> rotate90(List<String> source) {
+        List<String> target = new ArrayList<>();
+        for (int y = 0; y < source.get(0).length(); y++) {
+            target.add("");
+        }
+        for (int x = 0; x < source.size(); x++) {
+            for (int y = 0; y < source.get(x).length(); y++) {
+                target.set(y, target.get(y)+source.get(x).charAt(y));
+            }
+        }
+        return target;
     }
 
     private static void sides(BaseBlock unit, StringBuilder sb, int w, int x) {

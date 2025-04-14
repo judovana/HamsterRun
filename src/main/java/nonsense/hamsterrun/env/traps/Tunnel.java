@@ -19,7 +19,6 @@ public class Tunnel implements Item {
 
 
     @Override
-    //fixme honour neigbours
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 3) {
             g2d.drawImage(SpritesProvider.tunnelOpened, coordx, coordy, zoom, zoom, null);

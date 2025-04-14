@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.Rat;
@@ -13,6 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,27 +67,21 @@ public abstract class Teleport implements Item, Relocator {
         Collections.shuffle(twoWayTeleports);
         Point w = twoWayTeleports.get(0);
         System.out.println("Moving from " + rat.getUniversalCoords() + " nextto " + w);
-        BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w);
-
+        BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
+        //System.out.print(neighBase.toString());
+        //System.out.println();
         List<Point> freeSidePoints = new ArrayList<>(4);
-        BlockField df = neighBase.getDownField(rat.getCoordsInBaseBlock().x, rat.getCoordsInBaseBlock().y);
-        if (df != null && df.isPassable()) {
-            if (neighBase.getDown() == null) {
-                freeSidePoints.add(
-                        Rat.toUniversalCoords(neighBase.getCenter().getCoordsInNeigbrhood(), df.getCoordsInNeigbrhood()));
-            } else {
-                freeSidePoints.add(
-                        Rat.toUniversalCoords(neighBase.getDown().getCoordsInNeigbrhood(), df.getCoordsInNeigbrhood()));
-            }
-        }
-        BlockField uf = neighBase.getUpField(rat.getCoordsInBaseBlock().x, rat.getCoordsInBaseBlock().y);
-        if (uf != null && uf.isPassable()) {
-            if (neighBase.getUp() == null) {
-                freeSidePoints.add(
-                        Rat.toUniversalCoords(neighBase.getCenter().getCoordsInNeigbrhood(), uf.getCoordsInNeigbrhood()));
-            } else {
-                freeSidePoints.add(
-                        Rat.toUniversalCoords(neighBase.getUp().getCoordsInNeigbrhood(), uf.getCoordsInNeigbrhood()));
+        int xx = w.x % BaseConfig.getConfig().getBaseSize();
+        int yy = w.y % BaseConfig.getConfig().getBaseSize();
+        List<BlockField> possibleFields = new ArrayList<>(
+                Arrays.asList(
+                        neighBase.getRightField(xx, yy),
+                        neighBase.getLeftField(xx, yy),
+                        neighBase.getDownField(xx, yy),
+                        neighBase.getUpField(xx, yy)));
+        for (BlockField block : possibleFields) {
+            if (block != null && block.isPassable()) {
+                freeSidePoints.add(Rat.toUniversalCoords(block.getParent().getCoordsInNeigbrhood(), block.getCoordsInNeigbrhood()));
             }
         }
 
@@ -95,6 +91,7 @@ public abstract class Teleport implements Item, Relocator {
             Collections.shuffle(freeSidePoints);
             rat.setUniversalCoords(freeSidePoints.get(0));
         }
+        System.out.println("And it is: " + rat.getUniversalCoords());
     }
 
 }

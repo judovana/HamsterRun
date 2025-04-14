@@ -22,6 +22,8 @@ public class BlockField {
     //this is nothing to relay on it is usually set only  if the block is part of neigbrho.
     //still each call to set it, should be identical
     private Point coordsInNeigbrhood;
+    //this too
+    private BaseBlock parent;
 
     public BlockField(boolean passable) {
         this.passable = passable;
@@ -91,7 +93,14 @@ public class BlockField {
         this.item = new Empty();
     }
 
-    public void setLastNeighborhoodCords(int x, int y) {
+    public void setLastNeighborhoodCords(int x, int y, BaseBlock parent) {
+        if (this.parent == null){
+            this.parent = parent;
+        } else {
+            if (this.parent != parent) {
+                throw new RuntimeException("Field is being set a different parent then it already have");
+            }
+        }
         if (coordsInNeigbrhood == null) {
             coordsInNeigbrhood = new Point(x, y);
         } else {
@@ -103,5 +112,9 @@ public class BlockField {
 
     public Point getCoordsInNeigbrhood() {
         return coordsInNeigbrhood;
+    }
+
+    public BaseBlock getParent() {
+        return parent;
     }
 }

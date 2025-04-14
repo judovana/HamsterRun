@@ -23,7 +23,7 @@ public class World implements Runnable {
 
     private final Thread repl;
     private final Maze maze;
-    private final List<Rat> rats = Arrays.asList(new Rat(), new Rat(), new Rat(), new Rat());
+    private final List<Rat> rats = Arrays.asList(new Rat());//, new Rat(), new Rat(), new Rat());
     private int myMouse = -1;
     private int zoom = 64;
     private int worldAnim = 0;
@@ -137,7 +137,11 @@ public class World implements Runnable {
         return maze.getBaseBlockNeigbours(x, y);
     }
     public  BaseBlockNeigbours getBaseBlockNeigboursByUniversal(Point p) {
-        return maze.getBaseBlockNeigbours(p.x/BaseConfig.getConfig().getBaseSize(), p.y/BaseConfig.getConfig().getBaseSize());
+        return getBaseBlockNeigboursByUniversal(p.x, p.y);
+    }
+
+    public  BaseBlockNeigbours getBaseBlockNeigboursByUniversal(int x, int y) {
+        return maze.getBaseBlockNeigbours(x/BaseConfig.getConfig().getBaseSize(), y/BaseConfig.getConfig().getBaseSize());
     }
 
     public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride) {
@@ -155,7 +159,11 @@ public class World implements Runnable {
         for (Rat rat : rats) {
             i++;
             g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
-            rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map);
+            boolean selected = false;
+            if (rat.equals(getMyMouse())) {
+                selected = true;
+            }
+            rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
     }
@@ -193,6 +201,13 @@ public class World implements Runnable {
 
     public void setMyMouse(int i) {
         myMouse = i;
+    }
+
+    public Rat getMyMouse() {
+        if (myMouse >= 0 && myMouse < rats.size()) {
+            return rats.get(myMouse);
+        }
+        return null;
     }
 
     public void setMouseUp(int i) {
@@ -290,6 +305,10 @@ public class World implements Runnable {
                     }
                     if (m >= 0 && m < rats.size()) {
                         rats.get(m).act(this);
+                        if (rats.get(m) == getMyMouse() && getMyMouse().getAction() == RatActions.WALK) {
+                            BaseBlockNeigbours  bn =  maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x,getMyMouse().getCoordsInMaze().y);
+                            System.out.println(bn);
+                        }
                     }
                 }
                 for(JComponent repaintListener: repaintListeners) {

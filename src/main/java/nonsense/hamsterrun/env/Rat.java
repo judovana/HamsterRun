@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env;
 
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,6 @@ import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Relocator;
 import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Tunnel;
-import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
@@ -141,7 +141,7 @@ public class Rat {
     }
 
     //useInplaceSubMovement - in map false, in game true
-    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement) {
+    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
         Point coord = getUniversalCoords();
         Point relativeShift = new Point(0, 0);
         if (useInplaceSubMovement) {
@@ -164,6 +164,11 @@ public class Rat {
             g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, usedZoom, usedZoom, null);
         } else {
             g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
+            if (higlight) {
+                g2d.setColor(Color.red);
+                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x-anim.anim, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y-anim.anim, zoom+2*anim.anim, zoom+2*+anim.anim);
+
+            }
         }
     }
 
@@ -360,4 +365,7 @@ public class Rat {
         }
     }
 
+    public RatActions getAction() {
+        return action;
+    }
 }

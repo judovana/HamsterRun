@@ -11,8 +11,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class BaseBlock {
+
+    //if rotated then it matches gui, else it matches the internal arrays
+    private static final boolean rotate = false;
 
     public static final int WALL_WIDTH = 6;
     private final BlockField[][] map;
@@ -142,11 +146,55 @@ public class BaseBlock {
 
     @Override
     public String toString() {
-        return Utils.toString(map, null, null);
+        return toString(null, null);
+    }
+    public String toString(Character ch1, Character ch2) {
+        List<String> l = toStrings(ch1, ch2);
+        return l.stream().collect(Collectors.joining("\n"));
     }
 
-    public List<String> toStrings() {
-        return Utils.toStrings(map, null, null);
+    public  List<String> toStrings() {
+        return toStrings(null, null);
+    }
+
+    /* without rotation:
+    00 10 12 ..
+    01 11 12 ..
+    02 ...
+    ...
+    with rotation it is even wirder
+     */
+
+    public  List<String> toStrings(Character ch1, Character ch2) {
+        List<String> sb = new ArrayList<>(map.length);
+        for (int xop = 0; xop < map.length; xop++) {
+            StringBuilder line = new StringBuilder();
+            for (int yop = 0; yop < map[xop].length; yop++) {
+                int xcoord, ycoord;
+                if (rotate) {
+                    xcoord=yop;
+                    ycoord=xop;
+                } else {
+                    xcoord=xop;
+                    ycoord=yop;
+                }
+                if (map[xcoord][ycoord].isImpassable()) {
+                    if (ch1 == null) {
+                        line.append("" + (map[xcoord][ycoord].isPassable() ? "0" : "X"));
+                    } else {
+                        line.append("" + ch1);
+                    }
+                } else {
+                    if (ch2 == null) {
+                        line.append("" + (map[xcoord][ycoord].isPassable() ? "0" : "X"));
+                    } else {
+                        line.append("" + ch2);
+                    }
+                }
+            }
+            sb.add(line.toString());
+        }
+        return sb;
     }
 
     public BufferedImage toImage(int zoom, boolean map) {
@@ -231,7 +279,7 @@ public class BaseBlock {
         if (y < 0 || y >= map.length) {
             return null;
         }
-        map[x][y].setLastNeighborhoodCords(x,y);
+        map[x][y].setLastNeighborhoodCords(x,y, this);
         return map[x][y];
     }
 

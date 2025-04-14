@@ -36,40 +36,7 @@ public class Utils {
     }
 
 
-    public static String toString(BlockField[][] map, Character ch1, Character ch2) {
-        List<String> l = toStrings(map, ch1, ch2);
-        return l.stream().collect(Collectors.joining("\n"));
-    }
 
-    /*
-    00 10 12 ..
-    01 11 12 ..
-    02 ...
-    ...
-     */
-    public static List<String> toStrings(BlockField[][] map, Character ch1, Character ch2) {
-        List<String> sb = new ArrayList<>(map.length);
-        for (int x = 0; x < map.length; x++) {
-            StringBuilder line = new StringBuilder();
-            for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y].isImpassable()) {
-                    if (ch1 == null) {
-                        line.append("" + (map[x][y].isPassable() ? "0" : "X"));
-                    } else {
-                        line.append("" + ch1);
-                    }
-                } else {
-                    if (ch2 == null) {
-                        line.append("" + (map[x][y].isPassable() ? "0" : "X"));
-                    } else {
-                        line.append("" + ch2);
-                    }
-                }
-            }
-            sb.add(line.toString());
-        }
-        return sb;
-    }
 
 
     /*
