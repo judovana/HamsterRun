@@ -220,7 +220,6 @@ public class BaseBlock {
                     }
                     if (zoom > 2 && level == 1) {
                         if (!mapOnly) {
-                            //TODO walls really only  zoom >2?
                             BlockField lb = neigbours.getLeftField(x, y);
                             if (lb == null || lb.isImpassable()) {
                                 g2d.drawImage(SpritesProvider.wall, coordx - (zoom / WALL_WIDTH), coordy, zoom / WALL_WIDTH - 1, zoom - 1, null);

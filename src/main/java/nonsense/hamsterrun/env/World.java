@@ -133,14 +133,6 @@ public class World implements Runnable {
         drawMap(g2d, center, map, this.zoom);
     }
 
-    public BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
-        return maze.getBaseBlockNeigbours(x, y);
-    }
-
-    public BaseBlockNeigbours getBaseBlockNeigboursByUniversal(Point p) {
-        return getBaseBlockNeigboursByUniversal(p.x, p.y);
-    }
-
     public BaseBlockNeigbours getBaseBlockNeigboursByUniversal(int x, int y) {
         return maze.getBaseBlockNeigbours(x / BaseConfig.getConfig().getBaseSize(), y / BaseConfig.getConfig().getBaseSize());
     }
@@ -307,8 +299,8 @@ public class World implements Runnable {
                     if (m >= 0 && m < rats.size()) {
                         rats.get(m).act(this);
                         if (rats.get(m) == getMyMouse() && getMyMouse().getAction() == RatActions.WALK) {
-                            BaseBlockNeigbours bn = maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x, getMyMouse().getCoordsInMaze().y);
-                            System.out.println(bn);
+                            //BaseBlockNeigbours bn = maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x, getMyMouse().getCoordsInMaze().y);
+                            //System.out.println(bn);
                         }
                     }
                 }

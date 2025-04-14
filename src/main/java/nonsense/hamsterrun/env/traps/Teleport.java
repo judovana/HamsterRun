@@ -67,7 +67,7 @@ public abstract class Teleport implements Item, Relocator {
         Collections.shuffle(twoWayTeleports);
         Point w = twoWayTeleports.get(0);
         System.out.println("Moving from " + rat.getUniversalCoords() + " nextto " + w);
-        BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
+        BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.y, w.x);
         //System.out.print(neighBase.toString());
         //System.out.println();
         List<Point> freeSidePoints = new ArrayList<>(4);
