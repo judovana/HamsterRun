@@ -137,7 +137,10 @@ public class Maze {
         }
     }
 
-    public BaseBlockNeigbours getBaseBlockNeigbours(int x, int y) {
+    public BaseBlockNeigbours getBaseBlockNeigbours(int xx, int yy) {
+        //swap from visual to data
+        int x = yy;
+        int y = xx;
         BaseBlockNeigbours neighbours = new BaseBlockNeigbours(x, y, maze[x][y]);
         if (x > 0) {
             neighbours.setUp(maze[x - 1][y], x - 1, y);

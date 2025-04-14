@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
 
 public class BaseBlock {
 
-    //if rotated then it matches gui, else it matches the internal arrays
-    private static final boolean rotate = false;
-
     public static final int WALL_WIDTH = 6;
     private final BlockField[][] map;
     private static final Random seed = new Random();
@@ -171,13 +168,8 @@ public class BaseBlock {
             StringBuilder line = new StringBuilder();
             for (int yop = 0; yop < map[xop].length; yop++) {
                 int xcoord, ycoord;
-                if (rotate) {
-                    xcoord = yop;
-                    ycoord = xop;
-                } else {
-                    xcoord = xop;
-                    ycoord = yop;
-                }
+                xcoord = xop;
+                ycoord = yop;
                 if (map[xcoord][ycoord].isImpassable()) {
                     if (ch1 == null) {
                         line.append("" + (map[xcoord][ycoord].isPassable() ? "0" : "X"));
