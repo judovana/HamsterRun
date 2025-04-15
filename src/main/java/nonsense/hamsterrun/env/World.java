@@ -161,6 +161,8 @@ public class World implements Runnable {
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
+        //debug texts
+        //maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 4, map);
     }
 
     public void regenerateBlock(int x, int y) {
@@ -313,8 +315,17 @@ public class World implements Runnable {
 
     public void regenerateAll() {
         Set<Point> sqWithoutN = getSquaresWithoutRatInNeighbourhood();
+        if (getMyMouse() != null) {
+            BaseBlockNeigbours q1 = getBaseBlockNeigboursByUniversal(getMyMouse().getUniversalCoords().x,
+                    getMyMouse().getUniversalCoords().y);
+            System.out.println(q1);
+        }
         for (Point p : sqWithoutN) {
             maze.regenerate(p.y, p.x, BaseConfig.getConfig());
+        }
+        if (getMyMouse() != null) {
+            BaseBlockNeigbours q1 = maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x, getMyMouse().getCoordsInMaze().y);
+            System.out.println(q1);
         }
     }
 }

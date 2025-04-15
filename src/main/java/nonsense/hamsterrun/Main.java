@@ -125,7 +125,7 @@ public class Main {
                             world.allRatsSpread(false);
                         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                             world.regenerateAll();
-                        } else {
+                        } else if (e.getKeyCode() >= 65 && e.getKeyCode() < 95) {
                             world.setMyMouse(e.getKeyCode() - 65);
                         }
 

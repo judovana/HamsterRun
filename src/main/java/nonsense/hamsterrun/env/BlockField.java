@@ -100,4 +100,8 @@ public class BlockField {
     public BaseBlock getParent() {
         return parent;
     }
+
+    public Point getUniversalCoords() {
+        return Rat.toUniversalCoords(getParent().getCoords(), getCoords());
+    }
 }

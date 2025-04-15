@@ -65,12 +65,14 @@ public abstract class Teleport implements Item, Relocator {
         Collections.shuffle(twoWayTeleports);
         Point w = twoWayTeleports.get(0);
         System.out.println("Moving from " + rat.getUniversalCoords() + " nextto " + w);
-        BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.y, w.x);
+        BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
         System.out.print(neighBase.toString());
         System.out.println();
+        //up to now it is correct. the rat is moving between telepors and never misses
+        //also the neighbrs are corrct and w is correct and twoWayTeleports are correct
         List<Point> freeSidePoints = new ArrayList<>(4);
-        int xx = w.x % BaseConfig.getConfig().getBaseSize();
-        int yy = w.y % BaseConfig.getConfig().getBaseSize();
+        int xx = w.y % BaseConfig.getConfig().getBaseSize();
+        int yy = w.x % BaseConfig.getConfig().getBaseSize();
         List<BlockField> possibleFields = new ArrayList<>(
                 Arrays.asList(
                         neighBase.getRightField(xx, yy),
@@ -79,7 +81,9 @@ public abstract class Teleport implements Item, Relocator {
                         neighBase.getUpField(xx, yy)));
         for (BlockField block : possibleFields) {
             if (block != null && block.isPassable()) {
-                freeSidePoints.add(Rat.toUniversalCoords(block.getParent().getCoords(), block.getCoords()));
+                //they were recovered in swap coord system, we ahve to turn them back
+                //so they can be swapped again
+                freeSidePoints.add(new Point(block.getUniversalCoords().y, block.getUniversalCoords().x));
             }
         }
 
@@ -90,6 +94,7 @@ public abstract class Teleport implements Item, Relocator {
             rat.setUniversalCoords(freeSidePoints.get(0));
         }
         System.out.println("And it is: " + rat.getUniversalCoords());
+        System.out.println();
     }
 
 }
