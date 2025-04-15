@@ -46,25 +46,7 @@ public abstract class Teleport implements Item, Relocator {
 
     abstract protected BufferedImage getSprite(int id);
 
-    @Override
-    public void relocate(World world, Rat rat) {
-        List<Point> twoWayTeleports = new ArrayList<>();
-        for (int x = 0; x < BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(); x++) {
-            for (int y = 0; y < BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(); y++) {
-                Item item = world.getBlockField(new Point(x, y)).getItem();
-                if (item instanceof TwoWayTeleport || item instanceof AllWayTeleport) {
-                    System.out.println("Found teleport at " + x + ":" + y + "; rat is at " + rat.getUniversalCoords());
-                    twoWayTeleports.add(new Point(x, y));
-                }
-            }
-        }
-        if (twoWayTeleports.isEmpty()) {
-            System.out.println("No destination!");
-            return;
-        }
-        Collections.shuffle(twoWayTeleports);
-        Point w = twoWayTeleports.get(0);
-        System.out.println("Moving from " + rat.getUniversalCoords() + " nextto " + w);
+    protected static List<Point> getNeighboursForGivenPoint(Point w, World world) {
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
         System.out.print(neighBase.toString());
         System.out.println();
@@ -86,7 +68,12 @@ public abstract class Teleport implements Item, Relocator {
                 freeSidePoints.add(new Point(block.getUniversalCoords().y, block.getUniversalCoords().x));
             }
         }
+        return freeSidePoints;
+    }
 
+    protected static void moveRatTo(World world, Rat rat, Point w) {
+        System.out.println("Moving from " + rat.getUniversalCoords() + " next to " + w);
+        List<Point> freeSidePoints = getNeighboursForGivenPoint(w, world);
         if (freeSidePoints.isEmpty()) {
             rat.setUniversalCoords(w);
         } else {
