@@ -5,16 +5,24 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
+import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
+import nonsense.hamsterrun.env.traps.Item;
 import nonsense.hamsterrun.env.traps.Relocator;
 import nonsense.hamsterrun.env.traps.Teleport;
+import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.sprites.SpritesProvider;
+
+import javax.xml.stream.events.EndElement;
 
 public class Rat {
 
@@ -29,6 +37,7 @@ public class Rat {
     private Point relativeCoordInSquare = new Point(0, 0);
     private static final int relativeSizes = 5;
     private int speed = 1; //can not go over relativeSizes*2
+    private int score = 1000;
 
     public Rat() {
     }
@@ -294,6 +303,9 @@ public class Rat {
             case FALLING:
                 fall(world);
                 break;
+            case STAY:
+                harm(world);
+                break;
         }
     }
 
@@ -303,6 +315,7 @@ public class Rat {
                 direction = RatActions.Direction.getRandom();
             }
         }
+        harm(world);
         switch (direction) {
             case DOWN:
                 moveMouseDown(world);
@@ -327,6 +340,9 @@ public class Rat {
                 boolean eaten = ((Vegetable) world.getBlockField(getUniversalCoords()).getItem()).eat();
                 if (eaten) {
                     world.getBlockField(getUniversalCoords()).clear();
+                } else {
+                    adjustScore(50);
+                    harm(world);
                 }
             }
         } else {
@@ -367,5 +383,56 @@ public class Rat {
 
     public RatActions getAction() {
         return action;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void adjustScore(int scoreIncDec) {
+        this.score += scoreIncDec;
+        System.out.println(this.toString() + " " + this.score);
+    }
+
+    public void harm(World w) {
+        Item field = w.getBlockField(this.getUniversalCoords()).getItem();
+        if (field instanceof Torturer) {
+            adjustScore(-5 * speed);
+        }
+        if (field instanceof Fire) {
+            adjustScore(-20);
+        }
+        BaseBlockNeigbours neighBase1 = w.getBaseBlockNeigboursByUniversal(this.getUniversalCoords().x, this.getUniversalCoords().y);
+        int xx = this.getCoordsInBaseBlock().y;
+        int yy = this.getCoordsInBaseBlock().x;
+        List<BlockField> possibleFires1 = new ArrayList<>(
+                Arrays.asList(
+                        neighBase1.getRightField(xx, yy),
+                        neighBase1.getLeftField(xx, yy),
+                        neighBase1.getDownField(xx, yy),
+                        neighBase1.getUpField(xx, yy)));
+        for (BlockField block1 : possibleFires1) {
+            if (block1 != null) {
+                if (block1.getItem() instanceof Fire) {
+                    adjustScore(-5);
+
+                }
+                BaseBlockNeigbours neighBase2 = w.getBaseBlockNeigboursByUniversal(block1.getUniversalCoords().x, block1.getUniversalCoords().y);
+                int x = block1.getCoords().x;
+                int y = block1.getCoords().y;
+                List<BlockField> possibleFires2 = new ArrayList<>(
+                        Arrays.asList(
+                                neighBase2.getRightField(x, y),
+                                neighBase2.getLeftField(x, y),
+                                neighBase2.getDownField(x, y),
+                                neighBase2.getUpField(x, y)));
+                for (BlockField block2 : possibleFires2) {
+                    if (block2 != null && block2.getItem() instanceof Fire) {
+                        adjustScore(-1);
+                    }
+                }
+            }
+        }
+
     }
 }
