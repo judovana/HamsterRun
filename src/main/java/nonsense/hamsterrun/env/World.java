@@ -21,6 +21,8 @@ public class World implements Runnable {
     private static final Random seed = new Random();
     private static final int delayMs = 50;
 
+    private final boolean keepRegenerating = false;
+
     private final Thread repl;
     private final Maze maze;
     private final List<Rat> rats = Arrays.asList(new Rat());//, new Rat(), new Rat(), new Rat());
@@ -272,9 +274,8 @@ public class World implements Runnable {
                 worldAnim++;
                 if (worldAnim % 5 == 0) {
                     worldAnim = 0;
-                    Set<Point> sqWithoutN = getSquaresWithoutRatInNeighbourhood();
-                    for (Point p : sqWithoutN) {
-                        maze.regenerate(p.y, p.x, BaseConfig.getConfig());
+                    if (keepRegenerating) {
+                        regenerateAll();
                     }
                 }
                 Thread.sleep(delayMs);
@@ -298,10 +299,6 @@ public class World implements Runnable {
                     }
                     if (m >= 0 && m < rats.size()) {
                         rats.get(m).act(this);
-                        if (rats.get(m) == getMyMouse() && getMyMouse().getAction() == RatActions.WALK) {
-                            //BaseBlockNeigbours bn = maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x, getMyMouse().getCoordsInMaze().y);
-                            //System.out.println(bn);
-                        }
                     }
                 }
                 for (JComponent repaintListener : repaintListeners) {
@@ -312,5 +309,12 @@ public class World implements Runnable {
             }
         }
 
+    }
+
+    public void regenerateAll() {
+        Set<Point> sqWithoutN = getSquaresWithoutRatInNeighbourhood();
+        for (Point p : sqWithoutN) {
+            maze.regenerate(p.y, p.x, BaseConfig.getConfig());
+        }
     }
 }

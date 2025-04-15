@@ -49,7 +49,8 @@ public class BlockField {
         if (i < 5) {
             this.item = new Vegetable();
         } else if (i == 6) {
-            int subseed = seed.nextInt(6);
+            //int subseed = seed.nextInt(6);
+            int subseed = 4;
             switch (subseed) {
                 case 0:
                     this.item = new OneWayTeleport();

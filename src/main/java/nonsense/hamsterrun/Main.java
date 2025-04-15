@@ -123,6 +123,8 @@ public class Main {
                             world.allRatsSpread(true);
                         } else if (e.getKeyCode() == 20) {
                             world.allRatsSpread(false);
+                        } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                            world.regenerateAll();
                         } else {
                             world.setMyMouse(e.getKeyCode() - 65);
                         }
@@ -138,70 +140,5 @@ public class Main {
                 gameView.setVisible(true);
             }
         });
-
     }
-
-    private static void frameDemo(BaseConfig config) {
-        final Maze maze = Maze.generate(config);
-        final int[] xyz = new int[]{1, 5, 16};
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JPanel view = new JPanel() {
-                    public void paint(Graphics g) {
-                        super.paint(g);
-                        Graphics2D g2d = (Graphics2D) g;
-                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 1, true);
-                        maze.drawMap(xyz[0] * xyz[2], xyz[1] * xyz[2], xyz[2], config, g2d, 2, true);
-                    }
-                };
-                view.setBackground(Color.BLACK);
-                JFrame f = new JFrame();
-                f.add(view);
-                f.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        System.out.println(e.getKeyCode() + "");
-                        if (e.getKeyCode() == 37/*leftarrow*/) {
-                            xyz[0]++;
-                        }
-                        if (e.getKeyCode() == 38/*uparrow*/) {
-                            xyz[1]++;
-                        }
-                        if (e.getKeyCode() == 39/*rightarrow*/) {
-                            xyz[0]--;
-                        }
-                        if (e.getKeyCode() == 40/*downarrow*/) {
-                            xyz[1]--;
-                        }
-                        if (e.getKeyChar() == '+') {
-                            xyz[2]++;
-                        }
-                        if (e.getKeyChar() == '-') {
-                            xyz[2]--;
-                        }
-                        if (e.getKeyCode() >= 97 && e.getKeyCode() <= 105) {
-                            int numlock = e.getKeyCode() - 97; //1 is zero for our needs;
-                            maze.regenerate(numlock / 3, numlock % 3, config);
-                        }
-                        f.repaint();
-                    }
-                });
-                f.setSize(700, 700);
-                f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                f.setVisible(true);
-            }
-        });
-
-    }
-
-    private static void mazeDemo(BaseConfig config) throws IOException {
-        Maze maze = Maze.generate(config);
-        BufferedImage bi = maze.toImage(8, config, true);
-        File f = new File("/tmp/mazr.png");
-        ImageIO.write(bi, "png", f);
-        ProcessBuilder pb = new ProcessBuilder("eog", f.getAbsolutePath());
-        pb.start();
-    }
-
 }

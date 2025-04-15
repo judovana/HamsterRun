@@ -1,12 +1,10 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.BaseConfig;
-import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
-import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -68,8 +66,8 @@ public abstract class Teleport implements Item, Relocator {
         Point w = twoWayTeleports.get(0);
         System.out.println("Moving from " + rat.getUniversalCoords() + " nextto " + w);
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.y, w.x);
-        //System.out.print(neighBase.toString());
-        //System.out.println();
+        System.out.print(neighBase.toString());
+        System.out.println();
         List<Point> freeSidePoints = new ArrayList<>(4);
         int xx = w.x % BaseConfig.getConfig().getBaseSize();
         int yy = w.y % BaseConfig.getConfig().getBaseSize();
