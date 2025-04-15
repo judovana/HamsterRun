@@ -55,6 +55,10 @@ public class Main {
                         x++;
                         config.gridConnectivityMax = Integer.valueOf(args[x]);
                         break;
+                    case "keep-regenerating":
+                        x++;
+                        config.keepRegenerating = Boolean.valueOf(args[x]);
+                        break;
                     default:
                         throw new RuntimeException("Unknown parameter " + args[x]);
 

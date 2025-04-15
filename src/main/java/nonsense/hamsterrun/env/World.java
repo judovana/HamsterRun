@@ -21,11 +21,9 @@ public class World implements Runnable {
     private static final Random seed = new Random();
     private static final int delayMs = 50;
 
-    private final boolean keepRegenerating = false;
-
     private final Thread repl;
     private final Maze maze;
-    private final List<Rat> rats = Arrays.asList(new Rat());//, new Rat(), new Rat(), new Rat());
+    private final List<Rat> rats = Arrays.asList(new Rat(), new Rat(), new Rat(), new Rat());
     private int myMouse = -1;
     private int zoom = 64;
     private int worldAnim = 0;
@@ -276,29 +274,31 @@ public class World implements Runnable {
                 worldAnim++;
                 if (worldAnim % 5 == 0) {
                     worldAnim = 0;
-                    if (keepRegenerating) {
+                    if (BaseConfig.getConfig().isKeepRegenerating()) {
                         regenerateAll();
+                    }
+                    for (int m = 0; m < rats.size(); m++) {
+                        if (m != myMouse) {
+                            switch (seed.nextInt(20)) {
+                                case 0:
+                                    setMouseLeft(m);
+                                    break;
+                                case 1:
+                                    setMouseRight(m);
+                                    break;
+                                case 2:
+                                    setMouseUp(m);
+                                    break;
+                                case 3:
+                                    setMouseDown(m);
+                                    break;
+                                default: //ok
+                            }
+                        }
                     }
                 }
                 Thread.sleep(delayMs);
                 for (int m = 0; m < rats.size(); m++) {
-                    if (m != myMouse) {
-                        switch (seed.nextInt(8)) {
-                            case 0:
-                                setMouseLeft(m);
-                                break;
-                            case 1:
-                                setMouseRight(m);
-                                break;
-                            case 2:
-                                setMouseUp(m);
-                                break;
-                            case 3:
-                                setMouseDown(m);
-                                break;
-                            default: //ok
-                        }
-                    }
                     if (m >= 0 && m < rats.size()) {
                         rats.get(m).act(this);
                     }

@@ -9,6 +9,7 @@ public class BaseConfig {
     int gridSize = 5;
     int gridConnectivityMin = 1;
     int gridConnectivityMax = 4;
+    boolean keepRegenerating = false;
     private static final Random seed = new Random();
 
     BaseConfig() {
@@ -56,6 +57,7 @@ public class BaseConfig {
         System.out.println("Each base element will be connected to each neighbour at least by  " + gridConnectivityMin + " lines");
         System.out.println("Each base element will be connected to each neighbour no more then  " + gridConnectivityMax + " lines");
         System.out.println("The max connectivity can no always be honoured, because the opposite nighbours may have no intersection. but engine is doing its best.");
+        System.out.println("Constant regeneration of world is " + keepRegenerating);
     }
 
     void verify() {
@@ -122,5 +124,9 @@ public class BaseConfig {
 
     public int getConnectivity() {
         return getBaseConfigRandom(gridConnectivityMin, gridConnectivityMax);
+    }
+
+    public boolean isKeepRegenerating() {
+        return keepRegenerating;
     }
 }
