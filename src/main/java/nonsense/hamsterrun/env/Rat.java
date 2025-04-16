@@ -417,7 +417,7 @@ public class Rat {
                     adjustScore(-5);
 
                 }
-                BaseBlockNeigbours neighBase2 = w.getBaseBlockNeigboursByUniversal(block1.getUniversalCoords().x, block1.getUniversalCoords().y);
+                BaseBlockNeigbours neighBase2 = w.getBaseBlockNeigboursByUniversal(block1.getUniversalCoords().y, block1.getUniversalCoords().x);
                 int x = block1.getCoords().x;
                 int y = block1.getCoords().y;
                 List<BlockField> possibleFires2 = new ArrayList<>(
