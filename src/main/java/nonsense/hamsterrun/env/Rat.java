@@ -341,7 +341,7 @@ public class Rat {
                 if (eaten) {
                     world.getBlockField(getUniversalCoords()).clear();
                 } else {
-                    adjustScore(50);
+                    adjustScore(100);
                     harm(world);
                 }
             }
@@ -397,7 +397,7 @@ public class Rat {
     public void harm(World w) {
         Item field = w.getBlockField(this.getUniversalCoords()).getItem();
         if (field instanceof Torturer) {
-            adjustScore(-5 * speed);
+            adjustScore(-5 * speed*speed);
         }
         if (field instanceof Fire) {
             adjustScore(-20);
