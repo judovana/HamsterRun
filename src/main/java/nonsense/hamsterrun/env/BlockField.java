@@ -1,5 +1,6 @@
 package nonsense.hamsterrun.env;
 
+import nonsense.hamsterrun.env.aliens.Alien;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Fire;
@@ -18,7 +19,11 @@ import java.util.Random;
 public class BlockField {
 
     private boolean passable;
+    //to ahve only one item and one alien is simply simplification
     private Item item = new Empty();
+    //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
+    //wreckingball, bat... to do, implement.. somwhen...
+    private Alien alien;
     private final Point coords;
     private final BaseBlock parent;
 
