@@ -129,21 +129,20 @@ public class World implements Runnable {
         return mouseOcupied;
     }
 
-    public void drawMap(Graphics2D g2d, Point center, boolean map) {
-        drawMap(g2d, center, map, this.zoom);
+    public void drawMap(Graphics2D g2d, Point center, boolean map, Rat selectedMouse) {
+        drawMap(g2d, center, map, this.zoom, selectedMouse);
     }
 
     public BaseBlockNeigbours getBaseBlockNeigboursByUniversal(int x, int y) {
         return maze.getBaseBlockNeigbours(x / BaseConfig.getConfig().getBaseSize(), y / BaseConfig.getConfig().getBaseSize());
     }
 
-    public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride) {
+    public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride, Rat selectedMouse) {
         Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoomOverride,
                 center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoomOverride);
         if (myMouse >= 0 && myMouse < rats.size()) {
-            Point selectedMouse = rats.get(myMouse).getUniversalCoords();
-            int xShift = -center.x + selectedMouse.x * zoomOverride;
-            int yShift = -center.y + selectedMouse.y * zoomOverride;
+            int xShift = -center.x + selectedMouse.getUniversalCoords().x * zoomOverride;
+            int yShift = -center.y + selectedMouse.getUniversalCoords().y * zoomOverride;
             leftUpCornerOfMaze = new Point(-xShift, -yShift);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 1, map);

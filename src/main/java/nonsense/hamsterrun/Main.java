@@ -86,14 +86,14 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16);
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, world.getMyMouse());
                     }
                 };
                 JPanel view = new JPanel() {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false);
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, world.getMyMouse());
                     }
                 };
                 mapPanel.setBackground(Color.BLACK);
