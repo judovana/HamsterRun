@@ -79,6 +79,7 @@ public class Main {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
         RatsController.RatControl control = null;
+        //syntax control:skin:aiModifier  eg k1:uhlicek  or pc:rat:10
         for (String ratDef : BaseConfig.getConfig().getRats()) {
             Rat rat = new Rat();
             if (ratDef.equalsIgnoreCase("pc")) {
