@@ -1,6 +1,10 @@
 package nonsense.hamsterrun;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class BaseConfig {
     int baseSize = 10;
@@ -11,6 +15,7 @@ public class BaseConfig {
     int gridConnectivityMax = 4;
     boolean keepRegenerating = false;
     private static final Random seed = new Random();
+    private List<String> rats = new ArrayList<>(10);
 
     BaseConfig() {
     }
@@ -58,6 +63,7 @@ public class BaseConfig {
         System.out.println("Each base element will be connected to each neighbour no more then  " + gridConnectivityMax + " lines");
         System.out.println("The max connectivity can no always be honoured, because the opposite nighbours may have no intersection. but engine is doing its best.");
         System.out.println("Constant regeneration of world is " + keepRegenerating);
+        System.out.println("rats in world is " + rats.size() + "/" + rats.stream().collect(Collectors.joining(",")));
     }
 
     void verify() {
@@ -87,6 +93,18 @@ public class BaseConfig {
         }
         if (gridSize % 2 == 0) {
             throw new RuntimeException("grid size must be odd. is not: " + gridSize);
+        }
+        if (rats.isEmpty()) {
+            throw new RuntimeException("No mouses in world, add some!");
+        }
+        for (String rat : rats) {
+            if (!(rat.equalsIgnoreCase("pc") ||
+                    rat.equalsIgnoreCase("k1") ||
+                    rat.equalsIgnoreCase("k2") ||
+                    rat.equalsIgnoreCase("k3") ||
+                    rat.equalsIgnoreCase("m"))) {
+                throw new RuntimeException("Unknown rat def: " + rat + ". Use pc, k1, k2, k3 or m. Each can repeat unlimited times... but");
+            }
         }
     }
 
@@ -128,5 +146,13 @@ public class BaseConfig {
 
     public boolean isKeepRegenerating() {
         return keepRegenerating;
+    }
+
+    public void addRat(String def) {
+        rats.add(def);
+    }
+
+    public List<String> getRats() {
+        return Collections.unmodifiableList(rats);
     }
 }

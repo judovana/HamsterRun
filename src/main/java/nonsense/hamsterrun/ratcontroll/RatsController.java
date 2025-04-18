@@ -110,6 +110,8 @@ public class RatsController implements RatsProvider {
 
     public static class ComputerControl implements RatControl {
         public void selfAct(Rat rat) {
+            //todo, make thsi configurable  4 super active , 40+ super lazy...
+            //eg pc:val
             switch (seed.nextInt(20)) {
                 case 0:
                     rat.setMouseLeft();
@@ -129,7 +131,7 @@ public class RatsController implements RatsProvider {
 
         @Override
         public int getZoom() {
-            return 0;
+            return 64;
         }
 
         @Override

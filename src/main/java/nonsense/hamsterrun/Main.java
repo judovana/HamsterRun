@@ -1,13 +1,11 @@
 package nonsense.hamsterrun;
 
-import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -18,9 +16,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Hello world!
@@ -61,6 +56,10 @@ public class Main {
                         x++;
                         config.keepRegenerating = Boolean.valueOf(args[x]);
                         break;
+                    case "rat":
+                        x++;
+                        config.addRat(args[x]);
+                        break;
                     default:
                         throw new RuntimeException("Unknown parameter " + args[x]);
 
@@ -79,11 +78,25 @@ public class Main {
     private static void worldDemo() {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
-        Rat currentDemoRat = new Rat();
-        ratsController.addRat(new RatsController.RatWithControls(currentDemoRat, new RatsController.KeyboardControl1()));
-        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.KeyboardControl1()));//intentional experiment
-        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl()));
-        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl()));
+        RatsController.RatControl control = null;
+        for (String ratDef : BaseConfig.getConfig().getRats()) {
+            Rat rat = new Rat();
+            if (ratDef.equalsIgnoreCase("pc")) {
+                control = new RatsController.ComputerControl();
+            } else if (ratDef.equalsIgnoreCase("k1")) {
+                control = new RatsController.KeyboardControl1();
+            } else if (ratDef.equalsIgnoreCase("k2")) {
+                control = new RatsController.KeyboardControl2();
+            } else if (ratDef.equalsIgnoreCase("k3")) {
+                control = new RatsController.KeyboardControl3();
+            }  else if (ratDef.equalsIgnoreCase("m")) {
+                control = new RatsController.MouseControl();
+            } else {
+                throw new RuntimeException("unknown rat def: " + ratDef);
+            }
+            ratsController.addRat(new RatsController.RatWithControls(rat, control));
+        }
+        final Rat currentDemoRat = ratsController.getRats().get(0);
         world.setRatsProvider(ratsController);
         world.allRatsSpread(true);
         SwingUtilities.invokeLater(new Runnable() {
