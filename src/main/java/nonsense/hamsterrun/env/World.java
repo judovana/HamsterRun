@@ -142,10 +142,10 @@ public class World implements Runnable {
         return maze.getBaseBlockNeigbours(x / BaseConfig.getConfig().getBaseSize(), y / BaseConfig.getConfig().getBaseSize());
     }
 
-    public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride, Rat selectedMouse) {
+    public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride, Rat selectedMouse, boolean forceCenter) {
         Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoomOverride,
                 center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoomOverride);
-        if (selectedMouse != null) {
+        if (selectedMouse != null && !forceCenter) {
             int xShift = -center.x + selectedMouse.getUniversalCoords().x * zoomOverride;
             int yShift = -center.y + selectedMouse.getUniversalCoords().y * zoomOverride;
             leftUpCornerOfMaze = new Point(-xShift, -yShift);
