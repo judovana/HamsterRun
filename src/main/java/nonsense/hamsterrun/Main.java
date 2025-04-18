@@ -79,8 +79,8 @@ public class Main {
     private static void worldDemo() {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
-        Rat demoRat = new Rat();
-        ratsController.addRat(new RatsController.RatWithControls(demoRat, new RatsController.KeyboardControl1()));
+        Rat currentDemoRat = new Rat();
+        ratsController.addRat(new RatsController.RatWithControls(currentDemoRat, new RatsController.KeyboardControl1()));
         ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.KeyboardControl1()));//intentional experiment
         ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl()));
         ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl()));
@@ -93,14 +93,14 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, demoRat);
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, currentDemoRat);
                     }
                 };
                 JPanel view = new JPanel() {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, ratsController.getRatControl(demoRat).getZoom(), demoRat);
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, ratsController.getRatControl(currentDemoRat).getZoom(), currentDemoRat);
                     }
                 };
                 mapPanel.setBackground(Color.BLACK);
@@ -114,25 +114,12 @@ public class Main {
                 gameView.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
-                        System.out.println(e.getKeyCode() + "");
-                        if (e.getKeyCode() == 37/*leftarrow*/) {
-                            demoRat.setMouseLeft();
-                        } else if (e.getKeyCode() == 38/*uparrow*/) {
-                            demoRat.setMouseUp();
-                        } else if (e.getKeyCode() == 39/*rightarrow*/) {
-                            demoRat.setMouseRight();
-                        } else if (e.getKeyCode() == 40/*downarrow*/) {
-                            demoRat.setMouseDown();
-                        } else if (e.getKeyChar() == '+') {
-                            ratsController.getRatControl(demoRat).zoomIn();
-                        } else if (e.getKeyChar() == '-') {
-                            ratsController.getRatControl(demoRat).zoomOut();
-                        } else if (e.getKeyCode() == 16) {
-                            world.allRatsSpread(true);
-                        } else if (e.getKeyCode() == 20) {
-                            world.allRatsSpread(false);
-                        } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                            world.regenerateAll();
+                        for (Rat rat : ratsController.getRats()) {
+                            System.out.println(e.getKeyCode() + "");
+                            RatsController.RatControl ratControl = ratsController.getRatControl(rat);
+                            if (ratControl instanceof RatsController.KeyboardControl) {
+                                ((RatsController.KeyboardControl) ratControl).act(rat, e, world);
+                            }
                         }
                         gameView.repaint();
                     }

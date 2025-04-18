@@ -3,6 +3,7 @@ package nonsense.hamsterrun.ratcontroll;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -68,6 +69,27 @@ public class RatsController implements RatsProvider {
 
     public static abstract class KeyboardControl extends HumanControl {
 
+        public void act(Rat rat, KeyEvent e, World world) {
+            if (e.getKeyCode() == 37/*leftarrow*/) {
+                rat.setMouseLeft();
+            } else if (e.getKeyCode() == 38/*uparrow*/) {
+                rat.setMouseUp();
+            } else if (e.getKeyCode() == 39/*rightarrow*/) {
+                rat.setMouseRight();
+            } else if (e.getKeyCode() == 40/*downarrow*/) {
+                rat.setMouseDown();
+            } else if (e.getKeyChar() == '+') {
+                zoomIn();
+            } else if (e.getKeyChar() == '-') {
+                zoomOut();
+            } else if (e.getKeyCode() == 16) {
+                world.allRatsSpread(true);
+            } else if (e.getKeyCode() == 20) {
+                world.allRatsSpread(false);
+            } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                world.regenerateAll();
+            }
+        }
     }
 
     public static class KeyboardControl1 extends KeyboardControl {
