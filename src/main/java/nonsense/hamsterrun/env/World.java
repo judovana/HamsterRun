@@ -39,9 +39,11 @@ public class World implements Runnable {
     }
 
     public void teleportMouse(Rat rat, boolean center, boolean forceAlone) {
-        Point[] start;
+        Point[] start = new Point[]{new Point(-1, -1), new Point(-1, -1)};
         int aloneAttempts = 10;
-        while (true) {
+        int totalAttempts = 100;
+        while (totalAttempts > 0) {
+            totalAttempts--;
             if (aloneAttempts <= 0) {
                 forceAlone = false;
             }

@@ -262,10 +262,26 @@ public class BaseBlock {
     public Point getRandomSafeSpot() {
         int x = -1;
         int y = -1;
+        int attempts = 100;
         do {
+            attempts--;
+            if (attempts == 0) {
+                break;
+            }
             x = seed.nextInt(map.length);
             y = seed.nextInt(map[x].length);
         } while (map[x][y] != null && !map[x][y].isPassable() && !map[x][y].isFree());
+        if (attempts == 0) {
+            attempts = 100;
+            do {
+                attempts--;
+                if (attempts == 0) {
+                    break;
+                }
+                x = seed.nextInt(map.length);
+                y = seed.nextInt(map[x].length);
+            } while (map[x][y] != null && !map[x][y].isPassable());
+        }
         System.out.println("p" + map[x][y].isPassable());
         System.out.println("f" + map[x][y].isPassable());
         return new Point(x, y);
