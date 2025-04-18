@@ -2,7 +2,9 @@ package nonsense.hamsterrun;
 
 import nonsense.hamsterrun.env.BaseBlock;
 import nonsense.hamsterrun.env.Maze;
+import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
+import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.imageio.ImageIO;
@@ -70,15 +72,20 @@ public class Main {
         config.verify();
 
         worldDemo();
-        //frameDemo(config);
-        //mazeDemo(config);
-        //baseBlockDemo(config);
 
         System.out.println("bye");
     }
 
     private static void worldDemo() {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
+        final RatsController ratsController = new RatsController();
+        Rat demoRat = new Rat();
+        ratsController.addRat(new RatsController.RatWithControls(demoRat, new RatsController.KeyboardControl1(), world));
+        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.KeyboardControl1(), world));//intentional experiment
+        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl(), world));
+        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl(), world));
+        world.setRatsProvider(ratsController);
+        world.allRatsSpread(true);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -86,14 +93,14 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, world.getMyMouse());
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, demoRat);
                     }
                 };
                 JPanel view = new JPanel() {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, world.getMyMouse());
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, demoRat);
                     }
                 };
                 mapPanel.setBackground(Color.BLACK);
@@ -109,13 +116,13 @@ public class Main {
                     public void keyPressed(KeyEvent e) {
                         System.out.println(e.getKeyCode() + "");
                         if (e.getKeyCode() == 37/*leftarrow*/) {
-                            world.setMyMouseLeft();
+                            world.setMouseLeft(demoRat);
                         } else if (e.getKeyCode() == 38/*uparrow*/) {
-                            world.setMyMouseUp();
+                            world.setMouseUp(demoRat);
                         } else if (e.getKeyCode() == 39/*rightarrow*/) {
-                            world.setMyMouseRight();
+                            world.setMouseRight(demoRat);
                         } else if (e.getKeyCode() == 40/*downarrow*/) {
-                            world.setMyMouseDown();
+                            world.setMouseDown(demoRat);
                         } else if (e.getKeyChar() == '+') {
                             world.zoomIn();
                         } else if (e.getKeyChar() == '-') {
@@ -129,10 +136,7 @@ public class Main {
                             world.allRatsSpread(false);
                         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                             world.regenerateAll();
-                        } else if (e.getKeyCode() >= 65 && e.getKeyCode() < 95) {
-                            world.setMyMouse(e.getKeyCode() - 65);
                         }
-
                         gameView.repaint();
                     }
                 });

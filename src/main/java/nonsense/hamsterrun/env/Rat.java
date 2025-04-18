@@ -38,6 +38,7 @@ public class Rat {
     private static final int relativeSizes = 5;
     private int speed = 1; //can not go over relativeSizes*2
     private int score = 1000;
+    private boolean ai = false;
 
     public Rat() {
     }
@@ -395,9 +396,12 @@ public class Rat {
     }
 
     public void harm(World w) {
+        if (this.getUniversalCoords().x < 0 || this.getUniversalCoords().y < 0) {
+            return;
+        }
         Item field = w.getBlockField(this.getUniversalCoords()).getItem();
         if (field instanceof Torturer) {
-            adjustScore(-5 * speed*speed);
+            adjustScore(-5 * speed * speed);
         }
         if (field instanceof Fire) {
             adjustScore(-20);
@@ -434,5 +438,13 @@ public class Rat {
             }
         }
 
+    }
+
+    public boolean isAi() {
+        return ai;
+    }
+
+    public void setAi(boolean ai) {
+        this.ai = ai;
     }
 }

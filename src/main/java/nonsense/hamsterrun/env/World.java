@@ -2,12 +2,12 @@ package nonsense.hamsterrun.env;
 
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -23,12 +23,12 @@ public class World implements Runnable {
 
     private final Thread repl;
     private final Maze maze;
-    private final List<Rat> rats = Arrays.asList(new Rat());//, new Rat(), new Rat(), new Rat());
-    private int myMouse = -1;
+    //FIXME, move to RatWithControls, so each rat cna have theirs view
     private int zoom = 64;
     private int worldAnim = 0;
 
     private final List<JComponent> repaintListeners = new ArrayList<>(2);
+    private RatsProvider ratsProvider;
 
     public World(Maze maze) {
         this.maze = maze;
@@ -78,7 +78,7 @@ public class World implements Runnable {
         for (int x = 0; x < maze.getHeight(); x++) {
             for (int y = 0; y < maze.getWidth(); y++) {
                 boolean haveRat = false;
-                for (Rat rat : rats) {
+                for (Rat rat : getRats()) {
                     if (rat.getCoordsInMaze().equals(new Point(x, y))) {
                         haveRat = true;
                         break;
@@ -88,7 +88,7 @@ public class World implements Runnable {
                     boolean haveRatOnNeighbour = false;
                     List<Point> neighbours = maze.getDirectNeighbours(x, y);
                     for (Point point : neighbours) {
-                        for (Rat rat : rats) {
+                        for (Rat rat : getRats()) {
                             if (rat.getCoordsInMaze().equals(point)) {
                                 haveRatOnNeighbour = true;
                                 break;
@@ -107,22 +107,30 @@ public class World implements Runnable {
         return result;
     }
 
+    private List<Rat> getRats() {
+        if (ratsProvider == null) {
+            return new ArrayList(0);
+        } else {
+            return ratsProvider.getRats();
+        }
+    }
+
     public void allRatsSpread(boolean center) {
-        for (int x = 0; x < rats.size(); x++) {
-            teleportMouse(rats.get(x), center, false);
+        for (Rat rat : getRats()) {
+            teleportMouse(rat, center, false);
         }
     }
 
     private boolean isMouseOcupied(Rat currentMouse, Point[] start) {
         boolean mouseOcupied = false;
-        for (int y = 0; y < rats.size(); y++) {
+        for (Rat rat : getRats()) {
             //really ==
-            if (rats.get(y) == currentMouse) {
-                if (new Point(start[0].y, start[0].x).equals(rats.get(y).getCoordsInMaze()) && new Point(start[1].y,
-                        start[1].x).equals(rats.get(y).getCoordsInBaseBlock())) {
+            if (rat == currentMouse) {
+                if (new Point(start[0].y, start[0].x).equals(rat.getCoordsInMaze()) && new Point(start[1].y,
+                        start[1].x).equals(rat.getCoordsInBaseBlock())) {
                     mouseOcupied = true;
                     System.out.println("Mouse clash!");
-                    System.out.println(rats.get(y).getCoordsInMaze() + " " + rats.get(y).getCoordsInBaseBlock());
+                    System.out.println(rat.getCoordsInMaze() + " " + rat.getCoordsInBaseBlock());
                 }
             }
         }
@@ -140,7 +148,7 @@ public class World implements Runnable {
     public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride, Rat selectedMouse) {
         Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoomOverride,
                 center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoomOverride);
-        if (myMouse >= 0 && myMouse < rats.size()) {
+        if (selectedMouse != null) {
             int xShift = -center.x + selectedMouse.getUniversalCoords().x * zoomOverride;
             int yShift = -center.y + selectedMouse.getUniversalCoords().y * zoomOverride;
             leftUpCornerOfMaze = new Point(-xShift, -yShift);
@@ -148,11 +156,11 @@ public class World implements Runnable {
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 1, map);
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 2, map);
         int i = -1;
-        for (Rat rat : rats) {
+        for (Rat rat : getRats()) {
             i++;
-            g2d.setColor(new Color(0, 0, 250 - i * (250 / rats.size())));
+            g2d.setColor(new Color(0, 0, 250 - i * (250 / getRats().size())));
             boolean selected = false;
-            if (rat.equals(getMyMouse())) {
+            if (rat.equals(selectedMouse)) {
                 selected = true;
             }
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
@@ -177,54 +185,28 @@ public class World implements Runnable {
         }
     }
 
-    public void setMyMouseRight() {
-        setMouseRight(myMouse);
-    }
 
-    public void setMyMouseUp() {
-        setMouseUp(myMouse);
-    }
-
-    public void setMyMouseLeft() {
-        setMouseLeft(myMouse);
-    }
-
-    public void setMyMouseDown() {
-        setMouseDown(myMouse);
-    }
-
-    public void setMyMouse(int i) {
-        myMouse = i;
-    }
-
-    public Rat getMyMouse() {
-        if (myMouse >= 0 && myMouse < rats.size()) {
-            return rats.get(myMouse);
-        }
-        return null;
-    }
-
-    public void setMouseUp(int i) {
-        if (i >= 0 && i < rats.size()) {
-            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.UP);
+    public void setMouseUp(Rat rat) {
+        if (rat != null) {
+            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.UP);
         }
     }
 
-    public void setMouseLeft(int i) {
-        if (i >= 0 && i < rats.size()) {
-            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.LEFT);
+    public void setMouseLeft(Rat rat) {
+        if (rat != null) {
+            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.LEFT);
         }
     }
 
-    public void setMouseDown(int i) {
-        if (i >= 0 && i < rats.size()) {
-            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.DOWN);
+    public void setMouseDown(Rat rat) {
+        if (rat != null) {
+            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.DOWN);
         }
     }
 
-    public void setMouseRight(int i) {
-        if (i >= 0 && i < rats.size()) {
-            rats.get(i).setActionDirection(this, RatActions.WALK, RatActions.Direction.RIGHT);
+    public void setMouseRight(Rat rat) {
+        if (rat != null) {
+            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.RIGHT);
         }
     }
 
@@ -245,7 +227,7 @@ public class World implements Runnable {
         if (bl == null || bl.isImpassable()) {
             return false;
         }
-        for (Rat rat : rats) {
+        for (Rat rat : getRats()) {
             if (rat.getUniversalCoords().equals(coord)) {
                 return false;
             }
@@ -276,20 +258,21 @@ public class World implements Runnable {
                     if (BaseConfig.getConfig().isKeepRegenerating()) {
                         regenerateAll();
                     }
-                    for (int m = 0; m < rats.size(); m++) {
-                        if (m != myMouse) {
+                    for (Rat rat : getRats()) {
+                        //FIXME move this to AI implementation, once setMouse..action is fixed
+                        if (rat.isAi()) {
                             switch (seed.nextInt(20)) {
                                 case 0:
-                                    setMouseLeft(m);
+                                    setMouseLeft(rat);
                                     break;
                                 case 1:
-                                    setMouseRight(m);
+                                    setMouseRight(rat);
                                     break;
                                 case 2:
-                                    setMouseUp(m);
+                                    setMouseUp(rat);
                                     break;
                                 case 3:
-                                    setMouseDown(m);
+                                    setMouseDown(rat);
                                     break;
                                 default: //ok
                             }
@@ -297,10 +280,8 @@ public class World implements Runnable {
                     }
                 }
                 Thread.sleep(delayMs);
-                for (int m = 0; m < rats.size(); m++) {
-                    if (m >= 0 && m < rats.size()) {
-                        rats.get(m).act(this);
-                    }
+                for (Rat rat : getRats()) {
+                    rat.act(this);
                 }
                 for (JComponent repaintListener : repaintListeners) {
                     repaintListener.repaint();
@@ -314,17 +295,12 @@ public class World implements Runnable {
 
     public void regenerateAll() {
         Set<Point> sqWithoutN = getSquaresWithoutRatInNeighbourhood();
-        if (getMyMouse() != null) {
-            BaseBlockNeigbours q1 = getBaseBlockNeigboursByUniversal(getMyMouse().getUniversalCoords().x,
-                    getMyMouse().getUniversalCoords().y);
-            System.out.println(q1);
-        }
         for (Point p : sqWithoutN) {
             maze.regenerate(p.y, p.x, BaseConfig.getConfig());
         }
-        if (getMyMouse() != null) {
-            BaseBlockNeigbours q1 = maze.getBaseBlockNeigbours(getMyMouse().getCoordsInMaze().x, getMyMouse().getCoordsInMaze().y);
-            System.out.println(q1);
-        }
+    }
+
+    public void setRatsProvider(RatsProvider ratsController) {
+        this.ratsProvider = ratsController;
     }
 }
