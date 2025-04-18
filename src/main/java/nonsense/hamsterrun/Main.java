@@ -127,9 +127,6 @@ public class Main {
                             world.zoomIn();
                         } else if (e.getKeyChar() == '-') {
                             world.zoomOut();
-                        } else if (e.getKeyCode() >= 97 && e.getKeyCode() <= 105) {
-                            int numlock = e.getKeyCode() - 97; //1 is zero for our needs;
-                            world.regenerateBlock(numlock / 3, numlock % 3);
                         } else if (e.getKeyCode() == 16) {
                             world.allRatsSpread(true);
                         } else if (e.getKeyCode() == 20) {
