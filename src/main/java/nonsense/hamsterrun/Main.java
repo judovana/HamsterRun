@@ -80,10 +80,10 @@ public class Main {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
         Rat demoRat = new Rat();
-        ratsController.addRat(new RatsController.RatWithControls(demoRat, new RatsController.KeyboardControl1(), world));
-        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.KeyboardControl1(), world));//intentional experiment
-        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl(), world));
-        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl(), world));
+        ratsController.addRat(new RatsController.RatWithControls(demoRat, new RatsController.KeyboardControl1()));
+        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.KeyboardControl1()));//intentional experiment
+        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl()));
+        ratsController.addRat(new RatsController.RatWithControls(new Rat(), new RatsController.ComputerControl()));
         world.setRatsProvider(ratsController);
         world.allRatsSpread(true);
         SwingUtilities.invokeLater(new Runnable() {
@@ -100,7 +100,7 @@ public class Main {
                     public void paint(Graphics g) {
                         super.paint(g);
                         Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, demoRat);
+                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, ratsController.getRatControl(demoRat).getZoom(), demoRat);
                     }
                 };
                 mapPanel.setBackground(Color.BLACK);
@@ -116,17 +116,17 @@ public class Main {
                     public void keyPressed(KeyEvent e) {
                         System.out.println(e.getKeyCode() + "");
                         if (e.getKeyCode() == 37/*leftarrow*/) {
-                            world.setMouseLeft(demoRat);
+                            demoRat.setMouseLeft();
                         } else if (e.getKeyCode() == 38/*uparrow*/) {
-                            world.setMouseUp(demoRat);
+                            demoRat.setMouseUp();
                         } else if (e.getKeyCode() == 39/*rightarrow*/) {
-                            world.setMouseRight(demoRat);
+                            demoRat.setMouseRight();
                         } else if (e.getKeyCode() == 40/*downarrow*/) {
-                            world.setMouseDown(demoRat);
+                            demoRat.setMouseDown();
                         } else if (e.getKeyChar() == '+') {
-                            world.zoomIn();
+                            ratsController.getRatControl(demoRat).zoomIn();
                         } else if (e.getKeyChar() == '-') {
-                            world.zoomOut();
+                            ratsController.getRatControl(demoRat).zoomOut();
                         } else if (e.getKeyCode() == 16) {
                             world.allRatsSpread(true);
                         } else if (e.getKeyCode() == 20) {

@@ -23,8 +23,6 @@ public class World implements Runnable {
 
     private final Thread repl;
     private final Maze maze;
-    //FIXME, move to RatWithControls, so each rat cna have theirs view
-    private int zoom = 64;
     private int worldAnim = 0;
 
     private final List<JComponent> repaintListeners = new ArrayList<>(2);
@@ -137,9 +135,6 @@ public class World implements Runnable {
         return mouseOcupied;
     }
 
-    public void drawMap(Graphics2D g2d, Point center, boolean map, Rat selectedMouse) {
-        drawMap(g2d, center, map, this.zoom, selectedMouse);
-    }
 
     public BaseBlockNeigbours getBaseBlockNeigboursByUniversal(int x, int y) {
         return maze.getBaseBlockNeigbours(x / BaseConfig.getConfig().getBaseSize(), y / BaseConfig.getConfig().getBaseSize());
@@ -172,42 +167,6 @@ public class World implements Runnable {
 
     public void regenerateBlock(int x, int y) {
         maze.regenerate(x, y, BaseConfig.getConfig());
-    }
-
-    public void zoomIn() {
-        zoom = zoom + Math.max(zoom / 2, 1);
-    }
-
-    public void zoomOut() {
-        zoom = zoom - Math.max(1, zoom / 2);
-        if (zoom <= 0) {
-            zoom = 1;
-        }
-    }
-
-
-    public void setMouseUp(Rat rat) {
-        if (rat != null) {
-            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.UP);
-        }
-    }
-
-    public void setMouseLeft(Rat rat) {
-        if (rat != null) {
-            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.LEFT);
-        }
-    }
-
-    public void setMouseDown(Rat rat) {
-        if (rat != null) {
-            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.DOWN);
-        }
-    }
-
-    public void setMouseRight(Rat rat) {
-        if (rat != null) {
-            rat.setActionDirection(this, RatActions.WALK, RatActions.Direction.RIGHT);
-        }
     }
 
     public void addRepaintListener(JComponent repaintListener) {
@@ -259,24 +218,7 @@ public class World implements Runnable {
                         regenerateAll();
                     }
                     for (Rat rat : getRats()) {
-                        //FIXME move this to AI implementation, once setMouse..action is fixed
-                        if (rat.isAi()) {
-                            switch (seed.nextInt(20)) {
-                                case 0:
-                                    setMouseLeft(rat);
-                                    break;
-                                case 1:
-                                    setMouseRight(rat);
-                                    break;
-                                case 2:
-                                    setMouseUp(rat);
-                                    break;
-                                case 3:
-                                    setMouseDown(rat);
-                                    break;
-                                default: //ok
-                            }
-                        }
+                        ratsProvider.getRatControl(rat).selfAct(rat);
                     }
                 }
                 Thread.sleep(delayMs);

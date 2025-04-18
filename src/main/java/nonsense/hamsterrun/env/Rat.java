@@ -38,7 +38,6 @@ public class Rat {
     private static final int relativeSizes = 5;
     private int speed = 1; //can not go over relativeSizes*2
     private int score = 1000;
-    private boolean ai = false;
 
     public Rat() {
     }
@@ -259,7 +258,7 @@ public class Rat {
         }
     }
 
-    public void setActionDirection(World world, RatActions action, RatActions.Direction direction) {
+    public void setActionDirection(RatActions action, RatActions.Direction direction) {
         if (this.action == RatActions.WALK && this.direction == direction) {
             speed++;
             if (speed >= relativeSizes * 2) {
@@ -437,14 +436,22 @@ public class Rat {
                 }
             }
         }
-
     }
 
-    public boolean isAi() {
-        return ai;
+    public void setMouseUp() {
+        setActionDirection(RatActions.WALK, RatActions.Direction.UP);
     }
 
-    public void setAi(boolean ai) {
-        this.ai = ai;
+    public void setMouseLeft() {
+        setActionDirection(RatActions.WALK, RatActions.Direction.LEFT);
     }
+
+    public void setMouseDown() {
+        setActionDirection(RatActions.WALK, RatActions.Direction.DOWN);
+    }
+
+    public void setMouseRight() {
+        setActionDirection(RatActions.WALK, RatActions.Direction.RIGHT);
+    }
+
 }
