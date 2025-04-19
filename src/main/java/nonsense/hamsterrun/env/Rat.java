@@ -27,6 +27,8 @@ import javax.xml.stream.events.EndElement;
 public class Rat {
 
     private static final Random seed = new Random();
+    private static final int MAGICAL_FALL_CHANCE = 6;
+
 
     private AnimationCounrer anim = new AnimationCounrer();
     private Point coordsInBaseBlock = new Point(-1, -1);
@@ -261,6 +263,9 @@ public class Rat {
     public void setActionDirection(RatActions action, RatActions.Direction direction) {
         if (this.action == RatActions.WALK && this.direction == direction) {
             speed++;
+            if (speed == MAGICAL_FALL_CHANCE - 1) {
+                WavSoundPlayer.rawPlayAsync("turbo");
+            }
             if (speed >= relativeSizes * 2) {
                 speed = relativeSizes * 2;
             }
@@ -281,13 +286,13 @@ public class Rat {
         if (seed.nextInt(chanceToStop) == 0 && this.action.isInterruptible()) {
             this.stop(world);
         }
-        if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor && seed.nextInt(6) + 1 > speed) {
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof InvisibleTrapDoor && seed.nextInt(MAGICAL_FALL_CHANCE) + 1 > speed) {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
             }
         }
-        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Teleport && seed.nextInt(6) + 1 > speed) {
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Teleport && seed.nextInt(MAGICAL_FALL_CHANCE) + 1 > speed) {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
