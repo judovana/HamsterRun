@@ -184,8 +184,10 @@ public class Rat {
     }
 
     private BufferedImage getImageForAction() {
-        if (RatActions.isStay(action) || action == RatActions.EAT) {
+        if (RatActions.isStay(action)) {
             return SpritesProvider.ratSprites.getSit(direction.getSprite(), anim.ignore());
+        } else if (action == RatActions.EAT) {
+            return SpritesProvider.ratSprites.getEat(direction.getSprite(), anim.ignore());
         } else if (RatActions.isWalk(action)) {
             return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.getRuns()));
         } else if (action == RatActions.FALLING) {

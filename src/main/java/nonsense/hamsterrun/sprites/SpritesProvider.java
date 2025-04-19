@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SpritesProvider {
 
-    private static final List<String> KNOWN_RATS = List.of("uhlicek" /*rat*/);
+    private static final List<String> KNOWN_RATS = List.of("brownie" /*uhlicek, rat*/);
     public static RatSpriteSet ratSprites;
     public static BufferedImage wall;
     public static BufferedImage tunnelOpened;
@@ -33,7 +33,7 @@ public class SpritesProvider {
             List<BufferedImage> runBase = new ArrayList<>(2);
             for (int x = 1; x <= 20; x++) {
                 URL runUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/run" + x + ".png");
-                if (runUrl == null){
+                if (runUrl == null) {
                     break;
                 }
                 runBase.add(ImageIO.read(runUrl));
@@ -41,7 +41,7 @@ public class SpritesProvider {
             List<BufferedImage> fallBase = new ArrayList<>(2);
             for (int x = 1; x <= 20; x++) {
                 URL fallUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/fall" + x + ".png");
-                if (fallUrl == null){
+                if (fallUrl == null) {
                     break;
                 }
                 fallBase.add(ImageIO.read(fallUrl));
@@ -49,7 +49,14 @@ public class SpritesProvider {
 
             URL situ = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/sit.png");
             BufferedImage sit = ImageIO.read(situ);
-            ratSprites = new RatSpriteSet(runBase.toArray(new BufferedImage[0]), sit, fallBase.toArray(new BufferedImage[0]));
+
+            URL eatu = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + rat + "/eat.png");
+            BufferedImage eat = null;
+            if (eatu != null) {
+                eat = ImageIO.read(eatu);
+            }
+
+            ratSprites = new RatSpriteSet(runBase.toArray(new BufferedImage[0]), sit, fallBase.toArray(new BufferedImage[0]), eat);
         }
         URL tunnelCloseU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/tunnel1off.png");
         tunnelClosed[0] = ImageIO.read(tunnelCloseU);

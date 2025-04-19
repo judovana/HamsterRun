@@ -8,13 +8,19 @@ public class RatSpriteSet {
 
 
     private final BufferedImage[][] sits;
+    private final BufferedImage[][] eats;
     private final BufferedImage[][] runs;
     private final BufferedImage[][] falls;
 
-    public RatSpriteSet(BufferedImage[] run, BufferedImage sit1, BufferedImage[] fall) {
+    public RatSpriteSet(BufferedImage[] run, BufferedImage sit1, BufferedImage[] fall, BufferedImage eat) {
         sits = rotateImages(sit1);
         runs = rotateImages(run);
         falls = rotateImages(fall);
+        if (eat == null) {
+            eats = sits;
+        } else {
+            eats = rotateImages(eat);
+        }
     }
 
     private BufferedImage[][] rotateImages(BufferedImage... run) {
@@ -40,6 +46,10 @@ public class RatSpriteSet {
 
     public BufferedImage getSit(int direction, int anim) {
         return sits[direction][anim];
+    }
+
+    public BufferedImage getEat(int direction, int anim) {
+        return eats[direction][anim];
     }
 
     public BufferedImage getRun(int direction, int anim) {
