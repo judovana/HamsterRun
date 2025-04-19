@@ -13,6 +13,7 @@ public class BaseConfig {
     int gridSize = 5;
     int gridConnectivityMin = 1;
     int gridConnectivityMax = 4;
+    int delayMs = 50;
     boolean keepRegenerating = false;
     private static final Random seed = new Random();
     private List<String> rats = new ArrayList<>(10);
@@ -64,9 +65,13 @@ public class BaseConfig {
         System.out.println("The max connectivity can no always be honoured, because the opposite nighbours may have no intersection. but engine is doing its best.");
         System.out.println("Constant regeneration of world is " + keepRegenerating);
         System.out.println("rats in world is " + rats.size() + "/" + rats.stream().collect(Collectors.joining(",")));
+        System.out.println("main loop delay is " + delayMs);
     }
 
     void verify() {
+        if (delayMs <= 1 || delayMs > 1000) {
+            throw new RuntimeException(" main thead delay should be between 1 and 1000: " + delayMs);
+        }
         if (baseSize <= 4) {
             throw new RuntimeException(" minimal size of base is  5. You set" + baseSize);
         }
@@ -154,5 +159,9 @@ public class BaseConfig {
 
     public List<String> getRats() {
         return Collections.unmodifiableList(rats);
+    }
+
+    public long getDelayMs() {
+        return delayMs;
     }
 }

@@ -19,7 +19,6 @@ import javax.swing.JComponent;
 public class World implements Runnable {
 
     private static final Random seed = new Random();
-    private static final int delayMs = 50;
 
     private final Thread repl;
     private final Maze maze;
@@ -223,7 +222,7 @@ public class World implements Runnable {
                         ratsProvider.getRatControl(rat).selfAct(rat);
                     }
                 }
-                Thread.sleep(delayMs);
+                Thread.sleep(BaseConfig.getConfig().getDelayMs());
                 for (Rat rat : getRats()) {
                     rat.act(this);
                 }

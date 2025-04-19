@@ -27,6 +27,11 @@ public class Main {
             if (args[x].startsWith("-")) {
                 String sanitized = args[x].replaceAll("^-+", "").toLowerCase();
                 switch (sanitized) {
+                    case "delay":
+                        x++;
+                        config.delayMs = Integer.valueOf(args[x]);
+                        System.out.println("Main loop delay will be " + config.delayMs + " ms");
+                        break;
                     case "base-size":
                         x++;
                         config.baseSize = Integer.valueOf(args[x]);
