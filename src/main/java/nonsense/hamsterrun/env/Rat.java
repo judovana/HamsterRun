@@ -177,7 +177,7 @@ public class Rat {
             g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
             if (higlight) {
                 g2d.setColor(Color.red);
-                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x - anim.anim, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y - anim.anim, zoom + 2 * anim.anim, zoom + 2 * +anim.anim);
+                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x - anim.modMap(), leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y - anim.modMap(), zoom + 2 * anim.modMap(), zoom + 2 * +anim.modMap());
 
             }
         }
@@ -187,9 +187,9 @@ public class Rat {
         if (RatActions.isStay(action) || action == RatActions.EAT) {
             return SpritesProvider.ratSprites.getSit(direction.getSprite(), anim.ignore());
         } else if (RatActions.isWalk(action)) {
-            return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.everyOdd());
+            return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.getRuns()));
         } else if (action == RatActions.FALLING) {
-            return SpritesProvider.ratSprites.getFall(direction.getSprite(), anim.every10());
+            return SpritesProvider.ratSprites.getFall(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.getFalls()));
         } else {
             throw new RuntimeException("Unknown acction " + action);
         }

@@ -8,6 +8,14 @@ public class AnimationCounrer {
         return anim % 2;
     }
 
+    public int mod(int i) {
+        return anim % i;
+    }
+
+    public int modMap() {
+        return anim % 15;
+    }
+
     public int every10() {
         return anim % 10;
     }
@@ -18,7 +26,7 @@ public class AnimationCounrer {
 
     public void addLimited() {
         this.anim++;
-        if (anim >= 12) {
+        if (anim >= 100) {
             anim = 0;
         }
     }

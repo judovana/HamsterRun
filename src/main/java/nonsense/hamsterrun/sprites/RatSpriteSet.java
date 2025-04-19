@@ -50,4 +50,11 @@ public class RatSpriteSet {
         return falls[direction][anim];
     }
 
+    public int getRuns() {
+        return runs[0].length;
+    }
+
+    public int getFalls() {
+        return falls[0].length;
+    }
 }
