@@ -15,17 +15,39 @@ import java.net.URL;
 
 public class WavSoundPlayer {
 
-    public static void rawPlayAsync(String what) {
+    private boolean finished = false;
+    private final String what;
+
+    public WavSoundPlayer(String what) {
+        this.what = what;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public String getWhat() {
+        return what;
+    }
+
+    public void rawPlayAsync() {
         new Thread() {
             public void run() {
-                WavSoundPlayer.rawPlayCatched(what);
+                try {
+                    Clip clip = WavSoundPlayer.rawPlay(what);
+                    Thread.sleep(clip.getMicrosecondLength() / 1000); // Convert
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    finished = true;
+                }
             }
         }.start();
     }
 
-    public static void rawPlayCatched(String what) {
+    public static Clip rawPlayCatched(String what) {
         try {
-            rawPlay(what);
+            return rawPlay(what);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (LineUnavailableException e) {
@@ -35,9 +57,11 @@ public class WavSoundPlayer {
         }
     }
 
-    public static void rawPlay(String what) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        WavSoundPlayer.rawPlayAsync("turbo");
+
+    public static Clip rawPlay(String what) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+        return WavSoundPlayer.rawPlay(what, 1f);
     }
+
     public static Clip rawPlay(String what, float volume) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         URL runUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sounds/effects/" + what + ".wav");
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(runUrl.openStream());
@@ -48,7 +72,7 @@ public class WavSoundPlayer {
 //        float gain = (range * volume) + gainControl.getMinimum();
 //        gainControl.setValue(gain);
         clip.open(audioStream);
-        clip.start();
+        clip.start();//oh, this is actually unblocking....
         return clip;
     }
 
@@ -62,8 +86,14 @@ public class WavSoundPlayer {
             for (Line.Info lineInfo : lineInfos) {
                 System.out.println("  Line.Info: " + lineInfo);
             }
-            }
-        Clip clip = rawPlay("turbo", 1.0f);
-        Thread.sleep(clip.getMicrosecondLength() / 1000); // Convert
+        }
+
+        WavSoundPlayer w = new WavSoundPlayer("chroup");
+        w.rawPlayAsync();
+        while (!w.finished) {
+            Thread.sleep(50);
+            System.out.println("Waiting?");
+        }
+
     }
 }
