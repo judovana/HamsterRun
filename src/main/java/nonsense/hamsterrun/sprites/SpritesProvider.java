@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SpritesProvider {
 
-    private static final List<String> KNOWN_RATS = List.of("brownie" /*uhlicek, rat*/);
+    private static final List<String> KNOWN_RATS = List.of("hnedulka" /*brownie, uhlicek, rat*/);
     public static RatSpriteSet ratSprites;
     public static BufferedImage wall;
     public static BufferedImage tunnelOpened;
