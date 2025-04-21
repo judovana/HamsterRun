@@ -20,6 +20,7 @@ import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.Vegetable;
+import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.xml.stream.events.EndElement;
@@ -42,6 +43,8 @@ public class Rat {
     private int speed = 1; //can not go over relativeSizes*2
     private int score = 1000;
     private String skin = "rat";
+    private ScoreListener scoreListener;
+
     public Rat() {
     }
 
@@ -267,7 +270,7 @@ public class Rat {
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
             this.action = RatActions.EAT;
         } else {
-            if (this.action!=RatActions.STAY) {
+            if (this.action != RatActions.STAY) {
                 sounds.addToEatQueue(SoundsBuffer.piskLong);
             }
             this.action = RatActions.STAY;
@@ -414,7 +417,14 @@ public class Rat {
 
     public void adjustScore(int scoreIncDec) {
         this.score += scoreIncDec;
-        System.out.println(this.toString() + " " + this.score);
+        if (this.score < 0) {
+            score = 0;
+        }
+        if (scoreListener == null) {
+            System.out.println(this.getScore() + " - " + this.toString() + ": " + this.score);
+        } else {
+            scoreListener.report(this, this.score);
+        }
     }
 
     public void harm(World w) {
@@ -496,5 +506,9 @@ public class Rat {
 
     public void disableSounds() {
         this.sounds = new SoundsBuffer.NoSound();
+    }
+
+    public void addScoreListener(ScoreListener scoreListener) {
+        this.scoreListener = scoreListener;
     }
 }

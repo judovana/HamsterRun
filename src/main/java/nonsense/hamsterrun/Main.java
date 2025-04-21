@@ -4,12 +4,15 @@ import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.ratcontroll.RatsController;
+import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -174,7 +177,12 @@ public class Main {
                     };
                     view.setBackground(Color.BLACK);
                     world.addRepaintListener(view);
-                    gameView.add(view);
+                    JPanel wrapper = new JPanel(new BorderLayout());
+                    JLabel scoreShow = new JLabel(rat.getSkin() + ": " + rat.getScore());
+                    rat.addScoreListener(new ScoreListener(scoreShow, rat));
+                    wrapper.add(scoreShow, BorderLayout.NORTH);
+                    wrapper.add(view);
+                    gameView.add(wrapper);
                 }
                 gameView.addKeyListener(new KeyAdapter() {
                     @Override
