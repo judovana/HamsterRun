@@ -13,6 +13,7 @@ import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -81,7 +82,7 @@ public class Main {
         System.out.println("bye");
     }
 
-    private static void worldDemo() {
+    private static Object[] generateGame() {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
         RatsController.RatControl control = null;
@@ -133,31 +134,44 @@ public class Main {
         final Rat currentDemoRat = ratsController.getRats().get(0);
         world.setRatsProvider(ratsController);
         world.allRatsSpread(true);
+        return new Object[]{world, ratsController};
+    }
+
+    private static void worldDemo() {
+        Object[]  result = generateGame();
+        final World world = (World) result[0];
+        final RatsController ratsController = (RatsController) result[1];
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JPanel mapPanel = new JPanel() {
-                    public void paint(Graphics g) {
-                        super.paint(g);
-                        Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, currentDemoRat, true);
+//                JPanel mapPanel = new JPanel() {
+//                    public void paint(Graphics g) {
+//                        super.paint(g);
+//                        Graphics2D g2d = (Graphics2D) g;
+//                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, currentDemoRat, true);
+//                    }
+//                };
+//                mapPanel.setBackground(Color.BLACK);
+//                world.addRepaintListener(mapPanel);
+//                JFrame mapFrame = new JFrame();
+//                mapFrame.add(mapPanel);
+                JFrame gameView = new JFrame("Guniea pig run");
+                gameView.setLayout(new GridLayout(0,2, 2,2));
+                for (Rat rat: ratsController.getRats()) {
+                    if (!ratsController.getRatControl(rat).isDisplay()) {
+                        continue;
                     }
-                };
-                JPanel view = new JPanel() {
-                    public void paint(Graphics g) {
-                        super.paint(g);
-                        Graphics2D g2d = (Graphics2D) g;
-                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, ratsController.getRatControl(currentDemoRat).getZoom(), currentDemoRat, false);
-                    }
-                };
-                mapPanel.setBackground(Color.BLACK);
-                view.setBackground(Color.BLACK);
-                world.addRepaintListener(mapPanel);
-                world.addRepaintListener(view);
-                JFrame mapFrame = new JFrame();
-                mapFrame.add(mapPanel);
-                JFrame gameView = new JFrame();
-                gameView.add(view);
+                    JPanel view = new JPanel() {
+                        public void paint(Graphics g) {
+                            super.paint(g);
+                            Graphics2D g2d = (Graphics2D) g;
+                            world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, ratsController.getRatControl(rat).getZoom(), rat, false);
+                        }
+                    };
+                    view.setBackground(Color.BLACK);
+                    world.addRepaintListener(view);
+                    gameView.add(view);
+                }
                 gameView.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
@@ -171,13 +185,11 @@ public class Main {
                         gameView.repaint();
                     }
                 });
-                mapFrame.setSize(800, 800);
-                mapFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                mapFrame.setVisible(true);
                 gameView.setSize(800, 800);
                 gameView.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 gameView.setVisible(true);
             }
         });
     }
+
 }
