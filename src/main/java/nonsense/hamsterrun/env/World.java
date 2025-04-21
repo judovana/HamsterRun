@@ -213,11 +213,15 @@ public class World implements Runnable {
             //FIXME try catch all
             try {
                 worldAnim++;
-                if (worldAnim % 5 == 0) {
+                if (worldAnim >= 1000) {
                     worldAnim = 0;
+                }
+                if (worldAnim % BaseConfig.getConfig().getRegSpeed() == 0) {
                     if (BaseConfig.getConfig().isKeepRegenerating()) {
                         regenerateAll();
                     }
+                }
+                if (worldAnim % 5 == 0) {
                     for (Rat rat : getRats()) {
                         ratsProvider.getRatControl(rat).selfAct(rat);
                     }

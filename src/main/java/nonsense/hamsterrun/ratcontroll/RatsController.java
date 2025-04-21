@@ -149,7 +149,8 @@ public class RatsController implements RatsProvider {
             } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
                 world.regenerateAll();
             }
-            //keep those two? Made it controllable?
+            //keep those two? Made it configurable?
+            //yes! per player? Yes!
             else if (e.getKeyCode() == KeyEvent.VK_HOME) {
                 world.allRatsSpread(true);
             } else if (e.getKeyCode() == KeyEvent.VK_INSERT) {
@@ -174,8 +175,7 @@ public class RatsController implements RatsProvider {
             } else if (e.getKeyChar() == '3') {
                 zoomOut();
             } else if (e.getKeyChar() == '2') {
-                //we actually need two maps - anymated and non anymated.. what to do with zoom?
-                //base second zoom here internally?
+                //we actually need two maps - anymated and non anymated..
                 map = !map;
             } else if ((e.getKeyChar() == '4')) {
                 world.regenerateAll();
@@ -204,13 +204,13 @@ public class RatsController implements RatsProvider {
             } else if (e.getKeyChar() == '9') {
                 zoomOut();
             } else if (e.getKeyChar() == '0') {
-                //we actually need two maps - anymated and non anymated.. what to do with zoom?
-                //base second zoom here internally?
+                //we actually need two maps - anymated and non anymated..
                 map = !map;
             } else if ((e.getKeyChar() == '4')) {
                 world.regenerateAll();
             }
-            //keep those two? Made it controllable?
+            //keep those two? Made it configurable?
+            //yes! per player? Yes!
             else if ((e.getKeyChar() == '-')) {
                 world.allRatsSpread(true);
             } else if ((e.getKeyChar() == '=')) {

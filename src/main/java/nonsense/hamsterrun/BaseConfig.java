@@ -18,7 +18,8 @@ public class BaseConfig {
     int gridConnectivityMin = 1;
     int gridConnectivityMax = 4;
     int delayMs = 50;
-    boolean keepRegenerating = false;
+    boolean keepRegenerating = true;
+    int regSpeed = 200;
     private List<String> rats = new ArrayList<>(10);
     private int columns = 2;
 
@@ -76,13 +77,17 @@ public class BaseConfig {
         System.out.println("  note, available controls  are: k1, k2, m1, pc");
         System.out.println("  note, display is true/false, and calcs if this rtat have its own window");
         System.out.println("  note, last field is for ai only, how weird it will be");
-        System.out.println("main loop delay is " + delayMs);
+        System.out.println("main loop delay is " + delayMs + " bigger the number, slower the animations will be");
+        System.out.println("regenerations speed is  " + regSpeed + " (sm,aller the number, more often it changes)");
         System.out.println("gui will have columns: " + columns);
     }
 
     void verify() {
         if (delayMs <= 1 || delayMs > 1000) {
             throw new RuntimeException(" main thead delay should be between 1 and 1000: " + delayMs);
+        }
+        if (regSpeed <= 1 || regSpeed > 1000) {
+            throw new RuntimeException("regeneration should be between 1 and 1000: " + delayMs);
         }
         if (baseSize <= 4) {
             throw new RuntimeException(" minimal size of base is  5. You set" + baseSize);
@@ -203,5 +208,13 @@ public class BaseConfig {
 
     public int getColumns() {
         return columns;
+    }
+
+    public int getRegSpeed() {
+        return regSpeed;
+    }
+
+    public void setRegSpeed(int regSpeed) {
+        this.regSpeed = regSpeed;
     }
 }

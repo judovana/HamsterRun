@@ -66,6 +66,10 @@ public class Main {
                         x++;
                         config.keepRegenerating = Boolean.valueOf(args[x]);
                         break;
+                    case "regenerating-speed":
+                        x++;
+                        config.regSpeed = Integer.valueOf(args[x]);
+                        break;
                     case "rat":
                         x++;
                         config.addRat(args[x]);
