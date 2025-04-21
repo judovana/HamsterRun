@@ -10,6 +10,7 @@ public class SoundsBuffer {
         List<String> queue = new ArrayList<>(10);
         WavSoundPlayer player = null;
         private static int id;
+        private static int LIMIT = 15;
 
         public SoundQueue() {
             id++;
@@ -46,7 +47,9 @@ public class SoundsBuffer {
         }
 
         private void enqueue(String s) {
-            System.out.println(s + " " + queue.size());
+            if (queue.size()>LIMIT) {
+                queue.clear();
+            }
             queue.add(s);
         }
 
