@@ -38,10 +38,17 @@ public class RatsController implements RatsProvider {
         void zoomIn();
 
         void zoomOut();
+
+        void setDisplay(Boolean aBoolean);
+
+        boolean isDisplay();
+
+        void setChaos(int i);
     }
 
     public static abstract class HumanControl implements RatControl {
         private int worldZoom = 64;
+        private boolean display = false;
 
         @Override
         public int getZoom() {
@@ -63,6 +70,21 @@ public class RatsController implements RatsProvider {
 
         @Override
         public void selfAct(Rat rat) {
+
+        }
+
+        @Override
+        public void setDisplay(Boolean aBoolean) {
+            this.display = aBoolean;
+        }
+
+        @Override
+        public boolean isDisplay() {
+            return display;
+        }
+
+        @Override
+        public void setChaos(int i) {
 
         }
     }
@@ -109,10 +131,13 @@ public class RatsController implements RatsProvider {
     }
 
     public static class ComputerControl implements RatControl {
+        private int chaos = 20;
+        private boolean display = false;
+
         public void selfAct(Rat rat) {
             //todo, make thsi configurable  4 super active , 40+ super lazy...
             //eg pc:val
-            switch (seed.nextInt(20)) {
+            switch (seed.nextInt(chaos)) {
                 case 0:
                     rat.setMouseLeft();
                     break;
@@ -142,6 +167,21 @@ public class RatsController implements RatsProvider {
         @Override
         public void zoomOut() {
 
+        }
+
+        @Override
+        public void setDisplay(Boolean aBoolean) {
+            this.display = aBoolean;
+        }
+
+        @Override
+        public boolean isDisplay() {
+            return display;
+        }
+
+        @Override
+        public void setChaos(int i) {
+            this.chaos = i;
         }
     }
 

@@ -16,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.stream.Collectors;
 
 /**
  * Hello world!
@@ -87,19 +88,41 @@ public class Main {
         //syntax control:skin:haveDisplay:aiModifier  eg k1:uhlicek:true  or pc:rat:false:10
         for (String ratDef : BaseConfig.getConfig().getRats()) {
             Rat rat = new Rat();
-            if (ratDef.equalsIgnoreCase("pc")) {
-                control = new RatsController.ComputerControl();
-            } else if (ratDef.equalsIgnoreCase("k1")) {
-                control = new RatsController.KeyboardControl1();
-            } else if (ratDef.equalsIgnoreCase("k2")) {
-                control = new RatsController.KeyboardControl2();
-            } else if (ratDef.equalsIgnoreCase("k3")) {
-                control = new RatsController.KeyboardControl3();
-            }  else if (ratDef.equalsIgnoreCase("m")) {
-                control = new RatsController.MouseControl();
-            } else {
-                throw new RuntimeException("unknown rat def: " + ratDef);
+            String[] rataParams = ratDef.split(":");
+            for (int i = 0; i < rataParams.length; i++) {
+                String param = rataParams[i];
+                switch (i) {
+                    case 3:
+                        control.setChaos(Integer.valueOf(param));
+                        break;
+                    case 2:
+                        control.setDisplay(Boolean.valueOf(param));
+                        break;
+                    case 1:
+                        if (SpritesProvider.KNOWN_RATS.contains(param)) {
+                            rat.setSkin(param);
+                        } else {
+                            throw new RuntimeException("Unknown sprite " + param +". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
+                        }
+                        break;
+                    case 0:
+                        if (param.equalsIgnoreCase("pc")) {
+                            control = new RatsController.ComputerControl();
+                        } else if (param.equalsIgnoreCase("k1")) {
+                            control = new RatsController.KeyboardControl1();
+                        } else if (param.equalsIgnoreCase("k2")) {
+                            control = new RatsController.KeyboardControl2();
+                        } else if (param.equalsIgnoreCase("k3")) {
+                            control = new RatsController.KeyboardControl3();
+                        } else if (param.equalsIgnoreCase("m")) {
+                            control = new RatsController.MouseControl();
+                        } else {
+                            throw new RuntimeException("unknown param in rat def: " + param + "/" + ratDef);
+                        }
+                        break;
+                }
             }
+
             ratsController.addRat(new RatsController.RatWithControls(rat, control));
         }
         final Rat currentDemoRat = ratsController.getRats().get(0);

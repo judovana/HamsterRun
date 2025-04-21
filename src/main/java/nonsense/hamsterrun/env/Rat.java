@@ -41,7 +41,7 @@ public class Rat {
     private static final int relativeSizes = 5;
     private int speed = 1; //can not go over relativeSizes*2
     private int score = 1000;
-
+    private String skin = "rat";
     public Rat() {
     }
 
@@ -53,6 +53,14 @@ public class Rat {
     public Rat(int worldx, int worldy, int blockx, int blocky) {
         this.coordsInBaseBlock = new Point(blockx, blocky);
         this.coordsInMaze = new Point(worldx, worldy);
+    }
+
+    public String getSkin() {
+        return skin;
+    }
+
+    public void setSkin(String skin) {
+        this.skin = skin;
     }
 
     public Point getCoordsInBaseBlock() {
@@ -168,7 +176,7 @@ public class Rat {
             float relativeY = (relativeCoordInSquare.y) * step;
             relativeShift.x = (int) relativeX;
             relativeShift.y = (int) relativeY;
-            BufferedImage img = getImageForAction();
+            BufferedImage img = getImageForAction(skin);
             int usedZoom = zoom;
             if (action == RatActions.FALLING) {
                 usedZoom = Math.max(1, zoom - (zoom / 50 + 1) * anim.anim);
@@ -184,17 +192,17 @@ public class Rat {
         }
     }
 
-    private BufferedImage getImageForAction() {
+    private BufferedImage getImageForAction(String skin) {
         if (RatActions.isStay(action)) {
-            return SpritesProvider.ratSprites.getSit(direction.getSprite(), anim.ignore());
+            return SpritesProvider.ratSprites.get(skin).getSit(direction.getSprite(), anim.ignore());
         } else if (action == RatActions.EAT) {
-            return SpritesProvider.ratSprites.getEat(direction.getSprite(), anim.ignore());
+            return SpritesProvider.ratSprites.get(skin).getEat(direction.getSprite(), anim.ignore());
         } else if (RatActions.isWalk(action)) {
-            return SpritesProvider.ratSprites.getRun(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.getRuns()));
+            return SpritesProvider.ratSprites.get(skin).getRun(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.get(skin).getRuns()));
         } else if (action == RatActions.FALLING) {
-            return SpritesProvider.ratSprites.getFall(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.getFalls()));
+            return SpritesProvider.ratSprites.get(skin).getFall(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.get(skin).getFalls()));
         } else {
-            throw new RuntimeException("Unknown acction " + action);
+            throw new RuntimeException("Unknown action " + action);
         }
     }
 

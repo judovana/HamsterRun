@@ -1,5 +1,7 @@
 package nonsense.hamsterrun;
 
+import nonsense.hamsterrun.sprites.SpritesProvider;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +67,11 @@ public class BaseConfig {
         System.out.println("The max connectivity can no always be honoured, because the opposite nighbours may have no intersection. but engine is doing its best.");
         System.out.println("Constant regeneration of world is " + keepRegenerating);
         System.out.println("rats in world is " + rats.size() + "/" + rats.stream().collect(Collectors.joining(",")));
+        System.out.println("  note, syntax is as --rat control:skin:haveDisplay:aiModifier  eg  --rat k1:uhlicek:true  -rat pc:rat:false:10");
+        System.out.println("  note, available skins are: " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(", ")));
+        System.out.println("  note, available controls  are: k1, k2, m1, pc");
+        System.out.println("  note, display is true/false, and calcs if this rtat have its own window");
+        System.out.println("  note, last field is for ai only, how weird it will be");
         System.out.println("main loop delay is " + delayMs);
     }
 
@@ -102,13 +109,34 @@ public class BaseConfig {
         if (rats.isEmpty()) {
             throw new RuntimeException("No mouses in world, add some!");
         }
-        for (String rat : rats) {
-            if (!(rat.equalsIgnoreCase("pc") ||
-                    rat.equalsIgnoreCase("k1") ||
-                    rat.equalsIgnoreCase("k2") ||
-                    rat.equalsIgnoreCase("k3") ||
-                    rat.equalsIgnoreCase("m"))) {
-                throw new RuntimeException("Unknown rat def: " + rat + ". Use pc, k1, k2, k3 or m. Each can repeat unlimited times... but");
+        for (String ratDef : rats) {
+            String[] rataParams = ratDef.split(":");
+            for (int i = 0; i < rataParams.length; i++) {
+                String param = rataParams[i];
+                switch (i) {
+                    case 3:
+                        Integer.valueOf(param);
+                        break;
+                    case 2:
+                        Boolean.valueOf(param);
+                        break;
+                    case 1:
+                        if (SpritesProvider.KNOWN_RATS.contains(param)) {
+                            //ok
+                        } else {
+                            throw new RuntimeException("Unknown sprite " + param + ". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
+                        }
+                        break;
+                    case 0:
+                        if (!(param.equalsIgnoreCase("pc") ||
+                                param.equalsIgnoreCase("k1") ||
+                                param.equalsIgnoreCase("k2") ||
+                                param.equalsIgnoreCase("k3") ||
+                                param.equalsIgnoreCase("m"))) {
+                            throw new RuntimeException("Unknown rat def: " + param + ". Use pc, k1, k2, k3 or m. Each can repeat unlimited times... but");
+                        }
+                        break;
+                }
             }
         }
     }

@@ -7,12 +7,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SpritesProvider {
 
-    private static final List<String> KNOWN_RATS = List.of("uhlicek" /*virecek, hnedulka, brownie, uhlicek, rat*/);
-    public static RatSpriteSet ratSprites;
+    public static final List<String> KNOWN_RATS = List.of( "virecek", "hnedulka", "brownie", "uhlicek", "rat");
+    public static final Map<String, RatSpriteSet> ratSprites = new HashMap<>();
     public static BufferedImage wall;
     public static BufferedImage tunnelOpened;
     public static BufferedImage[] tunnelClosed = new BufferedImage[4];
@@ -56,7 +58,9 @@ public class SpritesProvider {
                 eat = ImageIO.read(eatu);
             }
 
-            ratSprites = new RatSpriteSet(runBase.toArray(new BufferedImage[0]), sit, fallBase.toArray(new BufferedImage[0]), eat);
+            RatSpriteSet ratSprite = new RatSpriteSet(runBase.toArray(new BufferedImage[0]), sit, fallBase.toArray(new BufferedImage[0]), eat);
+            ratSprites.put(rat, ratSprite);
+
         }
         URL tunnelCloseU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/tunnel1off.png");
         tunnelClosed[0] = ImageIO.read(tunnelCloseU);
