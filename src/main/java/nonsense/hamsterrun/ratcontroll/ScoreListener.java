@@ -13,8 +13,9 @@ public class ScoreListener {
         Color color = getDefaultColor();
         int counter = 0;
 
-        public Blinker() {
+        public Blinker(String name) {
             this.setDaemon(true);
+            this.setName("blinker " + name);
             this.start();
         }
 
@@ -27,26 +28,28 @@ public class ScoreListener {
         public void run() {
             while (true) {
                 try {
-                    if (counter % 2 == 1) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                label.setBackground(color);
-                                label.repaint();
-                            }
-                        });
-                    } else {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                label.setBackground(getDefaultColor());
-                                label.repaint();
-                            }
-                        });
+                    if (counter>=0) {
+                        if (counter % 2 == 1) {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    label.setBackground(color);
+                                    label.repaint();
+                                }
+                            });
+                        } else {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    label.setBackground(getDefaultColor());
+                                    label.repaint();
+                                }
+                            });
+                        }
                     }
                     counter--;
                     if (counter < 0) {
-                        counter = 0;
+                        counter = -1;
                     }
                     Thread.sleep(100);
                 } catch (Exception ex) {
@@ -62,12 +65,13 @@ public class ScoreListener {
 
     private final JLabel label;
     private int lastScore = 0;
-    private final Blinker blinker = new Blinker();
+    private final Blinker blinker;
 
 
     public ScoreListener(JLabel scoreShow, Rat rat) {
         this.label = scoreShow;
         this.label.setOpaque(true);
+        blinker = new Blinker(rat.getSkin() + " - " + rat);
     }
 
     public void report(Rat rat, int score) {

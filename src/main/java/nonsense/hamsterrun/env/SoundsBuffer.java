@@ -9,10 +9,13 @@ public class SoundsBuffer {
     private static class SoundQueue implements Runnable {
         List<String> queue = new ArrayList<>(10);
         WavSoundPlayer player = null;
+        private static int id;
 
         public SoundQueue() {
+            id++;
             Thread t = new Thread(this);
             t.setDaemon(true);
+            t.setName("Sound queue " + id);
             t.start();
         }
 

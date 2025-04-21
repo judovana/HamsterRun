@@ -282,8 +282,6 @@ public class BaseBlock {
                 y = seed.nextInt(map[x].length);
             } while (map[x][y] != null && !map[x][y].isPassable());
         }
-        System.out.println("p" + map[x][y].isPassable());
-        System.out.println("f" + map[x][y].isPassable());
         return new Point(x, y);
     }
 

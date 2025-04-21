@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,7 @@ public class World implements Runnable {
         allRatsSpread(true);
         this.repl = new Thread(this);
         repl.setDaemon(true);
+        repl.setName("world " + new Date());
         repl.start();
 
 

@@ -198,7 +198,8 @@ public class Main {
                     }
                 });
                 gameView.setSize(800, 800);
-                gameView.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                //gameView.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                gameView.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 gameView.setVisible(true);
             }
         });
