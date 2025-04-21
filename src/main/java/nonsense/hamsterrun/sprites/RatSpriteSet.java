@@ -2,8 +2,6 @@ package nonsense.hamsterrun.sprites;
 
 import java.awt.image.BufferedImage;
 
-import nonsense.hamsterrun.sprites.SpritesProvider;
-
 public class RatSpriteSet {
 
 

@@ -5,7 +5,6 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
@@ -15,34 +14,11 @@ import java.net.URL;
 
 public class WavSoundPlayer {
 
-    private boolean finished = false;
     private final String what;
+    private boolean finished = false;
 
     public WavSoundPlayer(String what) {
         this.what = what;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public String getWhat() {
-        return what;
-    }
-
-    public void rawPlayAsync() {
-        new Thread() {
-            public void run() {
-                try {
-                    Clip clip = WavSoundPlayer.rawPlay(what);
-                    Thread.sleep(clip.getMicrosecondLength() / 1000); // Convert
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    finished = true;
-                }
-            }
-        }.start();
     }
 
     public static Clip rawPlayCatched(String what) {
@@ -56,7 +32,6 @@ public class WavSoundPlayer {
             throw new RuntimeException(e);
         }
     }
-
 
     public static Clip rawPlay(String what) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         return WavSoundPlayer.rawPlay(what, 1f);
@@ -95,5 +70,28 @@ public class WavSoundPlayer {
             System.out.println("Waiting?");
         }
 
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public String getWhat() {
+        return what;
+    }
+
+    public void rawPlayAsync() {
+        new Thread() {
+            public void run() {
+                try {
+                    Clip clip = WavSoundPlayer.rawPlay(what);
+                    Thread.sleep(clip.getMicrosecondLength() / 1000); // Convert
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    finished = true;
+                }
+            }
+        }.start();
     }
 }

@@ -39,9 +39,9 @@ public class RatsController implements RatsProvider {
 
         void zoomOut();
 
-        void setDisplay(Boolean aBoolean);
-
         boolean isDisplay();
+
+        void setDisplay(Boolean aBoolean);
 
         void setChaos(int i);
 
@@ -49,10 +49,22 @@ public class RatsController implements RatsProvider {
     }
 
     public static abstract class HumanControl implements RatControl {
+        protected boolean map = false;
         private int worldZoom = 64;
         private int mapZoom = 16;
         private boolean display = false;
-        protected boolean map = false;
+
+        private static int calcZoomIn(int i) {
+            return i + Math.max(i / 2, 1);
+        }
+
+        private static int calcZoomOut(int i) {
+            i = i - Math.max(1, i / 2);
+            if (i <= 0) {
+                i = 1;
+            }
+            return i;
+        }
 
         @Override
         public int getZoom() {
@@ -72,10 +84,6 @@ public class RatsController implements RatsProvider {
             }
         }
 
-        private static int calcZoomIn(int i) {
-            return i + Math.max(i / 2, 1);
-        }
-
         @Override
         public void zoomOut() {
             if (getMap() == 0) {
@@ -85,27 +93,19 @@ public class RatsController implements RatsProvider {
             }
         }
 
-        private static int calcZoomOut(int i) {
-            i = i - Math.max(1, i / 2);
-            if (i <= 0) {
-                i = 1;
-            }
-            return i;
-        }
-
         @Override
         public void selfAct(Rat rat) {
 
         }
 
         @Override
-        public void setDisplay(Boolean aBoolean) {
-            this.display = aBoolean;
+        public boolean isDisplay() {
+            return display;
         }
 
         @Override
-        public boolean isDisplay() {
-            return display;
+        public void setDisplay(Boolean aBoolean) {
+            this.display = aBoolean;
         }
 
         @Override
@@ -261,13 +261,13 @@ public class RatsController implements RatsProvider {
         }
 
         @Override
-        public void setDisplay(Boolean aBoolean) {
-            this.display = aBoolean;
+        public boolean isDisplay() {
+            return display;
         }
 
         @Override
-        public boolean isDisplay() {
-            return display;
+        public void setDisplay(Boolean aBoolean) {
+            this.display = aBoolean;
         }
 
         @Override

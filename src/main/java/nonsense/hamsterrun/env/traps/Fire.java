@@ -1,12 +1,12 @@
 package nonsense.hamsterrun.env.traps;
 
+import nonsense.hamsterrun.env.BaseBlockNeigbours;
+import nonsense.hamsterrun.sprites.SpritesProvider;
+
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-
-import nonsense.hamsterrun.env.BaseBlockNeigbours;
-import nonsense.hamsterrun.sprites.SpritesProvider;
 
 //will try to turn rat to oposite direction and will be taking energy away
 //burns - a bit, on neighbour fields

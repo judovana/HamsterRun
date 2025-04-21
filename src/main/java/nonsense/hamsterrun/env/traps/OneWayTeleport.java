@@ -1,12 +1,10 @@
 package nonsense.hamsterrun.env.traps;
 
-import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 

@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class BaseConfig {
+    private static final Random seed = new Random();
+    private static BaseConfig baseConfig = BaseConfig.small();
     int baseSize = 10;
     int baseDensityMin = 4;
     int baseDensityMax = 7;
@@ -17,7 +19,6 @@ public class BaseConfig {
     int gridConnectivityMax = 4;
     int delayMs = 50;
     boolean keepRegenerating = false;
-    private static final Random seed = new Random();
     private List<String> rats = new ArrayList<>(10);
 
     BaseConfig() {
@@ -31,8 +32,6 @@ public class BaseConfig {
         this.gridConnectivityMin = gridConnectivityMin;
         this.gridConnectivityMax = gridConnectivityMax;
     }
-
-    private static BaseConfig baseConfig = BaseConfig.small();
 
     public static BaseConfig getConfig() {
         return baseConfig;
@@ -53,6 +52,10 @@ public class BaseConfig {
 
     private static BaseConfig normal() {
         return new BaseConfig(10, 2, 4, 5, 1, 2);
+    }
+
+    private static int getBaseConfigRandom(int min, int max) {
+        return seed.nextInt(max - min + 1) + min;
     }
 
     void summUp() {
@@ -163,10 +166,6 @@ public class BaseConfig {
 
     public int getGridConnectivityMax() {
         return gridConnectivityMax;
-    }
-
-    private static int getBaseConfigRandom(int min, int max) {
-        return seed.nextInt(max - min + 1) + min;
     }
 
     public int getDensity() {

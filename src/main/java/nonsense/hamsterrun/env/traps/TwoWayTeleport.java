@@ -22,6 +22,31 @@ public class TwoWayTeleport extends Teleport {
 
     private Point targetGate;
 
+    private static List<Point> findTeleportWithoutGate(List<Point> twoWayTeleports, World world) throws IOException {
+        Collections.shuffle(twoWayTeleports);
+        List<Point> realTwoWayTeleports = new ArrayList<>(twoWayTeleports.size());
+        for (Point point : twoWayTeleports) {
+            Item item = world.getBlockField(point).getItem();
+            if (item instanceof TwoWayTeleport) {
+                realTwoWayTeleports.add(point);
+            }
+        }
+        if (realTwoWayTeleports.isEmpty()) {
+            throw new IOException("No two way tleports in world!");
+        }
+        List<Point> unallocatedTwoWayTeleports = new ArrayList<>(twoWayTeleports.size());
+        for (Point point : realTwoWayTeleports) {
+            TwoWayTeleport item = (TwoWayTeleport) world.getBlockField(point).getItem();
+            if (item.targetGate == null) {
+                unallocatedTwoWayTeleports.add(point);
+            }
+        }
+        if (unallocatedTwoWayTeleports.isEmpty()) {
+            ((TwoWayTeleport) world.getBlockField(realTwoWayTeleports.get(0)).getItem()).targetGate = null;
+            unallocatedTwoWayTeleports.add(realTwoWayTeleports.get(0));
+        }
+        return unallocatedTwoWayTeleports;
+    }
 
     @Override
     protected BufferedImage getSprite(int id) {
@@ -70,32 +95,6 @@ public class TwoWayTeleport extends Teleport {
             ex.printStackTrace();
             moveRatTo(world, rat, rat.getUniversalCoords());
         }
-    }
-
-    private static List<Point> findTeleportWithoutGate(List<Point> twoWayTeleports, World world) throws IOException {
-        Collections.shuffle(twoWayTeleports);
-        List<Point> realTwoWayTeleports = new ArrayList<>(twoWayTeleports.size());
-        for (Point point : twoWayTeleports) {
-            Item item = world.getBlockField(point).getItem();
-            if (item instanceof TwoWayTeleport) {
-                realTwoWayTeleports.add(point);
-            }
-        }
-        if (realTwoWayTeleports.isEmpty()) {
-            throw new IOException("No two way tleports in world!");
-        }
-        List<Point> unallocatedTwoWayTeleports = new ArrayList<>(twoWayTeleports.size());
-        for (Point point : realTwoWayTeleports) {
-            TwoWayTeleport item = (TwoWayTeleport) world.getBlockField(point).getItem();
-            if (item.targetGate == null) {
-                unallocatedTwoWayTeleports.add(point);
-            }
-        }
-        if (unallocatedTwoWayTeleports.isEmpty()) {
-            ((TwoWayTeleport) world.getBlockField(realTwoWayTeleports.get(0)).getItem()).targetGate = null;
-            unallocatedTwoWayTeleports.add(realTwoWayTeleports.get(0));
-        }
-        return unallocatedTwoWayTeleports;
     }
 
 }

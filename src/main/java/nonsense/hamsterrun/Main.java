@@ -111,7 +111,7 @@ public class Main {
                         if (SpritesProvider.KNOWN_RATS.contains(param)) {
                             rat.setSkin(param);
                         } else {
-                            throw new RuntimeException("Unknown sprite " + param +". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
+                            throw new RuntimeException("Unknown sprite " + param + ". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
                         }
                         break;
                     case 0:
@@ -141,7 +141,7 @@ public class Main {
     }
 
     private static void worldDemo() {
-        Object[]  result = generateGame();
+        Object[] result = generateGame();
         final World world = (World) result[0];
         final RatsController ratsController = (RatsController) result[1];
         SwingUtilities.invokeLater(new Runnable() {
@@ -159,8 +159,8 @@ public class Main {
 //                JFrame mapFrame = new JFrame();
 //                mapFrame.add(mapPanel);
                 JFrame gameView = new JFrame("Guniea pig run");
-                gameView.setLayout(new GridLayout(0,2, 2,2));
-                for (Rat rat: ratsController.getRats()) {
+                gameView.setLayout(new GridLayout(0, 2, 2, 2));
+                for (Rat rat : ratsController.getRats()) {
                     if (!ratsController.getRatControl(rat).isDisplay()) {
                         continue;
                     }
@@ -171,7 +171,7 @@ public class Main {
                             if (ratsController.getRatControl(rat).getMap() == 0) {
                                 world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, ratsController.getRatControl(rat).getZoom(), rat, false);
                             } else {
-                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true,  ratsController.getRatControl(rat).getZoom(), rat, true);
+                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, ratsController.getRatControl(rat).getZoom(), rat, true);
                             }
                         }
                     };

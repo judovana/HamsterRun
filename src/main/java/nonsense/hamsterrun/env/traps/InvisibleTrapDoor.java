@@ -12,6 +12,10 @@ public class InvisibleTrapDoor implements Item, Relocator {
 
     protected boolean closed = true;
 
+    public static void randomAloneSpot(World world, Rat rat) {
+        world.teleportMouse(rat, false, true);
+    }
+
     public Color getMinimapColor() {
         return new Color(200, 200, 200);
     }
@@ -41,9 +45,5 @@ public class InvisibleTrapDoor implements Item, Relocator {
     @Override
     public void relocate(World world, Rat rat) {
         randomAloneSpot(world, rat);
-    }
-
-    public static void randomAloneSpot(World world, Rat rat) {
-        world.teleportMouse(rat, false, true);
     }
 }

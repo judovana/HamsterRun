@@ -23,29 +23,6 @@ public abstract class Teleport implements Item, Relocator {
 
     int anim = seed.nextInt(48);
 
-    public Color getMinimapColor() {
-        return new Color(255, 192, 203);
-    }
-
-    @Override
-    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
-        if (level == 2) {
-            g2d.drawImage(getSprite(0), coordx, coordy, zoom, zoom, null);
-        }
-        if (level == 3) {
-            float opacity = 0.75f;
-            anim++;
-            if (anim > 49) {
-                anim = 0;
-            }
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-            g2d.drawImage(getSprite(anim / 10 + 1), coordx - zoom / 2, coordy - zoom / 2, zoom + zoom, zoom + zoom, null);
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-        }
-    }
-
-    abstract protected BufferedImage getSprite(int id);
-
     protected static List<Point> getNeighboursForGivenPoint(Point w, World world) {
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
         System.out.print(neighBase.toString());
@@ -83,5 +60,28 @@ public abstract class Teleport implements Item, Relocator {
         System.out.println("And it is: " + rat.getUniversalCoords());
         System.out.println();
     }
+
+    public Color getMinimapColor() {
+        return new Color(255, 192, 203);
+    }
+
+    @Override
+    public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
+        if (level == 2) {
+            g2d.drawImage(getSprite(0), coordx, coordy, zoom, zoom, null);
+        }
+        if (level == 3) {
+            float opacity = 0.75f;
+            anim++;
+            if (anim > 49) {
+                anim = 0;
+            }
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+            g2d.drawImage(getSprite(anim / 10 + 1), coordx - zoom / 2, coordy - zoom / 2, zoom + zoom, zoom + zoom, null);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+        }
+    }
+
+    abstract protected BufferedImage getSprite(int id);
 
 }

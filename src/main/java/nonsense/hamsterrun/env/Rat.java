@@ -1,15 +1,6 @@
 package nonsense.hamsterrun.env;
 
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.Fire;
@@ -23,14 +14,20 @@ import nonsense.hamsterrun.env.traps.Vegetable;
 import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import javax.xml.stream.events.EndElement;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Rat {
 
     private static final Random seed = new Random();
     private static final int MAGICAL_FALL_CHANCE = 6;
-
-
+    private static final int relativeSizes = 5;
     private AnimationCounrer anim = new AnimationCounrer();
     private SoundsBuffer sounds = new SoundsBuffer();
     private Point coordsInBaseBlock = new Point(-1, -1);
@@ -39,7 +36,6 @@ public class Rat {
     private RatActions.OptionalmetaData actionMetaData = null;
     private RatActions.Direction direction = RatActions.Direction.UP;
     private Point relativeCoordInSquare = new Point(0, 0);
-    private static final int relativeSizes = 5;
     private int speed = 1; //can not go over relativeSizes*2
     private int score = 1000;
     private String skin = "rat";
@@ -58,6 +54,11 @@ public class Rat {
         this.coordsInMaze = new Point(worldx, worldy);
     }
 
+    public static Point toUniversalCoords(Point coordsInMaze, Point coordsInBaseBlock) {
+        return new Point(coordsInMaze.x * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.x,
+                coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
+    }
+
     public String getSkin() {
         return skin;
     }
@@ -70,12 +71,12 @@ public class Rat {
         return coordsInBaseBlock;
     }
 
-    public Point getCoordsInMaze() {
-        return coordsInMaze;
-    }
-
     public void setCoordsInBaseBlock(Point coordsInBaseBlock) {
         this.coordsInBaseBlock = coordsInBaseBlock;
+    }
+
+    public Point getCoordsInMaze() {
+        return coordsInMaze;
     }
 
     public void setCoordsInMaze(Point coordsInMaze) {
@@ -92,11 +93,6 @@ public class Rat {
 
     public Point getUniversalCoords() {
         return toUniversalCoords(coordsInMaze, coordsInBaseBlock);
-    }
-
-    public static Point toUniversalCoords(Point coordsInMaze, Point coordsInBaseBlock) {
-        return new Point(coordsInMaze.x * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.x,
-                coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
     }
 
     public void setUniversalCoords(Point target) {

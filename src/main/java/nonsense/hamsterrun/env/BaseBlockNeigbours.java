@@ -18,28 +18,6 @@ public class BaseBlockNeigbours {
         this.center = center;
     }
 
-    @Override
-    public String toString() {
-        int w = getBlockWidth();
-        int h = getBlockHeight();
-        if (w == -1 || h == -1) {
-            return "NaN";
-        }
-        List<String> result = new ArrayList<>(h * 3 + 1);
-        topAndBottom(up, result, w, h);
-        for (int x = 0; x < h; x++) {
-            StringBuilder sb = new StringBuilder();
-            sides(left, sb, w, x);
-            sides(center, sb, w, x);
-            sides(right, sb, w, x);
-            result.add(sb.toString());
-        }
-        topAndBottom(down, result, w, h);
-        result.add(0, middleX + " x " + middleY + " :");
-        return result.stream().collect(Collectors.joining("\n"));
-    }
-
-
     private static void sides(BaseBlock unit, StringBuilder sb, int w, int x) {
         if (unit == null) {
             sb.append(".".repeat(w));
@@ -62,6 +40,27 @@ public class BaseBlockNeigbours {
                 result.add(sb.toString());
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        int w = getBlockWidth();
+        int h = getBlockHeight();
+        if (w == -1 || h == -1) {
+            return "NaN";
+        }
+        List<String> result = new ArrayList<>(h * 3 + 1);
+        topAndBottom(up, result, w, h);
+        for (int x = 0; x < h; x++) {
+            StringBuilder sb = new StringBuilder();
+            sides(left, sb, w, x);
+            sides(center, sb, w, x);
+            sides(right, sb, w, x);
+            result.add(sb.toString());
+        }
+        topAndBottom(down, result, w, h);
+        result.add(0, middleX + " x " + middleY + " :");
+        return result.stream().collect(Collectors.joining("\n"));
     }
 
     private BaseBlock[] asArray() {

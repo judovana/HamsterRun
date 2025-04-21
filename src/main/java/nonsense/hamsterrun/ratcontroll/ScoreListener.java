@@ -8,6 +8,31 @@ import java.awt.Color;
 
 public class ScoreListener {
 
+    private final JLabel label;
+    private final Blinker blinker;
+    private int lastScore = 0;
+    public ScoreListener(JLabel scoreShow, Rat rat) {
+        this.label = scoreShow;
+        this.label.setOpaque(true);
+        blinker = new Blinker(rat.getSkin() + " - " + rat);
+    }
+
+    private static Color getDefaultColor() {
+        return Color.lightGray;
+    }
+
+    public void report(Rat rat, int score) {
+        if (lastScore < score) {
+            blinker.setColor(Color.green);
+        } else if (lastScore > score) {
+            blinker.setColor(Color.red);
+        } else {
+            blinker.setColor(getDefaultColor());
+        }
+        lastScore = score;
+        label.setText(rat.getSkin() + ": " + score);
+    }
+
     private class Blinker extends Thread {
 
         Color color = getDefaultColor();
@@ -28,7 +53,7 @@ public class ScoreListener {
         public void run() {
             while (true) {
                 try {
-                    if (counter>=0) {
+                    if (counter >= 0) {
                         if (counter % 2 == 1) {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
@@ -57,32 +82,5 @@ public class ScoreListener {
                 }
             }
         }
-    }
-
-    private static Color getDefaultColor() {
-        return Color.lightGray;
-    }
-
-    private final JLabel label;
-    private int lastScore = 0;
-    private final Blinker blinker;
-
-
-    public ScoreListener(JLabel scoreShow, Rat rat) {
-        this.label = scoreShow;
-        this.label.setOpaque(true);
-        blinker = new Blinker(rat.getSkin() + " - " + rat);
-    }
-
-    public void report(Rat rat, int score) {
-        if (lastScore < score) {
-            blinker.setColor(Color.green);
-        } else if (lastScore > score) {
-            blinker.setColor(Color.red);
-        } else {
-            blinker.setColor(getDefaultColor());
-        }
-        lastScore = score;
-        label.setText(rat.getSkin() + ": " + score);
     }
 }

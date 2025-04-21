@@ -7,11 +7,27 @@ public enum RatActions {
 
     STAY, WALK, EAT, FALLING(false);
 
-    public static class OptionalmetaData {
-        Point universalCoord;
-        Point mainCoord;
-        Point subCoord;
-        BaseBlock block;
+    private final boolean interruptible;
+
+    RatActions() {
+        interruptible = true;
+    }
+
+
+    RatActions(boolean interruptible) {
+        this.interruptible = interruptible;
+    }
+
+    public static boolean isStay(RatActions action) {
+        return action == STAY;
+    }
+
+    public static boolean isWalk(RatActions action) {
+        return action == WALK;
+    }
+
+    public boolean isInterruptible() {
+        return interruptible;
     }
 
     public enum Direction {
@@ -64,27 +80,10 @@ public enum RatActions {
         }
     }
 
-
-    private final boolean interruptible;
-
-    RatActions() {
-        interruptible = true;
-    }
-
-    RatActions(boolean interruptible) {
-        this.interruptible = interruptible;
-    }
-
-    public static boolean isStay(RatActions action) {
-        return action == STAY;
-    }
-
-    public static boolean isWalk(RatActions action) {
-        return action == WALK;
-    }
-
-
-    public boolean isInterruptible() {
-        return interruptible;
+    public static class OptionalmetaData {
+        Point universalCoord;
+        Point mainCoord;
+        Point subCoord;
+        BaseBlock block;
     }
 }

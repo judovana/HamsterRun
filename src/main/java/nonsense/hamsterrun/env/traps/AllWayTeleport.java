@@ -1,8 +1,6 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.BaseConfig;
-import nonsense.hamsterrun.env.BaseBlockNeigbours;
-import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.sprites.SpritesProvider;
@@ -10,7 +8,6 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

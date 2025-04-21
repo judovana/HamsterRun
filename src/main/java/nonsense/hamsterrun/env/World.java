@@ -4,6 +4,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
+import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -15,17 +16,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import javax.swing.JComponent;
-
 public class World implements Runnable {
 
     private static final Random seed = new Random();
 
     private final Thread repl;
     private final Maze maze;
-    private int worldAnim = 0;
-
     private final List<JComponent> repaintListeners = new ArrayList<>(2);
+    private int worldAnim = 0;
     private RatsProvider ratsProvider;
 
     public World(Maze maze) {

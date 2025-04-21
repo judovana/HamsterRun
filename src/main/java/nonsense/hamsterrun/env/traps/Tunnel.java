@@ -1,6 +1,5 @@
 package nonsense.hamsterrun.env.traps;
 
-import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.sprites.SpritesProvider;

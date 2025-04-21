@@ -8,9 +8,9 @@ import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
 import nonsense.hamsterrun.env.traps.OneWayTeleport;
 import nonsense.hamsterrun.env.traps.Torturer;
+import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.TwoWayTeleport;
-import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Vegetable;
 
 import java.awt.Point;
@@ -18,14 +18,14 @@ import java.util.Random;
 
 public class BlockField {
 
+    private final Point coords;
+    private final BaseBlock parent;
     private boolean passable;
     //to ahve only one item and one alien is simply simplification
     private Item item = new Empty();
     //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
     //wreckingball, bat... to do, implement.. somwhen...
     private Alien alien;
-    private final Point coords;
-    private final BaseBlock parent;
 
     public BlockField(boolean passable, Point coords, BaseBlock parent) {
         this.passable = passable;
@@ -37,12 +37,12 @@ public class BlockField {
         return passable;
     }
 
-    public boolean isImpassable() {
-        return !passable;
-    }
-
     public void setPassable(boolean passable) {
         this.passable = passable;
+    }
+
+    public boolean isImpassable() {
+        return !passable;
     }
 
     public Item getItem() {

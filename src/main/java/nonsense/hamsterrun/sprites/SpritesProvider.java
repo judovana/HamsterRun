@@ -2,7 +2,6 @@ package nonsense.hamsterrun.sprites;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -13,7 +12,7 @@ import java.util.Map;
 
 public class SpritesProvider {
 
-    public static final List<String> KNOWN_RATS = List.of( "virecek", "hnedulka", "brownie", "uhlicek", "rat");
+    public static final List<String> KNOWN_RATS = List.of("virecek", "hnedulka", "brownie", "uhlicek", "rat");
     public static final Map<String, RatSpriteSet> ratSprites = new HashMap<>();
     public static BufferedImage wall;
     public static BufferedImage tunnelOpened;

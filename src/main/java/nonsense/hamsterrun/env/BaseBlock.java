@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class BaseBlock {
 
     public static final int WALL_WIDTH = 6;
-    private final BlockField[][] map;
     private static final Random seed = new Random();
+    private final BlockField[][] map;
     private final int sizex;
     private final int sizey;
     private final int baseSize;
@@ -86,12 +86,12 @@ public class BaseBlock {
         }
     }
 
-    private void reset() {
-        Utils.clear(map, this, false);
-    }
-
     public static BaseBlock generateMiddle(BaseConfig config, Point coord) {
         return generateByNeighbours(config, null, null, null, null, coord);
+    }
+
+    private void reset() {
+        Utils.clear(map, this, false);
     }
 
     private List<Integer> getRows() {

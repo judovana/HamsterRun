@@ -1,16 +1,45 @@
 package nonsense.hamsterrun.env;
 
-import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SoundsBuffer {
 
+    public static final String turbo = "turbo";
+    public static final String eat = "chroup";
+    public static final String piskMuch = "pisk1";
+    public static final String piskChr = "pisk3";
+    public static final String piskLong = "pisk5";
+    public static final String brbliFall = "brblibrbli2";
+    public static final String brbliTele = "brblibrbli3";
+    public static final String brbliFire = "brblibrbli1";
+    public static final String piskFire = "pisk2";
+    public static final String brbliTunel = "brblibrbli4";
+    private final SoundQueue moveQueue = createSoundQueue();
+    private final SoundQueue eatQueue = createSoundQueue();
+    private final SoundQueue harmQueue = createSoundQueue();
+
+    protected SoundQueue createSoundQueue() {
+        return new SoundQueue();
+    }
+
+    public void addToMoveQueue(String clip) {
+        moveQueue.enqueue(clip);
+    }
+
+    public void addToEatQueue(String clip) {
+        eatQueue.enqueue(clip);
+    }
+
+    public void addHarmQueue(String clip) {
+        harmQueue.enqueue(clip);
+    }
+
     private static class SoundQueue implements Runnable {
-        List<String> queue = new ArrayList<>(10);
-        WavSoundPlayer player = null;
         private static int id;
         private static int LIMIT = 15;
+        List<String> queue = new ArrayList<>(10);
+        WavSoundPlayer player = null;
 
         public SoundQueue() {
             id++;
@@ -47,7 +76,7 @@ public class SoundsBuffer {
         }
 
         private void enqueue(String s) {
-            if (queue.size()>LIMIT) {
+            if (queue.size() > LIMIT) {
                 queue.clear();
             }
             queue.add(s);
@@ -71,38 +100,6 @@ public class SoundsBuffer {
                 return null;
             }
         }
-    }
-
-    public static final String turbo = "turbo";
-    public static final String eat = "chroup";
-    public static final String piskMuch = "pisk1";
-    public static final String piskChr = "pisk3";
-    public static final String piskLong = "pisk5";
-    public static final String brbliFall = "brblibrbli2";
-    public static final String brbliTele = "brblibrbli3";
-    public static final String brbliFire = "brblibrbli1";
-    public static final String piskFire = "pisk2";
-    public static final String brbliTunel = "brblibrbli4";
-
-
-    private final SoundQueue moveQueue = createSoundQueue();
-    private final SoundQueue eatQueue = createSoundQueue();
-    private final SoundQueue harmQueue = createSoundQueue();
-
-    protected SoundQueue createSoundQueue() {
-        return new SoundQueue();
-    }
-
-    public void addToMoveQueue(String clip) {
-        moveQueue.enqueue(clip);
-    }
-
-    public void addToEatQueue(String clip) {
-        eatQueue.enqueue(clip);
-    }
-
-    public void addHarmQueue(String clip) {
-        harmQueue.enqueue(clip);
     }
 
     public static class NoSound extends SoundsBuffer {
