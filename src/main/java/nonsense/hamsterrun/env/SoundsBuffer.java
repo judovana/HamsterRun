@@ -31,7 +31,7 @@ public class SoundsBuffer {
                             player.rawPlayAsync();
                         } else {
                             //if player already plays whats in queue, it is removed
-                            if (player.getWhat().equals(what)){
+                            if (player.getWhat().equals(what)) {
                                 dequeue();
                             }
                         }
@@ -43,7 +43,7 @@ public class SoundsBuffer {
         }
 
         private void enqueue(String s) {
-            System.out.println(s +" " + queue.size());
+            System.out.println(s + " " + queue.size());
             queue.add(s);
         }
 
@@ -79,9 +79,13 @@ public class SoundsBuffer {
     public static final String brbliTunel = "brblibrbli4";
 
 
-    private final SoundQueue moveQueue = new SoundQueue();
-    private final SoundQueue eatQueue = new SoundQueue();
-    private final SoundQueue harmQueue = new SoundQueue();
+    private final SoundQueue moveQueue = createSoundQueue();
+    private final SoundQueue eatQueue = createSoundQueue();
+    private final SoundQueue harmQueue = createSoundQueue();
+
+    protected SoundQueue createSoundQueue() {
+        return new SoundQueue();
+    }
 
     public void addToMoveQueue(String clip) {
         moveQueue.enqueue(clip);
@@ -93,5 +97,23 @@ public class SoundsBuffer {
 
     public void addHarmQueue(String clip) {
         harmQueue.enqueue(clip);
+    }
+
+    public static class NoSound extends SoundsBuffer {
+        protected SoundQueue createSoundQueue() {
+            return null;
+        }
+
+        public void addToMoveQueue(String clip) {
+
+        }
+
+        public void addToEatQueue(String clip) {
+
+        }
+
+        public void addHarmQueue(String clip) {
+
+        }
     }
 }

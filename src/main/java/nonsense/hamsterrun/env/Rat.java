@@ -494,4 +494,7 @@ public class Rat {
         setActionDirection(RatActions.WALK, RatActions.Direction.RIGHT);
     }
 
+    public void disableSounds() {
+        this.sounds = new SoundsBuffer.NoSound();
+    }
 }

@@ -97,6 +97,11 @@ public class Main {
                         break;
                     case 2:
                         control.setDisplay(Boolean.valueOf(param));
+                        if (!control.isDisplay()) {
+                            //this is not enough. AI can sometimes overflow the sound buffers
+                            //however it is unsure to me why and how
+                            rat.disableSounds();
+                        }
                         break;
                     case 1:
                         if (SpritesProvider.KNOWN_RATS.contains(param)) {
