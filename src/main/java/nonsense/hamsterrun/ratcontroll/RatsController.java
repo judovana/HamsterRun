@@ -44,28 +44,53 @@ public class RatsController implements RatsProvider {
         boolean isDisplay();
 
         void setChaos(int i);
+
+        int getMap();
     }
 
     public static abstract class HumanControl implements RatControl {
         private int worldZoom = 64;
+        private int mapZoom = 16;
         private boolean display = false;
+        protected boolean map = false;
 
         @Override
         public int getZoom() {
-            return worldZoom;
+            if (getMap() == 0) {
+                return worldZoom;
+            } else {
+                return mapZoom;
+            }
         }
 
         @Override
         public void zoomIn() {
-            worldZoom = worldZoom + Math.max(worldZoom / 2, 1);
+            if (getMap() == 0) {
+                worldZoom = calcZoomIn(worldZoom);
+            } else {
+                mapZoom = calcZoomIn(mapZoom);
+            }
+        }
+
+        private static int calcZoomIn(int i) {
+            return i + Math.max(i / 2, 1);
         }
 
         @Override
         public void zoomOut() {
-            worldZoom = worldZoom - Math.max(1, worldZoom / 2);
-            if (worldZoom <= 0) {
-                worldZoom = 1;
+            if (getMap() == 0) {
+                worldZoom = calcZoomOut(worldZoom);
+            } else {
+                mapZoom = calcZoomOut(mapZoom);
             }
+        }
+
+        private static int calcZoomOut(int i) {
+            i = i - Math.max(1, i / 2);
+            if (i <= 0) {
+                i = 1;
+            }
+            return i;
         }
 
         @Override
@@ -87,43 +112,111 @@ public class RatsController implements RatsProvider {
         public void setChaos(int i) {
 
         }
+
+        @Override
+        public int getMap() {
+            if (map) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 
     public static abstract class KeyboardControl extends HumanControl {
 
+        public abstract void act(Rat rat, KeyEvent e, World world);
+    }
+
+    public static class KeyboardControl1 extends KeyboardControl {
         public void act(Rat rat, KeyEvent e, World world) {
-            if (e.getKeyCode() == 37/*leftarrow*/) {
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 rat.setMouseLeft();
-            } else if (e.getKeyCode() == 38/*uparrow*/) {
+            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
                 rat.setMouseUp();
-            } else if (e.getKeyCode() == 39/*rightarrow*/) {
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 rat.setMouseRight();
-            } else if (e.getKeyCode() == 40/*downarrow*/) {
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                 rat.setMouseDown();
             } else if (e.getKeyChar() == '+') {
                 zoomIn();
             } else if (e.getKeyChar() == '-') {
                 zoomOut();
-            } else if (e.getKeyCode() == 16) {
-                world.allRatsSpread(true);
-            } else if (e.getKeyCode() == 20) {
-                world.allRatsSpread(false);
-            } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            } else if (e.getKeyCode() == KeyEvent.VK_END) {
+                //we actually need two maps - anymated and non anymated.. what to do with zoom?
+                //base second zoom here internally?
+                map = !map;
+            } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
                 world.regenerateAll();
             }
+            //keep those two? Made it controllable?
+            else if (e.getKeyCode() == KeyEvent.VK_HOME) {
+                world.allRatsSpread(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_INSERT) {
+                world.allRatsSpread(false);
+            }
         }
-    }
-
-    public static class KeyboardControl1 extends KeyboardControl {
 
     }
 
     public static class KeyboardControl2 extends KeyboardControl {
-
+        public void act(Rat rat, KeyEvent e, World world) {
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                rat.setMouseLeft();
+            } else if (e.getKeyCode() == KeyEvent.VK_W) {
+                rat.setMouseUp();
+            } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                rat.setMouseRight();
+            } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                rat.setMouseDown();
+            } else if (e.getKeyChar() == '1') {
+                zoomIn();
+            } else if (e.getKeyChar() == '3') {
+                zoomOut();
+            } else if (e.getKeyChar() == '2') {
+                //we actually need two maps - anymated and non anymated.. what to do with zoom?
+                //base second zoom here internally?
+                map = !map;
+            } else if ((e.getKeyChar() == '4')) {
+                world.regenerateAll();
+            }
+            //keep those two? Made it controllable?
+            else if ((e.getKeyChar() == '5')) {
+                world.allRatsSpread(true);
+            } else if ((e.getKeyChar() == '6')) {
+                world.allRatsSpread(false);
+            }
+        }
     }
 
     public static class KeyboardControl3 extends KeyboardControl {
-
+        public void act(Rat rat, KeyEvent e, World world) {
+            if (e.getKeyCode() == KeyEvent.VK_J) {
+                rat.setMouseLeft();
+            } else if (e.getKeyCode() == KeyEvent.VK_I) {
+                rat.setMouseUp();
+            } else if (e.getKeyCode() == KeyEvent.VK_L) {
+                rat.setMouseRight();
+            } else if (e.getKeyCode() == KeyEvent.VK_K) {
+                rat.setMouseDown();
+            } else if (e.getKeyChar() == '8') {
+                zoomIn();
+            } else if (e.getKeyChar() == '9') {
+                zoomOut();
+            } else if (e.getKeyChar() == '0') {
+                //we actually need two maps - anymated and non anymated.. what to do with zoom?
+                //base second zoom here internally?
+                map = !map;
+            } else if ((e.getKeyChar() == '4')) {
+                world.regenerateAll();
+            }
+            //keep those two? Made it controllable?
+            else if ((e.getKeyChar() == '-')) {
+                world.allRatsSpread(true);
+            } else if ((e.getKeyChar() == '=')) {
+                world.allRatsSpread(false);
+            }
+        }
     }
 
     public static class MouseControl extends HumanControl {
@@ -135,8 +228,6 @@ public class RatsController implements RatsProvider {
         private boolean display = false;
 
         public void selfAct(Rat rat) {
-            //todo, make thsi configurable  4 super active , 40+ super lazy...
-            //eg pc:val
             switch (seed.nextInt(chaos)) {
                 case 0:
                     rat.setMouseLeft();
@@ -182,6 +273,11 @@ public class RatsController implements RatsProvider {
         @Override
         public void setChaos(int i) {
             this.chaos = i;
+        }
+
+        @Override
+        public int getMap() {
+            return 0;
         }
     }
 
