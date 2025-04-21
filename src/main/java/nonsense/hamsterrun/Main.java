@@ -70,6 +70,10 @@ public class Main {
                         x++;
                         config.addRat(args[x]);
                         break;
+                    case "columns":
+                        x++;
+                        config.setColumns(Integer.valueOf(args[x]));
+                        break;
                     default:
                         throw new RuntimeException("Unknown parameter " + args[x]);
 
@@ -159,7 +163,7 @@ public class Main {
 //                JFrame mapFrame = new JFrame();
 //                mapFrame.add(mapPanel);
                 JFrame gameView = new JFrame("Guniea pig run");
-                gameView.setLayout(new GridLayout(0, 2, 2, 2));
+                gameView.setLayout(new GridLayout(0, BaseConfig.getConfig().getColumns(), 2, 2));
                 for (Rat rat : ratsController.getRats()) {
                     if (!ratsController.getRatControl(rat).isDisplay()) {
                         continue;

@@ -20,6 +20,7 @@ public class BaseConfig {
     int delayMs = 50;
     boolean keepRegenerating = false;
     private List<String> rats = new ArrayList<>(10);
+    private int columns = 2;
 
     BaseConfig() {
     }
@@ -76,6 +77,7 @@ public class BaseConfig {
         System.out.println("  note, display is true/false, and calcs if this rtat have its own window");
         System.out.println("  note, last field is for ai only, how weird it will be");
         System.out.println("main loop delay is " + delayMs);
+        System.out.println("gui will have columns: " + columns);
     }
 
     void verify() {
@@ -108,6 +110,9 @@ public class BaseConfig {
         }
         if (gridSize % 2 == 0) {
             throw new RuntimeException("grid size must be odd. is not: " + gridSize);
+        }
+        if (columns < 1 || columns>10) {
+            throw new RuntimeException("To few, to much columns");
         }
         if (rats.isEmpty()) {
             throw new RuntimeException("No mouses in world, add some!");
@@ -190,5 +195,13 @@ public class BaseConfig {
 
     public long getDelayMs() {
         return delayMs;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 }
