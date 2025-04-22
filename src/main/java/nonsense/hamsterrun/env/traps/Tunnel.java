@@ -2,6 +2,8 @@ package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.BlockField;
+import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
@@ -14,6 +16,11 @@ public class Tunnel implements Item {
 
     public Color getMinimapColor() {
         return new Color(20, 20, 20);
+    }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToMoveQueue(SoundsBuffer.brbliTunel);
     }
 
 

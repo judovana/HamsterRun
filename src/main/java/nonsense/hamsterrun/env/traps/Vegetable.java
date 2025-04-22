@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
@@ -14,6 +15,12 @@ public class Vegetable implements Item {
     public Color getMinimapColor() {
         return Color.green;
     }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToEatQueue(SoundsBuffer.eat);
+    }
+
 
     @Override
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {

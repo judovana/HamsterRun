@@ -235,4 +235,9 @@ public class BaseConfig {
     public void setRegSpeed(int regSpeed) {
         this.regSpeed = regSpeed;
     }
+
+    public int getTunnelConfusioNfactor() {
+        //fixme do it configurable
+        return 20;
+    }
 }

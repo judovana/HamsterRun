@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
 
 import java.awt.Color;
@@ -19,6 +20,12 @@ public class InvisibleTrapDoor implements Item, Relocator {
     public Color getMinimapColor() {
         return new Color(200, 200, 200);
     }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToMoveQueue(SoundsBuffer.brbliFall);
+    }
+
 
     @Override
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {

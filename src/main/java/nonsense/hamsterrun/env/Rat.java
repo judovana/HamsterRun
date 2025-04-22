@@ -303,14 +303,14 @@ public class Rat {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
-                sounds.addToMoveQueue(SoundsBuffer.brbliFall);
+                ((InvisibleTrapDoor)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
             }
         }
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Teleport && seed.nextInt(MAGICAL_FALL_CHANCE) + 1 > speed) {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
-                sounds.addToMoveQueue(SoundsBuffer.brbliTele);
+                ((Teleport)world.getBlockField(getUniversalCoords()).getItem()).playMainSoundFor(this.sounds);
             }
         }
         switch (action) {
@@ -331,9 +331,9 @@ public class Rat {
 
     private void moveInDirection(World world) {
         if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel) {
-            if (seed.nextInt(20) == 0) {
+            if (seed.nextInt(BaseConfig.getConfig().getTunnelConfusioNfactor()) == 0) {
                 direction = RatActions.Direction.getRandom();
-                sounds.addToMoveQueue(SoundsBuffer.brbliTunel);
+                ((Tunnel)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
             }
         }
         harm(world);
@@ -362,7 +362,7 @@ public class Rat {
                 if (eaten) {
                     world.getBlockField(getUniversalCoords()).clear();
                 } else {
-                    sounds.addToEatQueue(SoundsBuffer.eat);
+                    ((Vegetable)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
                     adjustScore(100);
                     harm(world);
                 }
@@ -431,9 +431,9 @@ public class Rat {
         if (field instanceof Torturer) {
             adjustScore(-5 * speed * speed);
             if (speed == MAGICAL_FALL_CHANCE - 1) {
-                sounds.addHarmQueue(SoundsBuffer.piskMuch);
+                ((Torturer)w.getBlockField(this.getUniversalCoords()).getItem()).playMainSoundFor(this.getSounds());
             } else {
-                sounds.addHarmQueue(SoundsBuffer.piskChr);
+                ((Torturer)w.getBlockField(this.getUniversalCoords()).getItem()).playSecondarySoundFor(this.getSounds());
             }
         }
         boolean burned = false;
@@ -441,7 +441,7 @@ public class Rat {
             adjustScore(-20);
             if (!burned) {
                 burned = true;
-                sounds.addHarmQueue(SoundsBuffer.piskMuch);
+                ((Fire)field).playMainSoundFor(sounds);
             }
         }
         BaseBlockNeigbours neighBase1 = w.getBaseBlockNeigboursByUniversal(this.getUniversalCoords().x, this.getUniversalCoords().y);
@@ -459,7 +459,7 @@ public class Rat {
                     adjustScore(-5);
                     if (!burned) {
                         burned = true;
-                        sounds.addHarmQueue(SoundsBuffer.piskFire);
+                        ((Fire)(block1.getItem())).playSecondarySoundFor(sounds);
                     }
                 }
                 BaseBlockNeigbours neighBase2 = w.getBaseBlockNeigboursByUniversal(block1.getUniversalCoords().y, block1.getUniversalCoords().x);
@@ -476,7 +476,7 @@ public class Rat {
                         adjustScore(-1);
                         if (!burned) {
                             burned = true;
-                            sounds.addHarmQueue(SoundsBuffer.brbliFire);
+                            ((Fire)(block2.getItem())).playTercialSoundFor(sounds);
                         }
                     }
                 }
@@ -506,5 +506,9 @@ public class Rat {
 
     public void addScoreListener(ScoreListener scoreListener) {
         this.scoreListener = scoreListener;
+    }
+
+    public SoundsBuffer getSounds() {
+        return sounds;
     }
 }

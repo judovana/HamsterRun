@@ -4,6 +4,7 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
 
 import java.awt.AlphaComposite;
@@ -80,6 +81,11 @@ public abstract class Teleport implements Item, Relocator {
             g2d.drawImage(getSprite(anim / 10 + 1), coordx - zoom / 2, coordy - zoom / 2, zoom + zoom, zoom + zoom, null);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         }
+    }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToMoveQueue(SoundsBuffer.brbliTele);
     }
 
     abstract protected BufferedImage getSprite(int id);

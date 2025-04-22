@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
@@ -42,4 +43,16 @@ public class Torturer implements Item {
     protected BufferedImage getSprite() {
         return SpritesProvider.whirlMove[anim % 2];
     }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskMuch);
+    }
+
+    @Override
+    public void playSecondarySoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskChr);
+    }
+
+
 }

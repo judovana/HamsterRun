@@ -31,7 +31,7 @@ public class SoundsBuffer {
         eatQueue.enqueue(clip);
     }
 
-    public void addHarmQueue(String clip) {
+    public void addToHarmQueue(String clip) {
         harmQueue.enqueue(clip);
     }
 
@@ -115,7 +115,7 @@ public class SoundsBuffer {
 
         }
 
-        public void addHarmQueue(String clip) {
+        public void addToHarmQueue(String clip) {
 
         }
     }

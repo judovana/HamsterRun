@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.AlphaComposite;
@@ -20,6 +21,20 @@ public class Fire implements Item {
         return Color.red;
     }
 
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskMuch);
+    }
+
+    @Override
+    public void playSecondarySoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskFire);
+    }
+
+    @Override
+    public void playTercialSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.brbliFire);
+    }
 
     @Override
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
