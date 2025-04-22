@@ -11,6 +11,8 @@ public interface Item {
 
 
     Color getMinimapColor();
+    //fixme move sounds to here - it may have severa; spunds - eg fire
+    //use this in some readme instead of plain doc
 
 
     //level: 1 floor, 2 before rats, rats, 3 over rats

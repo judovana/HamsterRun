@@ -49,6 +49,9 @@ public class BlockField {
         return item;
     }
 
+    //fixme - made this setup-able, absolutely.
+    //eg via percent, including absolute disablement
+    //then use the list instead of reame (including sound)
     public void setRandomObstacle(Random seed) {
         int i = seed.nextInt(14);
         if (i < 5) {
