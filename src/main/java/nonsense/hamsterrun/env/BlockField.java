@@ -6,6 +6,7 @@ import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
+import nonsense.hamsterrun.env.traps.Mushroom;
 import nonsense.hamsterrun.env.traps.OneWayTeleport;
 import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.TrapDoor;
@@ -53,7 +54,7 @@ public class BlockField {
     //eg via percent, including absolute disablement
     //then use the list instead of reame (including sound)
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(14);
+        int i = seed.nextInt(15);
         if (i < 5) {
             this.item = new Vegetable();
         } else if (i == 6) {
@@ -87,7 +88,10 @@ public class BlockField {
             this.item = new Fire();
         } else if (i == 13) {
             this.item = new Torturer();
+        } else if (i == 14) {
+            this.item = new Mushroom();
         }
+
 
     }
 

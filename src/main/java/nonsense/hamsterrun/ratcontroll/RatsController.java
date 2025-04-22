@@ -27,9 +27,32 @@ public class RatsController implements RatsProvider {
         return rats.stream().filter(a -> a != null && a.rat != null).map(a -> a.rat).collect(Collectors.toUnmodifiableList());
     }
 
+    private List<RatWithControls> getRatsWithControlls() {
+        return rats.stream().filter(a -> a != null && a.rat != null).collect(Collectors.toUnmodifiableList());
+    }
+
     @Override
     public RatControl getRatControl(Rat rat) {
         return rats.stream().filter(a -> a.rat == rat).map(a -> a.ratControl).findFirst().get();
+    }
+
+    @Override
+    public void swap(Rat rat) {
+        RatWithControls current = rats.get(seed.nextInt(rats.size()));
+        for (int x = 0; x<5 ; x++) {
+            RatWithControls future = rats.get(seed.nextInt(rats.size()));
+            if (future == current){
+                continue;
+            } else {
+                RatControl currentControl = current.getRatControl();
+                RatControl futureControl = future.getRatControl();
+                current.setRatControl(futureControl);
+                future.setRatControl(currentControl);
+                break;
+            }
+        }
+
+
     }
 
     public KeyboardControl getNulLControl() {
@@ -379,12 +402,19 @@ public class RatsController implements RatsProvider {
 
     public static class RatWithControls {
         private final Rat rat;
-        private final RatControl ratControl;
+        private RatControl ratControl;
 
         public RatWithControls(Rat rat, RatControl ratControl) {
             this.rat = rat;
             this.ratControl = ratControl;
         }
 
+        public void setRatControl(RatControl ratControl) {
+            this.ratControl = ratControl;
+        }
+
+        public RatControl getRatControl() {
+            return ratControl;
+        }
     }
 }

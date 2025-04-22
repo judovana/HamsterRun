@@ -2,6 +2,7 @@ package nonsense.hamsterrun.sprites;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +27,7 @@ public class SpritesProvider {
     public static BufferedImage[] glow = new BufferedImage[6];
     public static BufferedImage[] whirlStay = new BufferedImage[2];
     public static BufferedImage[] whirlMove = new BufferedImage[2];
+    public static BufferedImage[] houbicky = new BufferedImage[4];
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
@@ -99,6 +101,10 @@ public class SpritesProvider {
             URL bladeUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/blades1" + x + ".png");
             whirlMove[x - 1] = ImageIO.read(bladeUrl1);
         }
+        for (int x = 1; x <= 4; x++) {
+            URL houbickyUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/houbicky" + x + ".png");
+            houbicky[x - 1] = ImageIO.read(houbickyUrl);
+        }
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);
         for (int z = 1; z < 10; z++) {
@@ -160,5 +166,9 @@ public class SpritesProvider {
 
     public static BufferedImage getAllWayTeleport(int i) {
         return SpritesProvider.allWayTeleport[i];
+    }
+
+    public static Image getMushroom(int anim) {
+        return houbicky[anim];
     }
 }

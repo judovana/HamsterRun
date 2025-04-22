@@ -9,4 +9,6 @@ public interface RatsProvider {
     public List<Rat> getRats();
 
     public RatsController.RatControl getRatControl(Rat rat);
+
+    void swap(Rat rat);
 }

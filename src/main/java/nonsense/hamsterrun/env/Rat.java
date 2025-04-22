@@ -6,6 +6,7 @@ import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
+import nonsense.hamsterrun.env.traps.Mushroom;
 import nonsense.hamsterrun.env.traps.Relocator;
 import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Torturer;
@@ -269,6 +270,10 @@ public class Rat {
             if (this.action != RatActions.STAY) {
                 sounds.addToEatQueue(SoundsBuffer.piskLong);
             }
+            this.action = RatActions.STAY;
+        }
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof Mushroom) {
+            world.swap(this);
             this.action = RatActions.STAY;
         }
     }

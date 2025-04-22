@@ -250,4 +250,8 @@ public class World implements Runnable {
     public void setRatsProvider(RatsProvider ratsController) {
         this.ratsProvider = ratsController;
     }
+
+    public void swap(Rat rat) {
+        ratsProvider.swap(rat);
+    }
 }
