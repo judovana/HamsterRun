@@ -63,7 +63,7 @@ public class BaseBlock {
     public static void setObstacles(BlockField[][] map) {
         for (int x = 0; x < map.length; x++) {
             for (int y = 0; y < map[x].length; y++) {
-                if (map[x][y].isPassable() && seed.nextBoolean()) {
+                if (map[x][y].isPassable()) {
                     map[x][y].setRandomObstacle(seed);
                 }
             }

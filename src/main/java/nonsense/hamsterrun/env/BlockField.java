@@ -54,45 +54,28 @@ public class BlockField {
     //eg via percent, including absolute disablement
     //then use the list instead of reame (including sound)
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(15);
-        if (i < 5) {
+        int i = seed.nextInt(100) + 1;
+        if (i > 20 && i <= 60) {
             this.item = new Vegetable();
-        } else if (i == 6) {
-            int subseed = seed.nextInt(6);
-            switch (subseed) {
-                case 0:
-                    this.item = new OneWayTeleport();
-                    break;
-                case 1:
-                case 2:
-                    this.item = new TwoWayTeleport();
-                    break;
-                case 3:
-                case 4:
-                    this.item = new AllWayTeleport();
-                    break;
-                default:
-                    if (seed.nextBoolean()) {
-                        item = new Vegetable();
-                    } else {
-                        item = new Tunnel();
-                    }
-            }
-        } else if (i == 7) {
+        } else if (i > 60 && i <= 62) {
+            this.item = new OneWayTeleport();
+        } else if (i > 62 && i <= 66) {
+            this.item = new TwoWayTeleport();
+        } else if (i > 66 && i <= 68) {
+            this.item = new AllWayTeleport();
+        } else if (i > 68 && i <= 71) {
             this.item = new TrapDoor();
-        } else if (i == 8) {
+        } else if (i > 71 && i <= 74) {
             this.item = new InvisibleTrapDoor();
-        } else if (i == 9 || i == 10 || i == 11) {
+        } else if (i > 74 && i <= 90) {
             this.item = new Tunnel();
-        } else if (i == 12) {
+        } else if (i > 90 && i <= 94) {
             this.item = new Fire();
-        } else if (i == 13) {
+        } else if (i > 94 && i <= 98) {
             this.item = new Torturer();
-        } else if (i == 14) {
+        } else if (i > 98) {
             this.item = new Mushroom();
         }
-
-
     }
 
 
