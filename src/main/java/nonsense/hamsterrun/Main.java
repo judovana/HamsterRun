@@ -92,72 +92,50 @@ public class Main {
 
         System.out.println("bye");
     }
+    private static class WorldAndRats {
+        final World world ;
+        final RatsController ratsController;
 
-    private static Object[] generateGame() {
+        public WorldAndRats(World world, RatsController ratsController) {
+            this.world = world;
+            this.ratsController = ratsController;
+        }
+    }
+
+    private static WorldAndRats generateGame() {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
         RatsController.RatControl control = null;
-        //syntax control:skin:haveDisplay:aiModifier  eg k1:uhlicek:true  or pc:rat:false:10
-        for (String ratDef : BaseConfig.getConfig().getRats()) {
-            Rat rat = new Rat();
-            String[] rataParams = ratDef.split(":");
-            for (int i = 0; i < rataParams.length; i++) {
-                String param = rataParams[i];
-                switch (i) {
-                    case 3:
-                        control.setChaos(Integer.valueOf(param));
-                        break;
-                    case 2:
-                        control.setDisplay(Boolean.valueOf(param));
-                        if (!control.isDisplay()) {
-                            //this is not enough. AI can sometimes overflow the sound buffers
-                            //however it is unsure to me why and how
-                            rat.disableSounds();
-                        }
-                        break;
-                    case 1:
-                        if (SpritesProvider.KNOWN_RATS.contains(param)) {
-                            rat.setSkin(param);
-                        } else {
-                            throw new RuntimeException("Unknown sprite " + param + ". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
-                        }
-                        break;
-                    case 0:
-                        if (param.equalsIgnoreCase("pc")) {
-                            control = new RatsController.ComputerControl();
-                        } else if (param.equalsIgnoreCase("k1")) {
-                            control = new RatsController.KeyboardControl1();
-                        } else if (param.equalsIgnoreCase("k2")) {
-                            control = new RatsController.KeyboardControl2();
-                        } else if (param.equalsIgnoreCase("k3")) {
-                            control = new RatsController.KeyboardControl3();
-                        } else if (param.equalsIgnoreCase("m")) {
-                            control = new RatsController.MouseControl();
-                        } else {
-                            throw new RuntimeException("unknown param in rat def: " + param + "/" + ratDef);
-                        }
-                        break;
-                }
-            }
 
+        for (RatSetup param : BaseConfig.getConfig().getRats()) {
+            Rat rat = new Rat();
+            control = param.control;
+            control.setChaos(param.aiChaos);
+            control.setDisplay(param.display);
+            if (!control.isDisplay()) {
+                //this is not enough. AI can sometimes overflow the sound buffers
+                //however it is unsure to me why and how
+                rat.disableSounds();
+            }
+            rat.setSkin(param.skin);
             ratsController.addRat(new RatsController.RatWithControls(rat, control));
         }
         world.setRatsProvider(ratsController);
         world.allRatsSpread(true);
-        return new Object[]{world, ratsController};
+        return new WorldAndRats(world, ratsController);
     }
 
     private static void worldDemo() {
-        Object[] result = generateGame();
-        final World world = (World) result[0];
-        final RatsController ratsController = (RatsController) result[1];
+        WorldAndRats result = generateGame();
+        final World world = result.world;
+        final RatsController ratsController =  result.ratsController;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame gameView = new JFrame("Guniea pig run");
+                JFrame gameView = new JFrame("Guinea pig run");
                 gameView.setLayout(new GridLayout(0, BaseConfig.getConfig().getColumns(), 2, 2));
                 if (BaseConfig.getConfig().getViews() == 0) {
-                    RatsController.RatControl exControl = new RatsController.KeyboardControl1();
+                    RatsController.RatControl exControl = new RatsController.KeyboardControl0();
                     ratsController.addRat(new RatsController.RatWithControls(null, exControl));
                     JPanel view = new JPanel() {
                         public void paint(Graphics g) {

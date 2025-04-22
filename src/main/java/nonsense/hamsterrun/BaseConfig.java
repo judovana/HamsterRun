@@ -20,7 +20,7 @@ public class BaseConfig {
     int delayMs = 50;
     boolean keepRegenerating = true;
     int regSpeed = 200;
-    private List<String> rats = new ArrayList<>(10);
+    private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
 
     BaseConfig() {
@@ -71,7 +71,7 @@ public class BaseConfig {
         System.out.println("Each base element will be connected to each neighbour no more then  " + gridConnectivityMax + " lines");
         System.out.println("The max connectivity can no always be honoured, because the opposite nighbours may have no intersection. but engine is doing its best.");
         System.out.println("Constant regeneration of world is " + keepRegenerating);
-        System.out.println("rats in world is " + rats.size() + "/" + rats.stream().collect(Collectors.joining(",")));
+        System.out.println("rats in world is " + rats.size() + "/" + rats.stream().map(a->a.toString()).collect(Collectors.joining(",")));
         System.out.println("  note, syntax is as --rat control:skin:haveDisplay:aiModifier  eg  --rat k1:uhlicek:true  -rat pc:rat:false:10");
         System.out.println("  note, available skins are: " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(", ")));
         System.out.println("  note, available controls  are: k1, k2, m1, pc");
@@ -120,37 +120,7 @@ public class BaseConfig {
             throw new RuntimeException("To few, to much columns");
         }
         if (rats.isEmpty()) {
-            //throw new RuntimeException("No mouses in world, add some!");
-        }
-        for (String ratDef : rats) {
-            String[] rataParams = ratDef.split(":");
-            for (int i = 0; i < rataParams.length; i++) {
-                String param = rataParams[i];
-                switch (i) {
-                    case 3:
-                        Integer.valueOf(param);
-                        break;
-                    case 2:
-                        Boolean.valueOf(param);
-                        break;
-                    case 1:
-                        if (SpritesProvider.KNOWN_RATS.contains(param)) {
-                            //ok
-                        } else {
-                            throw new RuntimeException("Unknown sprite " + param + ". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
-                        }
-                        break;
-                    case 0:
-                        if (!(param.equalsIgnoreCase("pc") ||
-                                param.equalsIgnoreCase("k1") ||
-                                param.equalsIgnoreCase("k2") ||
-                                param.equalsIgnoreCase("k3") ||
-                                param.equalsIgnoreCase("m"))) {
-                            throw new RuntimeException("Unknown rat def: " + param + ". Use pc, k1, k2, k3 or m. Each can repeat unlimited times... but");
-                        }
-                        break;
-                }
-            }
+            System.out.println("Warning, no rats, view only centered mode");
         }
     }
 
@@ -191,10 +161,10 @@ public class BaseConfig {
     }
 
     public void addRat(String def) {
-        rats.add(def);
+        rats.add(RatSetup.parse(def));
     }
 
-    public List<String> getRats() {
+    public List<RatSetup> getRats() {
         return Collections.unmodifiableList(rats);
     }
 
@@ -216,13 +186,9 @@ public class BaseConfig {
 
     public int getViews() {
         int views = 0;
-        for (String def : getRats()) {
-            //fixme move to  object, its getting complicated
-            String[] params = def.split(":");
-            if (params.length > 2) {
-                if (Boolean.valueOf(params[2])) {
-                    views++;
-                }
+        for (RatSetup def : getRats()) {
+            if (def.display) {
+                views++;
             }
         }
         return views;

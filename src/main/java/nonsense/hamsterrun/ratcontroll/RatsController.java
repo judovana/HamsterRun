@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 public class RatsController implements RatsProvider {
 
+    public static final int DEFAULT_CHAOS = 20;
+
+
     private static final Random seed = new Random();
 
     private List<RatWithControls> rats = new ArrayList<>(4);
@@ -55,6 +58,8 @@ public class RatsController implements RatsProvider {
         void setChaos(int i);
 
         int getMap();
+
+        String id();
     }
 
     public static abstract class HumanControl implements RatControl {
@@ -133,11 +138,53 @@ public class RatsController implements RatsProvider {
     }
 
     public static abstract class KeyboardControl extends HumanControl {
-
         public abstract void act(Rat rat, KeyEvent e, World world);
     }
 
+    public static class KeyboardControl0 extends KeyboardControl {
+        @Override
+        public String id() {
+            return "k0";
+        }
+
+        @Override
+        public String toString() {
+            return "+ - end, del, home, ins";
+        }
+
+        public void act(Rat rat, KeyEvent e, World world) {
+            if (e.getKeyChar() == '+') {
+                zoomIn();
+            } else if (e.getKeyChar() == '-') {
+                zoomOut();
+            } else if (e.getKeyCode() == KeyEvent.VK_END) {
+                //we actually need two maps - anymated and non anymated.. what to do with zoom?
+                //base second zoom here internally?
+                map = !map;
+            } else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                world.regenerateAll();
+            }
+            //keep those two? Made it configurable?
+            //yes! per player? Yes!
+            else if (e.getKeyCode() == KeyEvent.VK_HOME) {
+                world.allRatsSpread(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_INSERT) {
+                world.allRatsSpread(false);
+            }
+        }
+    }
     public static class KeyboardControl1 extends KeyboardControl {
+
+        @Override
+        public String id() {
+            return "k1";
+        }
+
+        @Override
+        public String toString() {
+            return "<-  ^  ->  + - end, del, home, ins";
+        }
+
         public void act(Rat rat, KeyEvent e, World world) {
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                 rat.setMouseLeft();
@@ -170,6 +217,17 @@ public class RatsController implements RatsProvider {
     }
 
     public static class KeyboardControl2 extends KeyboardControl {
+
+        @Override
+        public String id() {
+            return "k2";
+        }
+
+        @Override
+        public String toString() {
+            return "wasd 13 2456";
+        }
+
         public void act(Rat rat, KeyEvent e, World world) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 rat.setMouseLeft();
@@ -199,6 +257,17 @@ public class RatsController implements RatsProvider {
     }
 
     public static class KeyboardControl3 extends KeyboardControl {
+
+        @Override
+        public String id() {
+            return "k3";
+        }
+
+        @Override
+        public String toString() {
+            return "jilk 89 0 bckspace -=";
+        }
+
         public void act(Rat rat, KeyEvent e, World world) {
             if (e.getKeyCode() == KeyEvent.VK_J) {
                 rat.setMouseLeft();
@@ -215,7 +284,7 @@ public class RatsController implements RatsProvider {
             } else if (e.getKeyChar() == '0') {
                 //we actually need two maps - anymated and non anymated..
                 map = !map;
-            } else if ((e.getKeyChar() == '4')) {
+            } else if ((e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
                 world.regenerateAll();
             }
             //keep those two? Made it configurable?
@@ -229,12 +298,30 @@ public class RatsController implements RatsProvider {
     }
 
     public static class MouseControl extends HumanControl {
+        @Override
+        public String id() {
+            return "m1";
+        }
 
+        @Override
+        public String toString() {
+            return "mouse move  wheel wheel-click  double-click tripple-click";
+        }
     }
 
     public static class ComputerControl implements RatControl {
-        private int chaos = 20;
+        private int chaos = DEFAULT_CHAOS;
         private boolean display = false;
+
+        @Override
+        public String id() {
+            return "pc";
+        }
+
+        @Override
+        public String toString() {
+            return "chaos around 5 is really chaotic, above 50 is really apaptic";
+        }
 
         public void selfAct(Rat rat) {
             switch (seed.nextInt(chaos)) {
