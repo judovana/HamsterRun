@@ -20,7 +20,7 @@ public class Mushroom implements Item {
 
     @Override
     public void playMainSoundFor(SoundsBuffer rat) {
-        rat.addToEatQueue(SoundsBuffer.eat);
+        rat.addToEatQueue(SoundsBuffer.piskLong);
     }
 
 

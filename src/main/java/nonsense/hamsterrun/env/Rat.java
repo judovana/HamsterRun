@@ -268,11 +268,12 @@ public class Rat {
             this.action = RatActions.EAT;
         } else {
             if (this.action != RatActions.STAY) {
-                sounds.addToEatQueue(SoundsBuffer.piskLong);
+                sounds.addToEatQueue(SoundsBuffer.piskWeird);
             }
             this.action = RatActions.STAY;
         }
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Mushroom) {
+            ((Mushroom)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
             world.swap(this);
             this.action = RatActions.STAY;
         }

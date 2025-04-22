@@ -10,6 +10,7 @@ public class SoundsBuffer {
     public static final String piskMuch = "pisk1";
     public static final String piskChr = "pisk3";
     public static final String piskLong = "pisk5";
+    public static final String piskWeird = "pisk4";
     public static final String brbliFall = "brblibrbli2";
     public static final String brbliTele = "brblibrbli3";
     public static final String brbliFire = "brblibrbli1";
