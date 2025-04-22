@@ -142,7 +142,6 @@ public class Main {
 
             ratsController.addRat(new RatsController.RatWithControls(rat, control));
         }
-        final Rat currentDemoRat = ratsController.getRats().get(0);
         world.setRatsProvider(ratsController);
         world.allRatsSpread(true);
         return new Object[]{world, ratsController};
@@ -155,19 +154,28 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-//                JPanel mapPanel = new JPanel() {
-//                    public void paint(Graphics g) {
-//                        super.paint(g);
-//                        Graphics2D g2d = (Graphics2D) g;
-//                        world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 16, currentDemoRat, true);
-//                    }
-//                };
-//                mapPanel.setBackground(Color.BLACK);
-//                world.addRepaintListener(mapPanel);
-//                JFrame mapFrame = new JFrame();
-//                mapFrame.add(mapPanel);
                 JFrame gameView = new JFrame("Guniea pig run");
                 gameView.setLayout(new GridLayout(0, BaseConfig.getConfig().getColumns(), 2, 2));
+                if (BaseConfig.getConfig().getViews() == 0) {
+                    RatsController.RatControl exControl = new RatsController.KeyboardControl1();
+                    ratsController.addRat(new RatsController.RatWithControls(null, exControl));
+                    JPanel view = new JPanel() {
+                        public void paint(Graphics g) {
+                            super.paint(g);
+                            Graphics2D g2d = (Graphics2D) g;
+                            if (exControl.getMap() == 0) {
+                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, exControl.getZoom(),
+                                        null, false);
+                            } else {
+                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, exControl.getZoom(),
+                                        null, true);
+                            }
+                        }
+                    };
+                    view.setBackground(Color.BLACK);
+                    world.addRepaintListener(view);
+                    gameView.add(view);
+                }
                 for (Rat rat : ratsController.getRats()) {
                     if (!ratsController.getRatControl(rat).isDisplay()) {
                         continue;
@@ -195,11 +203,18 @@ public class Main {
                 gameView.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {
+                        boolean found = false;
                         for (Rat rat : ratsController.getRats()) {
                             System.out.println(e.getKeyCode() + "");
                             RatsController.RatControl ratControl = ratsController.getRatControl(rat);
                             if (ratControl instanceof RatsController.KeyboardControl) {
+                                found = true;
                                 ((RatsController.KeyboardControl) ratControl).act(rat, e, world);
+                            }
+                        }
+                        if (!found) {
+                            if (ratsController.getNulLControl() != null) {
+                                ratsController.getNulLControl().act(null, e, world);
                             }
                         }
                         gameView.repaint();

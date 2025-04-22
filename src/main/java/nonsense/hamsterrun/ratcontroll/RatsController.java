@@ -21,12 +21,21 @@ public class RatsController implements RatsProvider {
 
     @Override
     public List<Rat> getRats() {
-        return rats.stream().map(a -> a.rat).collect(Collectors.toUnmodifiableList());
+        return rats.stream().filter(a -> a != null && a.rat != null).map(a -> a.rat).collect(Collectors.toUnmodifiableList());
     }
 
     @Override
     public RatControl getRatControl(Rat rat) {
         return rats.stream().filter(a -> a.rat == rat).map(a -> a.ratControl).findFirst().get();
+    }
+
+    public KeyboardControl getNulLControl() {
+        for (RatWithControls ratsconts : rats) {
+            if (ratsconts.rat == null) {
+                return (KeyboardControl) (ratsconts.ratControl);
+            }
+        }
+        return null;
     }
 
     public interface RatControl {

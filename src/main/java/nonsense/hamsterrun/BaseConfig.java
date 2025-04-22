@@ -120,7 +120,7 @@ public class BaseConfig {
             throw new RuntimeException("To few, to much columns");
         }
         if (rats.isEmpty()) {
-            throw new RuntimeException("No mouses in world, add some!");
+            //throw new RuntimeException("No mouses in world, add some!");
         }
         for (String ratDef : rats) {
             String[] rataParams = ratDef.split(":");
@@ -207,7 +207,25 @@ public class BaseConfig {
     }
 
     public int getColumns() {
+        int views = getViews();
+        if (views <= 1) {
+            return 1;
+        }
         return columns;
+    }
+
+    public int getViews() {
+        int views = 0;
+        for (String def : getRats()) {
+            //fixme move to  object, its getting complicated
+            String[] params = def.split(":");
+            if (params.length > 2) {
+                if (Boolean.valueOf(params[2])) {
+                    views++;
+                }
+            }
+        }
+        return views;
     }
 
     public int getRegSpeed() {
