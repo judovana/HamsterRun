@@ -344,7 +344,7 @@ public class Rat {
 
     private void moveInDirection(World world) {
         if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel) {
-            if (seed.nextInt(BaseConfig.getConfig().getTunnelConfusioNfactor()) == 0) {
+            if (seed.nextInt(BaseConfig.getConfig().getTunnelConfusionFactor()) == 0) {
                 direction = RatActions.Direction.getRandom();
                 ((Tunnel)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
             }

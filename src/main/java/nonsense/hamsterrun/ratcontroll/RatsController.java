@@ -1,9 +1,14 @@
 package nonsense.hamsterrun.ratcontroll;
 
+import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 
+import java.awt.Point;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -39,9 +44,9 @@ public class RatsController implements RatsProvider {
     @Override
     public void swap(Rat rat) {
         RatWithControls current = rats.get(seed.nextInt(rats.size()));
-        for (int x = 0; x<5 ; x++) {
+        for (int x = 0; x < 5; x++) {
             RatWithControls future = rats.get(seed.nextInt(rats.size()));
-            if (future == current){
+            if (future == current) {
                 continue;
             } else {
                 RatControl currentControl = current.getRatControl();
@@ -196,6 +201,7 @@ public class RatsController implements RatsProvider {
             }
         }
     }
+
     public static class KeyboardControl1 extends KeyboardControl {
 
         @Override
@@ -321,6 +327,10 @@ public class RatsController implements RatsProvider {
     }
 
     public static class MouseControl extends HumanControl {
+
+        Point lastPosition = new Point(0, 0);
+        private long lastMove = System.currentTimeMillis();
+
         @Override
         public String id() {
             return "m1";
@@ -329,6 +339,55 @@ public class RatsController implements RatsProvider {
         @Override
         public String toString() {
             return "mouse move  wheel wheel-click  double-click tripple-click";
+        }
+
+
+        public void actW(Rat rat, MouseWheelEvent ew, World world) {
+            int notches = ew.getWheelRotation();
+            if (notches > 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        }
+
+        public void actM(Rat rat, MouseEvent em, World world) {
+            if (System.currentTimeMillis() - lastMove < BaseConfig.getConfig().getMouseDelay()) {
+                return;
+            }
+            if (Math.abs(lastPosition.x - em.getLocationOnScreen().x) > Math.abs(lastPosition.y - em.getLocationOnScreen().y)) {
+                if (lastPosition.x - em.getLocationOnScreen().x < 0) {
+                    rat.setMouseRight();
+                } else if (lastPosition.x - em.getLocationOnScreen().x > 0) {
+                    rat.setMouseLeft();
+                }
+            } else if (Math.abs(lastPosition.x - em.getLocationOnScreen().x) < Math.abs(lastPosition.y - em.getLocationOnScreen().y)) {
+                if (lastPosition.y - em.getLocationOnScreen().y < 0) {
+                    rat.setMouseDown();
+                } else if (lastPosition.y - em.getLocationOnScreen().y > 0) {
+                    rat.setMouseUp();
+                }
+            }
+            lastPosition = em.getLocationOnScreen();
+            lastMove = System.currentTimeMillis();
+        }
+
+        public void actC(Rat rat, MouseEvent em, World world) {
+            if ((em.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
+                //we actually need two maps - anymated and non anymated..
+                map = !map;
+            }
+            if ((em.getModifiers() & InputEvent.BUTTON1_MASK) != 0 && em.getClickCount() >= 2) {
+                world.regenerateAll();
+            }
+            //keep those two? Made it configurable?
+            //yes! per player? Yes!
+            if ((em.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && em.getClickCount() == 2) {
+                world.allRatsSpread(true);
+            }
+            if ((em.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && em.getClickCount() == 3) {
+                world.allRatsSpread(false);
+            }
         }
     }
 

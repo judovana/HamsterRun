@@ -20,7 +20,10 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.stream.Collectors;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 /**
  * Hello world!
@@ -92,8 +95,9 @@ public class Main {
 
         System.out.println("bye");
     }
+
     private static class WorldAndRats {
-        final World world ;
+        final World world;
         final RatsController ratsController;
 
         public WorldAndRats(World world, RatsController ratsController) {
@@ -128,7 +132,7 @@ public class Main {
     private static void worldDemo() {
         WorldAndRats result = generateGame();
         final World world = result.world;
-        final RatsController ratsController =  result.ratsController;
+        final RatsController ratsController = result.ratsController;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -178,6 +182,43 @@ public class Main {
                     wrapper.add(view);
                     gameView.add(wrapper);
                 }
+                gameView.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        for (Rat rat : ratsController.getRats()) {
+                            RatsController.RatControl ratControl = ratsController.getRatControl(rat);
+                            if (ratControl instanceof RatsController.MouseControl) {
+                                ((RatsController.MouseControl) ratControl).actC(rat, e, world);
+                            }
+                        }
+                        gameView.repaint();
+                    }
+                });
+                gameView.addMouseMotionListener(new MouseAdapter() {
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        for (Rat rat : ratsController.getRats()) {
+                            RatsController.RatControl ratControl = ratsController.getRatControl(rat);
+                            if (ratControl instanceof RatsController.MouseControl) {
+                                ((RatsController.MouseControl) ratControl).actM(rat, e, world);
+                            }
+                        }
+                        gameView.repaint();
+                    }
+                });
+                gameView.addMouseWheelListener(new MouseWheelListener() {
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent e) {
+                        for (Rat rat : ratsController.getRats()) {
+                            RatsController.RatControl ratControl = ratsController.getRatControl(rat);
+                            if (ratControl instanceof RatsController.MouseControl) {
+                                ((RatsController.MouseControl) ratControl).actW(rat, e, world);
+                            }
+                        }
+                        gameView.repaint();
+                    }
+                });
+
                 gameView.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyPressed(KeyEvent e) {

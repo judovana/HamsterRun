@@ -202,8 +202,13 @@ public class BaseConfig {
         this.regSpeed = regSpeed;
     }
 
-    public int getTunnelConfusioNfactor() {
+    public int getTunnelConfusionFactor() {
         //fixme do it configurable
         return 20;
+    }
+
+    public long getMouseDelay() {
+        //fixme do it configurable
+        return 100;
     }
 }

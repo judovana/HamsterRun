@@ -60,7 +60,7 @@ public class RatSetup {
                         control = new RatsController.KeyboardControl2();
                     } else if (param.equalsIgnoreCase("k3")) {
                         control = new RatsController.KeyboardControl3();
-                    } else if (param.equalsIgnoreCase("m")) {
+                    } else if (param.equalsIgnoreCase("m1")) {
                         control = new RatsController.MouseControl();
                     } else {
                         throw new RuntimeException("unknown param in rat def: " + param + " in " + def);
