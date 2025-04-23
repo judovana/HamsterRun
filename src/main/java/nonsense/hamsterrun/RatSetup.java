@@ -2,6 +2,11 @@ package nonsense.hamsterrun;
 
 import java.util.stream.Collectors;
 
+import nonsense.hamsterrun.ratcontroll.ComputerControl;
+import nonsense.hamsterrun.ratcontroll.KeyboardControl1;
+import nonsense.hamsterrun.ratcontroll.KeyboardControl2;
+import nonsense.hamsterrun.ratcontroll.KeyboardControl3;
+import nonsense.hamsterrun.ratcontroll.MouseControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
@@ -53,15 +58,15 @@ public class RatSetup {
                     break;
                 case 0:
                     if (param.equalsIgnoreCase("pc")) {
-                        control = new RatsController.ComputerControl();
+                        control = new ComputerControl();
                     } else if (param.equalsIgnoreCase("k1")) {
-                        control = new RatsController.KeyboardControl1();
+                        control = new KeyboardControl1();
                     } else if (param.equalsIgnoreCase("k2")) {
-                        control = new RatsController.KeyboardControl2();
+                        control = new KeyboardControl2();
                     } else if (param.equalsIgnoreCase("k3")) {
-                        control = new RatsController.KeyboardControl3();
+                        control = new KeyboardControl3();
                     } else if (param.equalsIgnoreCase("m1")) {
-                        control = new RatsController.MouseControl();
+                        control = new MouseControl();
                     } else {
                         throw new RuntimeException("unknown param in rat def: " + param + " in " + def);
                     }

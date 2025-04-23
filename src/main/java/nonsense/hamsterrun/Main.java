@@ -3,6 +3,9 @@ package nonsense.hamsterrun;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
+import nonsense.hamsterrun.ratcontroll.KeyboardControl;
+import nonsense.hamsterrun.ratcontroll.KeyboardControl0;
+import nonsense.hamsterrun.ratcontroll.MouseControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
@@ -139,7 +142,7 @@ public class Main {
                 JFrame gameView = new JFrame(Localization.get().getMainTitle());
                 gameView.setLayout(new GridLayout(0, BaseConfig.getConfig().getColumns(), 2, 2));
                 if (BaseConfig.getConfig().getViews() == 0) {
-                    RatsController.RatControl exControl = new RatsController.KeyboardControl0();
+                    RatsController.RatControl exControl = new KeyboardControl0();
                     ratsController.addRat(new RatsController.RatWithControls(null, exControl));
                     JPanel view = new JPanel() {
                         public void paint(Graphics g) {
@@ -187,8 +190,8 @@ public class Main {
                     public void mouseClicked(MouseEvent e) {
                         for (Rat rat : ratsController.getRats()) {
                             RatsController.RatControl ratControl = ratsController.getRatControl(rat);
-                            if (ratControl instanceof RatsController.MouseControl) {
-                                ((RatsController.MouseControl) ratControl).actC(rat, e, world);
+                            if (ratControl instanceof MouseControl) {
+                                ((MouseControl) ratControl).actC(rat, e, world);
                             }
                         }
                         gameView.repaint();
@@ -199,8 +202,8 @@ public class Main {
                     public void mouseMoved(MouseEvent e) {
                         for (Rat rat : ratsController.getRats()) {
                             RatsController.RatControl ratControl = ratsController.getRatControl(rat);
-                            if (ratControl instanceof RatsController.MouseControl) {
-                                ((RatsController.MouseControl) ratControl).actM(rat, e, world);
+                            if (ratControl instanceof MouseControl) {
+                                ((MouseControl) ratControl).actM(rat, e, world);
                             }
                         }
                         gameView.repaint();
@@ -211,8 +214,8 @@ public class Main {
                     public void mouseWheelMoved(MouseWheelEvent e) {
                         for (Rat rat : ratsController.getRats()) {
                             RatsController.RatControl ratControl = ratsController.getRatControl(rat);
-                            if (ratControl instanceof RatsController.MouseControl) {
-                                ((RatsController.MouseControl) ratControl).actW(rat, e, world);
+                            if (ratControl instanceof MouseControl) {
+                                ((MouseControl) ratControl).actW(rat, e, world);
                             }
                         }
                         gameView.repaint();
@@ -226,9 +229,9 @@ public class Main {
                         for (Rat rat : ratsController.getRats()) {
                             System.out.println(e.getKeyCode() + "");
                             RatsController.RatControl ratControl = ratsController.getRatControl(rat);
-                            if (ratControl instanceof RatsController.KeyboardControl) {
+                            if (ratControl instanceof KeyboardControl) {
                                 found = true;
-                                ((RatsController.KeyboardControl) ratControl).act(rat, e, world);
+                                ((KeyboardControl) ratControl).act(rat, e, world);
                             }
                         }
                         if (!found) {
