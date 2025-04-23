@@ -2,13 +2,16 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.env.aliens.Alien;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
+import nonsense.hamsterrun.env.traps.Carrot;
 import nonsense.hamsterrun.env.traps.ColorfullFlask;
+import nonsense.hamsterrun.env.traps.Cucumber;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
 import nonsense.hamsterrun.env.traps.Mushroom;
 import nonsense.hamsterrun.env.traps.OneWayTeleport;
+import nonsense.hamsterrun.env.traps.Pepper;
 import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Tunnel;
@@ -59,8 +62,12 @@ public class BlockField {
         int i = seed.nextInt(101) + 1;
         if (i > 10 && i <= 20) {
             this.item = new Water();
-        } else if (i > 20 && i <= 60) {
-            this.item = new Vegetable();
+        } else if (i > 20 && i <= 34) {
+            this.item = new Cucumber();
+        } else if (i > 34 && i <= 47) {
+            this.item = new Pepper();
+        } else if (i > 47 && i <= 60) {
+            this.item = new Carrot();
         } else if (i > 60 && i <= 62) {
             this.item = new OneWayTeleport();
         } else if (i > 62 && i <= 66) {

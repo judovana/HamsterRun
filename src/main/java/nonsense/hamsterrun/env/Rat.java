@@ -385,16 +385,16 @@ public class Rat {
     private void eat(World world) {
         speed = 1;
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Vegetable) {
+            Point origCoords = getUniversalCoords();
             if (anim.everyThird()) {
                 direction = direction.rotateCW();
-                boolean eaten = ((Vegetable) world.getBlockField(getUniversalCoords()).getItem()).eat();
-                if (eaten) {
-                    world.getBlockField(getUniversalCoords()).clear();
+                ((Vegetable) world.getBlockField(getUniversalCoords()).getItem()).eat(this, world );
+                if (((Vegetable) world.getBlockField(origCoords).getItem()).eaten()) {
+                    world.getBlockField(origCoords).clear();
                 } else {
-                    ((Vegetable)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
-                    adjustScore(100);
-                    harm(world);
+                    ((Vegetable)(world.getBlockField(origCoords).getItem())).playMainSoundFor(this.sounds);
                 }
+                harm(world);
             }
         } else {
             action = RatActions.STAY;
@@ -539,5 +539,9 @@ public class Rat {
 
     public SoundsBuffer getSounds() {
         return sounds;
+    }
+
+    public void setAction(RatActions ratActions) {
+        action = ratActions;
     }
 }

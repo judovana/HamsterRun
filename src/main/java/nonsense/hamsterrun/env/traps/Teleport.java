@@ -24,7 +24,7 @@ public abstract class Teleport implements Item, Relocator {
 
     int anim = seed.nextInt(48);
 
-    protected static List<Point> getNeighboursForGivenPoint(Point w, World world) {
+    static List<Point> getNeighboursForGivenPoint(Point w, World world) {
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
         System.out.print(neighBase.toString());
         System.out.println();

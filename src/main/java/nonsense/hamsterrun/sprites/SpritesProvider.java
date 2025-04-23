@@ -19,6 +19,8 @@ public class SpritesProvider {
     public static BufferedImage tunnelOpened;
     public static BufferedImage[] tunnelClosed = new BufferedImage[4];
     public static BufferedImage okurka;
+    public static BufferedImage pepper;
+    public static BufferedImage carrot;
     public static BufferedImage[] trapdoor;
     public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
     public static BufferedImage[] oneWayTeleport = new BufferedImage[6];
@@ -74,6 +76,10 @@ public class SpritesProvider {
         tunnelOpened = ImageIO.read(tunnelU);
         URL wall1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");
         wall = ImageIO.read(wall1u);
+        URL pepperU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/pepper.png");
+        pepper = ImageIO.read(pepperU);
+        URL carrotU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/carrot.png");
+        carrot = ImageIO.read(carrotU);
         URL okurkaU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/okurka.png");
         okurka = ImageIO.read(okurkaU);
         URL trapDoorUrl1 = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/trapdoor1.png");
