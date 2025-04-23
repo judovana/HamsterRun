@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
+import nonsense.hamsterrun.env.traps.ColorfullFlask;
 import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
@@ -12,6 +13,7 @@ import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.Vegetable;
+import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
@@ -277,6 +279,11 @@ public class Rat {
             world.swap(this);
             this.action = RatActions.STAY;
         }
+        if (world.getBlockField(getUniversalCoords()).getItem() instanceof ColorfullFlask) {
+            ((ColorfullFlask)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
+            this.skin = SpritesProvider.KNOWN_RATS.get(seed.nextInt(SpritesProvider.KNOWN_RATS.size()));
+            this.action = RatActions.STAY;
+        }
     }
 
     public void setActionDirection(RatActions action, RatActions.Direction direction) {
@@ -340,6 +347,22 @@ public class Rat {
             if (seed.nextInt(BaseConfig.getConfig().getTunnelConfusioNfactor()) == 0) {
                 direction = RatActions.Direction.getRandom();
                 ((Tunnel)(world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
+            }
+        }else  if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Water) {
+            speed = 1;
+            if (seed.nextInt(20) < 18) {
+                if (relativeCoordInSquare.x>0){
+                    relativeCoordInSquare.x--;
+                }
+                if (relativeCoordInSquare.x<0){
+                    relativeCoordInSquare.x++;
+                }
+                if (relativeCoordInSquare.y>0){
+                    relativeCoordInSquare.y--;
+                }
+                if (relativeCoordInSquare.y<0){
+                    relativeCoordInSquare.y++;
+                }
             }
         }
         harm(world);

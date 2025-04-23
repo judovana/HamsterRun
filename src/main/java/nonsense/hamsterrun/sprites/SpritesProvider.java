@@ -28,6 +28,8 @@ public class SpritesProvider {
     public static BufferedImage[] whirlStay = new BufferedImage[2];
     public static BufferedImage[] whirlMove = new BufferedImage[2];
     public static BufferedImage[] houbicky = new BufferedImage[4];
+    public static BufferedImage[] flask = new BufferedImage[3];
+    public static BufferedImage[] water = new BufferedImage[4];
     public static List<BufferedImage> floor = new ArrayList<>();
 
     public static void load() throws IOException {
@@ -104,6 +106,14 @@ public class SpritesProvider {
         for (int x = 1; x <= 4; x++) {
             URL houbickyUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/houbicky" + x + ".png");
             houbicky[x - 1] = ImageIO.read(houbickyUrl);
+        }
+        for (int x = 3; x <= 4; x++) {
+            URL waterUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/water" + x + ".png");
+            water[x - 3] = ImageIO.read(waterUrl);
+        }
+        for (int x = 1; x <= 3; x++) {
+            URL flaskUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/flask" + x + ".png");
+            flask[x - 1] = ImageIO.read(flaskUrl);
         }
         URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
         BufferedImage floorI = ImageIO.read(floor1u);

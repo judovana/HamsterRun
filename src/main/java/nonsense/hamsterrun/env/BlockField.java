@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.env.aliens.Alien;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
+import nonsense.hamsterrun.env.traps.ColorfullFlask;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Fire;
 import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
@@ -13,6 +14,7 @@ import nonsense.hamsterrun.env.traps.TrapDoor;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Vegetable;
+import nonsense.hamsterrun.env.traps.Water;
 
 import java.awt.Point;
 import java.util.Random;
@@ -54,8 +56,10 @@ public class BlockField {
     //eg via percent, including absolute disablement
     //then use the list instead of reame (including sound)
     public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(100) + 1;
-        if (i > 20 && i <= 60) {
+        int i = seed.nextInt(101) + 1;
+        if (i > 10 && i <= 20) {
+            this.item = new Water();
+        } else if (i > 20 && i <= 60) {
             this.item = new Vegetable();
         } else if (i > 60 && i <= 62) {
             this.item = new OneWayTeleport();
@@ -73,8 +77,10 @@ public class BlockField {
             this.item = new Fire();
         } else if (i > 94 && i <= 98) {
             this.item = new Torturer();
-        } else if (i > 98) {
+        } else if (i > 98 &&  i <= 99) {
             this.item = new Mushroom();
+        } else if (i > 99 &&  i <= 100) {
+            this.item = new ColorfullFlask();
         }
     }
 
