@@ -33,4 +33,7 @@ public class Localization {
     }
 
 
+    public String getMainTitle() {
+        return get("mainTitle");
+    }
 }

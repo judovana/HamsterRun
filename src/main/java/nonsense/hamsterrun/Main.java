@@ -132,7 +132,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame gameView = new JFrame("Guinea pig run");
+                JFrame gameView = new JFrame(Localization.get().getMainTitle());
                 gameView.setLayout(new GridLayout(0, BaseConfig.getConfig().getColumns(), 2, 2));
                 if (BaseConfig.getConfig().getViews() == 0) {
                     RatsController.RatControl exControl = new RatsController.KeyboardControl0();
