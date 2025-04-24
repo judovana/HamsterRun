@@ -1,5 +1,6 @@
 package nonsense.hamsterrun.env;
 
+import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.aliens.Alien;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
 import nonsense.hamsterrun.env.traps.Carrot;
@@ -28,33 +29,14 @@ import java.util.stream.Collectors;
 
 public class BlockField {
 
-    private static ItemsWithProbability[] itemsWithProbabilities = new ItemsWithProbability[]{
-            new ItemsWithProbability(Empty.class, 50),
-            new ItemsWithProbability(Cucumber.class, 30),
-            new ItemsWithProbability(Carrot.class, 15),
-            new ItemsWithProbability(Pepper.class, 15),
-            new ItemsWithProbability(Cucumber.class, 30),
-            new ItemsWithProbability(OneWayTeleport.class, 4),
-            new ItemsWithProbability(TwoWayTeleport.class, 8),
-            new ItemsWithProbability(AllWayTeleport.class, 4),
-            new ItemsWithProbability(TrapDoor.class, 5),
-            new ItemsWithProbability(InvisibleTrapDoor.class, 4),
-            new ItemsWithProbability(Water.class, 15),
-            new ItemsWithProbability(Tunnel.class, 20),
-            new ItemsWithProbability(Fire.class, 10),
-            new ItemsWithProbability(Torturer.class, 10),
-            new ItemsWithProbability(Mushroom.class, 2),
-            new ItemsWithProbability(ColorfullFlask.class, 2),
+    private static final List<ItemsWithBoundaries> recalcualted = recalculateToBoundaries(BaseConfig.DEFAULT_ITEMS_PROBABILITIES);
 
-    };
-    private static final List<ItemsWithBoundaries> recalcualted = recalculateToBoundaries(itemsWithProbabilities);
-
-    private static List<ItemsWithBoundaries> recalculateToBoundaries(ItemsWithProbability[] itemsWithProbabilities) {
+    private static List<ItemsWithBoundaries> recalculateToBoundaries(BaseConfig.ItemsWithProbability[] itemsWithProbabilities) {
         int maxSum = Arrays.stream(itemsWithProbabilities).map(a -> a.ratio).collect(Collectors.summingInt(Integer::intValue));
         List<ItemsWithBoundaries> recalcualted = new ArrayList<>(itemsWithProbabilities.length);
         int usedSum = 0;
         float probabCheck = 0;
-        for (ItemsWithProbability item : itemsWithProbabilities) {
+        for (BaseConfig.ItemsWithProbability item : itemsWithProbabilities) {
             if (item.ratio > 0) {
                 recalcualted.add(new ItemsWithBoundaries(item.clazz, usedSum, usedSum + item.ratio));
                 usedSum = usedSum + item.ratio;
@@ -125,17 +107,6 @@ public class BlockField {
         return Rat.toUniversalCoords(getParent().getCoords(), getCoords());
     }
 
-
-    private static class ItemsWithProbability {
-        //0 == disabled
-        private final Class clazz;
-        private final int ratio;
-
-        public ItemsWithProbability(Class clazz, int ratio) {
-            this.clazz = clazz;
-            this.ratio = ratio;
-        }
-    }
 
     private static class ItemsWithBoundaries {
         //0 == disabled

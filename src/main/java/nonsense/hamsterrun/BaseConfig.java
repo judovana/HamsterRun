@@ -1,5 +1,21 @@
 package nonsense.hamsterrun;
 
+import nonsense.hamsterrun.env.BlockField;
+import nonsense.hamsterrun.env.traps.AllWayTeleport;
+import nonsense.hamsterrun.env.traps.Carrot;
+import nonsense.hamsterrun.env.traps.ColorfullFlask;
+import nonsense.hamsterrun.env.traps.Cucumber;
+import nonsense.hamsterrun.env.traps.Empty;
+import nonsense.hamsterrun.env.traps.Fire;
+import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
+import nonsense.hamsterrun.env.traps.Mushroom;
+import nonsense.hamsterrun.env.traps.OneWayTeleport;
+import nonsense.hamsterrun.env.traps.Pepper;
+import nonsense.hamsterrun.env.traps.Torturer;
+import nonsense.hamsterrun.env.traps.TrapDoor;
+import nonsense.hamsterrun.env.traps.Tunnel;
+import nonsense.hamsterrun.env.traps.TwoWayTeleport;
+import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.util.ArrayList;
@@ -9,6 +25,18 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class BaseConfig {
+
+    public static class ItemsWithProbability {
+        //0 == disabled
+        public final Class clazz;
+        public final int ratio;
+
+        public ItemsWithProbability(Class clazz, int ratio) {
+            this.clazz = clazz;
+            this.ratio = ratio;
+        }
+    }
+
     private static final Random seed = new Random();
     private static BaseConfig baseConfig = BaseConfig.small();
     int baseSize = 10;
@@ -22,6 +50,26 @@ public class BaseConfig {
     int regSpeed = 200;
     private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
+
+    public static final ItemsWithProbability[] DEFAULT_ITEMS_PROBABILITIES = new ItemsWithProbability[]{
+            new ItemsWithProbability(Empty.class, 50),
+            new ItemsWithProbability(Cucumber.class, 30),
+            new ItemsWithProbability(Carrot.class, 15),
+            new ItemsWithProbability(Pepper.class, 15),
+            new ItemsWithProbability(Cucumber.class, 30),
+            new ItemsWithProbability(OneWayTeleport.class, 4),
+            new ItemsWithProbability(TwoWayTeleport.class, 8),
+            new ItemsWithProbability(AllWayTeleport.class, 4),
+            new ItemsWithProbability(TrapDoor.class, 5),
+            new ItemsWithProbability(InvisibleTrapDoor.class, 4),
+            new ItemsWithProbability(Water.class, 15),
+            new ItemsWithProbability(Tunnel.class, 20),
+            new ItemsWithProbability(Fire.class, 10),
+            new ItemsWithProbability(Torturer.class, 10),
+            new ItemsWithProbability(Mushroom.class, 2),
+            new ItemsWithProbability(ColorfullFlask.class, 2),
+
+    };
 
     BaseConfig() {
     }
