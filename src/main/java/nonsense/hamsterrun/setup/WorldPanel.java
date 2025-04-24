@@ -11,6 +11,7 @@ import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -63,7 +64,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
 
         gridSizeLabel = new JLabel("grid size");
         controls.add(gridSizeLabel);
-        gridSizeSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getGridSize(), 3, 10000, 1));
+        gridSizeSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getGridSize(), 3, 10001, 2));
         gridSizeSpinner.addChangeListener(this);
         controls.add(gridSizeSpinner);
 
@@ -96,6 +97,13 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         BaseConfig.getConfig().setBaseSize(((Number) baseSizeSpinner.getValue()).intValue());
         BaseConfig.getConfig().setGridSize(((Number) gridSizeSpinner.getValue()).intValue());
         BaseConfig.getConfig().setRegSpeed(((Number) regSpeedSpinner.getValue()).intValue());
+        try {
+            BaseConfig.getConfig().verify();
+        }catch (Exception ex) {
+            //((JSpinner)changeEvent.getSource()).setValue(orginalValue);
+            JOptionPane.showMessageDialog(null, ex);
+            throw ex;
+        }
         if (world != null) {
             world.kill();
         }
