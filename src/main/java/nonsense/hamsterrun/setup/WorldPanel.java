@@ -35,6 +35,10 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
     private final JSpinner gridSizeSpinner;
     private final JLabel regSpeedLabel;
     private final JSpinner regSpeedSpinner;
+    private final JLabel baseDensityMaxLabel;
+    private final JSpinner baseDensityMaxSpinner;
+    private final JLabel baseDensityMinLabel;
+    private final JSpinner baseDensityMinSpinner;
     private final JPanel preview = new JPanel() {
         public void paint(Graphics g) {
             super.paint(g);
@@ -74,6 +78,19 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         regSpeedSpinner.addChangeListener(this);
         controls.add(regSpeedSpinner);
 
+        baseDensityMinLabel = new JLabel("base Density Min");
+        controls.add(baseDensityMinLabel);
+        baseDensityMinSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getBaseDensityMin(), 1, 999, 1));
+        baseDensityMinSpinner.addChangeListener(this);
+        controls.add(baseDensityMinSpinner);
+
+        baseDensityMaxLabel = new JLabel("base Density Max");
+        controls.add(baseDensityMaxLabel);
+        baseDensityMaxSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getBaseDensityMax(), 1, 999, 1));
+        baseDensityMaxSpinner.addChangeListener(this);
+        controls.add(baseDensityMaxSpinner);
+
+
         ///controlsScroll.add(controls);
         add(controls);
 
@@ -90,6 +107,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         baseSizeLabel.setText(Localization.get().getBaseConfigLabel());
         gridSizeLabel.setText(Localization.get().getGridConfigLabel());
         regSpeedLabel.setText(Localization.get().getRegSpeedLabel());
+        baseDensityMaxLabel.setText(Localization.get().baseDensityMaxLabel());
+        baseDensityMinLabel.setText(Localization.get().baseDensityMinLabel());
     }
 
     @Override
@@ -97,6 +116,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         BaseConfig.getConfig().setBaseSize(((Number) baseSizeSpinner.getValue()).intValue());
         BaseConfig.getConfig().setGridSize(((Number) gridSizeSpinner.getValue()).intValue());
         BaseConfig.getConfig().setRegSpeed(((Number) regSpeedSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setBaseDensityMin(((Number) baseDensityMinSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setBaseDensityMax(((Number) baseDensityMaxSpinner.getValue()).intValue());
         try {
             BaseConfig.getConfig().verify();
         }catch (Exception ex) {

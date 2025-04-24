@@ -52,4 +52,12 @@ public class Localization {
     public String getRegSpeedLabel() {
         return get("regSpeedLabel");
     }
+
+    public String baseDensityMaxLabel() {
+        return get("baseDensityMaxLabel");
+    }
+
+    public String baseDensityMinLabel() {
+        return get("baseDensityMinLabel");
+    }
 }
