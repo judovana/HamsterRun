@@ -21,6 +21,7 @@ public class World implements Runnable {
     private static final Random seed = new Random();
 
     private final Thread repl;
+    private boolean live = true;
     private final Maze maze;
     private final List<JComponent> repaintListeners = new ArrayList<>(2);
     private int worldAnim = 0;
@@ -208,8 +209,12 @@ public class World implements Runnable {
         return bl;
     }
 
+    public void kill() {
+        live = false;
+    }
+
     public void run() {
-        while (true) {
+        while (live) {
             //FIXME try catch all
             try {
                 worldAnim++;

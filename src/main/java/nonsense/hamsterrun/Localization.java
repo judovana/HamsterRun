@@ -44,4 +44,8 @@ public class Localization {
     public String getBaseConfigLabel() {
         return get("baseConfiglabel");
     }
+
+    public String getGridConfigLabel() {
+        return get("gridConfiglabel");
+    }
 }
