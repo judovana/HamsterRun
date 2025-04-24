@@ -32,7 +32,11 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
             super.paint(g);
             Graphics2D g2d = (Graphics2D) g;
             if (world!=null) {
-                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, 2, null, true);
+                int worldWidth = BaseConfig.getConfig().getBaseSize()*BaseConfig.getConfig().getGridSize();
+                int worldHeight = BaseConfig.getConfig().getBaseSize()*BaseConfig.getConfig().getGridSize();
+                int wZoopm = this.getWidth()/worldWidth;
+                int hZoopm = this.getHeight()/worldHeight;
+                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, Math.min(hZoopm, wZoopm), null, true);
             }
         }
     };
