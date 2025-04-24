@@ -67,7 +67,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
     @Override
     public void stateChanged(ChangeEvent changeEvent) {
         BaseConfig.getConfig().setBaseSize(((Number) baseSizeSpinner.getValue()).intValue());
-        //FIXME the old world must terminate te thread.. or something..its blocking the shutdwon now
+        //TODO the old world must terminate te thread?
         world = new World(Maze.generate(BaseConfig.getConfig()));
         world.addRepaintListener(preview);
     }

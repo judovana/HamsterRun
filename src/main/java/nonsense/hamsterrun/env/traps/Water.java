@@ -31,6 +31,7 @@ public class Water implements Item {
     };
 
     static {
+        waterCounter.setDaemon(true);
         waterCounter.start();
     }
 
