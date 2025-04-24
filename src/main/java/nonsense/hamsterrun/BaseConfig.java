@@ -140,14 +140,14 @@ public class BaseConfig {
         if (baseSize <= 4) {
             throw new RuntimeException(" minimal size of base is  5. You set" + baseSize);
         }
-        if (baseDensityMin >= baseSize) {
-            throw new RuntimeException("base density min must be lower base size:  " + baseDensityMin + "!<" + baseSize);
-        }
-        if (baseDensityMax >= baseSize) {
-            throw new RuntimeException("base density max must be lower base size:  " + baseDensityMax + "!<" + baseSize);
-        }
         if (baseDensityMin > baseDensityMax) {
             throw new RuntimeException("base density min must be lower or equal to max, is not: " + baseDensityMin + "!<=" + baseDensityMax);
+        }
+        if (baseDensityMin >= baseSize-2) {
+            throw new RuntimeException("base density min must be lower base size:  " + baseDensityMin + "!<" + (baseSize-2));
+        }
+        if (baseDensityMax >= baseSize-2) {
+            throw new RuntimeException("base density max must be lower base size:  " + baseDensityMax + "!<" + (baseSize-2));
         }
         if (gridConnectivityMin > baseDensityMin) {
             throw new RuntimeException("connectivity min must be lower or equals  base density min " + gridConnectivityMin + "!<=" + baseDensityMin);

@@ -72,12 +72,6 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         gridSizeSpinner.addChangeListener(this);
         controls.add(gridSizeSpinner);
 
-        regSpeedLabel = new JLabel("reg speed");
-        controls.add(regSpeedLabel);
-        regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 1));
-        regSpeedSpinner.addChangeListener(this);
-        controls.add(regSpeedSpinner);
-
         baseDensityMinLabel = new JLabel("base Density Min");
         controls.add(baseDensityMinLabel);
         baseDensityMinSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getBaseDensityMin(), 1, 999, 1));
@@ -90,6 +84,11 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         baseDensityMaxSpinner.addChangeListener(this);
         controls.add(baseDensityMaxSpinner);
 
+        regSpeedLabel = new JLabel("reg speed");
+        controls.add(regSpeedLabel);
+        regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 1));
+        regSpeedSpinner.addChangeListener(this);
+        controls.add(regSpeedSpinner);
 
         ///controlsScroll.add(controls);
         add(controls);
