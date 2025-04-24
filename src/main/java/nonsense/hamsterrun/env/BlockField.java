@@ -2,22 +2,8 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.aliens.Alien;
-import nonsense.hamsterrun.env.traps.AllWayTeleport;
-import nonsense.hamsterrun.env.traps.Carrot;
-import nonsense.hamsterrun.env.traps.ColorfullFlask;
-import nonsense.hamsterrun.env.traps.Cucumber;
 import nonsense.hamsterrun.env.traps.Empty;
-import nonsense.hamsterrun.env.traps.Fire;
-import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
-import nonsense.hamsterrun.env.traps.Mushroom;
-import nonsense.hamsterrun.env.traps.OneWayTeleport;
-import nonsense.hamsterrun.env.traps.Pepper;
-import nonsense.hamsterrun.env.traps.Torturer;
-import nonsense.hamsterrun.env.traps.TrapDoor;
-import nonsense.hamsterrun.env.traps.Tunnel;
-import nonsense.hamsterrun.env.traps.TwoWayTeleport;
-import nonsense.hamsterrun.env.traps.Water;
 
 import java.awt.Point;
 import java.lang.reflect.Constructor;
@@ -31,7 +17,7 @@ public class BlockField {
 
     private static final List<ItemsWithBoundaries> recalcualted = recalculateToBoundaries(BaseConfig.DEFAULT_ITEMS_PROBABILITIES);
 
-    private static List<ItemsWithBoundaries> recalculateToBoundaries(BaseConfig.ItemsWithProbability[] itemsWithProbabilities) {
+    public static List<ItemsWithBoundaries> recalculateToBoundaries(BaseConfig.ItemsWithProbability[] itemsWithProbabilities) {
         int maxSum = Arrays.stream(itemsWithProbabilities).map(a -> a.ratio).collect(Collectors.summingInt(Integer::intValue));
         List<ItemsWithBoundaries> recalcualted = new ArrayList<>(itemsWithProbabilities.length);
         int usedSum = 0;

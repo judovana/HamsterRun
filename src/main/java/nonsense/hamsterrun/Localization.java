@@ -36,4 +36,12 @@ public class Localization {
     public String getMainTitle() {
         return get("mainTitle");
     }
+
+    public String getWorldTitle() {
+        return get("worldTitle");
+    }
+
+    public String getBaseConfigLabel() {
+        return get("baseConfiglabel");
+    }
 }

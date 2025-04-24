@@ -1,6 +1,5 @@
 package nonsense.hamsterrun;
 
-import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
 import nonsense.hamsterrun.env.traps.Carrot;
 import nonsense.hamsterrun.env.traps.ColorfullFlask;
@@ -39,15 +38,16 @@ public class BaseConfig {
 
     private static final Random seed = new Random();
     private static BaseConfig baseConfig = BaseConfig.small();
-    int baseSize = 10;
-    int baseDensityMin = 4;
-    int baseDensityMax = 7;
-    int gridSize = 5;
-    int gridConnectivityMin = 1;
-    int gridConnectivityMax = 4;
-    int delayMs = 50;
-    boolean keepRegenerating = true;
-    int regSpeed = 200;
+
+    private int baseSize = 10;
+    private int baseDensityMin = 4;
+    private int baseDensityMax = 7;
+    private int gridSize = 5;
+    private int gridConnectivityMin = 1;
+    private int gridConnectivityMax = 4;
+    private int delayMs = 50;
+    private boolean keepRegenerating = true;
+    private int regSpeed = 200;
     private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
 
@@ -108,7 +108,7 @@ public class BaseConfig {
         return seed.nextInt(max - min + 1) + min;
     }
 
-    void summUp() {
+    public void summUp() {
         System.out.println("Each basic block will have size " + baseSize + " x " + baseSize);
         System.out.println("Each basic block will minimum of vertical bars " + baseDensityMin);
         System.out.println("Each basic block will minimum of horizontal bars " + baseDensityMin);
@@ -130,7 +130,7 @@ public class BaseConfig {
         System.out.println("gui will have columns: " + columns);
     }
 
-    void verify() {
+    public void verify() {
         if (delayMs <= 1 || delayMs > 1000) {
             throw new RuntimeException(" main thead delay should be between 1 and 1000: " + delayMs);
         }
@@ -248,6 +248,42 @@ public class BaseConfig {
 
     public void setRegSpeed(int regSpeed) {
         this.regSpeed = regSpeed;
+    }
+
+    public void setBaseSize(int baseSize) {
+        this.baseSize = baseSize;
+    }
+
+    public void setBaseDensityMin(int baseDensityMin) {
+        this.baseDensityMin = baseDensityMin;
+    }
+
+    public void setBaseDensityMax(int baseDensityMax) {
+        this.baseDensityMax = baseDensityMax;
+    }
+
+    public void setGridSize(int gridSize) {
+        this.gridSize = gridSize;
+    }
+
+    public void setGridConnectivityMin(int gridConnectivityMin) {
+        this.gridConnectivityMin = gridConnectivityMin;
+    }
+
+    public void setGridConnectivityMax(int gridConnectivityMax) {
+        this.gridConnectivityMax = gridConnectivityMax;
+    }
+
+    public void setDelayMs(int delayMs) {
+        this.delayMs = delayMs;
+    }
+
+    public void setKeepRegenerating(boolean keepRegenerating) {
+        this.keepRegenerating = keepRegenerating;
+    }
+
+    public void setRats(List<RatSetup> rats) {
+        this.rats = rats;
     }
 
     public int getTunnelConfusionFactor() {

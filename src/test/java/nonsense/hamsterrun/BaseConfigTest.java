@@ -14,11 +14,11 @@ public class BaseConfigTest {
         BaseConfig config = new BaseConfig();
         for (int x = 0; x < 1000; x++) {
             int d = config.getDensity();
-            Assertions.assertTrue(d >= config.baseDensityMin);
-            Assertions.assertTrue(d <= config.baseDensityMax);
+            Assertions.assertTrue(d >= config.getBaseDensityMin());
+            Assertions.assertTrue(d <= config.getBaseDensityMax());
         }
-        config.baseDensityMin = 2;
-        config.baseDensityMax = 2;
+        config.setBaseDensityMin(2);
+        config.setBaseDensityMax(2);
         for (int x = 0; x < 1000; x++) {
             int d = config.getDensity();
             Assertions.assertEquals(2, d);
@@ -30,11 +30,11 @@ public class BaseConfigTest {
         BaseConfig config = new BaseConfig();
         for (int x = 0; x < 1000; x++) {
             int d = config.getConnectivity();
-            Assertions.assertTrue(d >= config.gridConnectivityMin);
-            Assertions.assertTrue(d <= config.gridConnectivityMax);
+            Assertions.assertTrue(d >= config.getGridConnectivityMin());
+            Assertions.assertTrue(d <= config.getGridConnectivityMax());
         }
-        config.gridConnectivityMin = 2;
-        config.gridConnectivityMax = 2;
+        config.setGridConnectivityMin(2);
+        config.setGridConnectivityMax(2);
         for (int x = 0; x < 1000; x++) {
             int d = config.getConnectivity();
             Assertions.assertEquals(2, d);

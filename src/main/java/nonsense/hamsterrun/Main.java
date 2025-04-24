@@ -40,41 +40,41 @@ public class Main {
                 switch (sanitized) {
                     case "delay":
                         x++;
-                        config.delayMs = Integer.valueOf(args[x]);
-                        System.out.println("Main loop delay will be " + config.delayMs + " ms");
+                        config.setDelayMs(Integer.valueOf(args[x]));
+                        System.out.println("Main loop delay will be " + config.getDelayMs() + " ms");
                         break;
                     case "base-size":
                         x++;
-                        config.baseSize = Integer.valueOf(args[x]);
-                        System.out.println("Each basic block will have size " + config.baseSize + " x " + config.baseSize);
+                        config.setBaseSize(Integer.valueOf(args[x]));
+                        System.out.println("Each basic block will have size " + config.getBaseSize() + " x " + config.getBaseSize());
                         break;
                     case "base-density-min":
                         x++;
-                        config.baseDensityMin = Integer.valueOf(args[x]);
+                        config.setBaseDensityMin(Integer.valueOf(args[x]));
                         break;
                     case "base-density-max":
                         x++;
-                        config.baseDensityMax = Integer.valueOf(args[x]);
+                        config.setBaseDensityMax(Integer.valueOf(args[x]));
                         break;
                     case "grid-size":
                         x++;
-                        config.gridSize = Integer.valueOf(args[x]);
+                        config.setGridSize(Integer.valueOf(args[x]));
                         break;
                     case "grid-connectivity-min":
                         x++;
-                        config.gridConnectivityMin = Integer.valueOf(args[x]);
+                        config.setGridConnectivityMin(Integer.valueOf(args[x]));
                         break;
                     case "grid-connectivity-max":
                         x++;
-                        config.gridConnectivityMax = Integer.valueOf(args[x]);
+                        config.setGridConnectivityMax(Integer.valueOf(args[x]));
                         break;
                     case "keep-regenerating":
                         x++;
-                        config.keepRegenerating = Boolean.valueOf(args[x]);
+                        config.setKeepRegenerating(Boolean.valueOf(args[x]));
                         break;
                     case "regenerating-speed":
                         x++;
-                        config.regSpeed = Integer.valueOf(args[x]);
+                        config.setRegSpeed(Integer.valueOf(args[x]));
                         break;
                     case "rat":
                         x++;
