@@ -48,4 +48,8 @@ public class Localization {
     public String getGridConfigLabel() {
         return get("gridConfiglabel");
     }
+
+    public String getRegSpeedLabel() {
+        return get("regSpeedLabel");
+    }
 }

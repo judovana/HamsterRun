@@ -4,7 +4,11 @@ package nonsense.hamsterrun.setup;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.env.Maze;
+import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
+import nonsense.hamsterrun.ratcontroll.ComputerControl;
+import nonsense.hamsterrun.ratcontroll.RatsController;
+import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +21,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class WorldPanel extends JPanel implements Localized, ChangeListener {
@@ -26,6 +32,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
     private final JSpinner baseSizeSpinner;
     private final JLabel gridSizeLabel;
     private final JSpinner gridSizeSpinner;
+    private final JLabel regSpeedLabel;
+    private final JSpinner regSpeedSpinner;
     private final JPanel preview = new JPanel() {
         public void paint(Graphics g) {
             super.paint(g);
@@ -59,6 +67,12 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         gridSizeSpinner.addChangeListener(this);
         controls.add(gridSizeSpinner);
 
+        regSpeedLabel = new JLabel("reg speed");
+        controls.add(regSpeedLabel);
+        regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 1));
+        regSpeedSpinner.addChangeListener(this);
+        controls.add(regSpeedSpinner);
+
         ///controlsScroll.add(controls);
         add(controls);
 
@@ -74,16 +88,36 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         setName(Localization.get().getWorldTitle());
         baseSizeLabel.setText(Localization.get().getBaseConfigLabel());
         gridSizeLabel.setText(Localization.get().getGridConfigLabel());
+        regSpeedLabel.setText(Localization.get().getRegSpeedLabel());
     }
 
     @Override
     public void stateChanged(ChangeEvent changeEvent) {
         BaseConfig.getConfig().setBaseSize(((Number) baseSizeSpinner.getValue()).intValue());
         BaseConfig.getConfig().setGridSize(((Number) gridSizeSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setRegSpeed(((Number) regSpeedSpinner.getValue()).intValue());
         if (world != null) {
             world.kill();
         }
         world = new World(Maze.generate(BaseConfig.getConfig()));
+        world.setRatsProvider(new RatsProvider() {
+            private final Rat r = new Rat();
+            @Override
+            public List<Rat> getRats() {
+                return Arrays.asList(r);
+            }
+
+            @Override
+            public RatsController.RatControl getRatControl(Rat rat) {
+                return new ComputerControl();
+            }
+
+            @Override
+            public void swap(Rat rat) {
+
+            }
+        });
+        world.allRatsSpread(false);
         world.addRepaintListener(preview);
     }
 }
