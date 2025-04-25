@@ -40,6 +40,12 @@ public class Torturer implements Item {
         }
     }
 
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        drawInto(g2d, 0,0, size, 2,null, 0, 0);
+        drawInto(g2d, 0,0, size, 3,null, 0, 0);
+    }
+
     protected BufferedImage getSprite() {
         return SpritesProvider.whirlMove[anim % 2];
     }

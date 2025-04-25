@@ -32,6 +32,11 @@ public abstract class Vegetable implements Item {
         }
     }
 
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        drawInto(g2d, 0,0, size, 2,null, 0, 0);
+    }
+
     protected abstract Image getSprite();
 
     abstract public int eat(Rat eater, World world);

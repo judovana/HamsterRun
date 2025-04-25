@@ -84,6 +84,12 @@ public abstract class Teleport implements Item, Relocator {
     }
 
     @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        drawInto(g2d, 0,0, size, 2,null, 0, 0);
+        drawInto(g2d, 0,0, size, 3,null, 0, 0);
+    }
+
+    @Override
     public void playMainSoundFor(SoundsBuffer rat) {
         rat.addToMoveQueue(SoundsBuffer.brbliTele);
     }

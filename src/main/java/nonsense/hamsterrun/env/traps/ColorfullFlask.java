@@ -37,4 +37,9 @@ public class ColorfullFlask implements Item {
             g2d.drawImage(SpritesProvider.flask[((anim/3)%3)], coordx + (zoom - finalSize) / 2, coordy + (zoom - finalSize) / 2, finalSize, finalSize, null);
         }
     }
+
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        drawInto(g2d, 0,0, size, 2,null, 0, 0);
+    }
 }

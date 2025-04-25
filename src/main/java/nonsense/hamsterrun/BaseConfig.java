@@ -17,6 +17,7 @@ import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,7 @@ public class BaseConfig {
             this.clazz = clazz;
             this.ratio = ratio;
         }
+
     }
 
     private static final Random seed = new Random();

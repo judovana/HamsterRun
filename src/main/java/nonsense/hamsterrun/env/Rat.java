@@ -33,6 +33,20 @@ public class Rat extends MovingOne {
     private String skin = "rat";
     private ScoreListener scoreListener;
 
+    public Rat(SoundsBuffer sounds) {
+        this.sounds = sounds;
+    }
+
+    public Rat() {
+    }
+
+    public Rat(Point world, Point block) {
+        super(world, block);
+    }
+
+    public Rat(int worldx, int worldy, int blockx, int blocky) {
+        super(worldx, worldy, blockx, blocky);
+    }
 
     public String getSkin() {
         return skin;

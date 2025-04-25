@@ -18,7 +18,8 @@ public class Empty implements Item {
 
     }
 
-    public void drawThumbnail(Graphics2D g2d, int size, int level) {
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
         g2d.drawImage(SpritesProvider.getFloor(5), 0, 0, size, size, null);
     }
 

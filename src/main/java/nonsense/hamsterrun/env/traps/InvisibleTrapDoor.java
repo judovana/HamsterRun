@@ -41,6 +41,11 @@ public class InvisibleTrapDoor implements Item, Relocator {
         }
     }
 
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        drawInto(g2d, 0,0, size, 2,null, 0, 0);
+    }
+
     public void close() {
         this.closed = true;
     }

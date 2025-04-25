@@ -20,8 +20,9 @@ public class Cage implements Item {
 
     }
 
-    public void drawThumbnail(Graphics2D g2d, int size, int level) {
-
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        drawInto(g2d, 0,0, size, 2,null, 0, 0);
     }
 
     @Override

@@ -1,15 +1,11 @@
 package nonsense.hamsterrun.setup;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -37,8 +33,7 @@ public class SetupWindow {
                 JPanel rats = new JPanel(new BorderLayout());
                 rats.setName("rats");;
                 rats.add(new JButton("Add rat"), BorderLayout.NORTH);
-                JPanel items = new JPanel();
-                items.setName("items");;
+                JPanel items = new ItemsAndAliensPanel();
                 tabs.add(rats);
                 tabs.add(items);
                 tabs.add(new WorldPanel());

@@ -7,6 +7,7 @@ import nonsense.hamsterrun.env.traps.Item;
 
 import java.awt.Point;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -112,15 +113,22 @@ public class BlockField {
         int i = seed.nextInt(recalcualted.get(recalcualted.size()-1).upper);
         for (ItemsWithBoundaries item : recalcualted) {
             if (i >= item.lower && i < item.upper) {
-                try {
-                    Constructor<?> ctor = item.clazz.getConstructor();
-                    Object object = ctor.newInstance();
-                    this.item = (Item) object;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                this.item = itemClassToItemCatched(item.clazz);
                 break;
             }
         }
+    }
+
+    public static Item itemClassToItemCatched(Class clazz) {
+        try {
+            return itemClassToItem(clazz);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static Item itemClassToItem(Class clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Constructor<?> ctor = clazz.getConstructor();
+        Object object = ctor.newInstance();
+        return (Item) object;
     }
 }

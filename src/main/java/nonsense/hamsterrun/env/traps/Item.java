@@ -22,7 +22,5 @@ public interface Item {
     //missing somethign between floor and walls.. but nvm...
     void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y);
 
-    default void drawThumbnail(Graphics2D g2d, int size, int level) {
-        drawInto(g2d, 0, 0, size,  level, null, 0,0);
-    }
+    void drawThumbnail(Graphics2D g2d, int size);
 }
