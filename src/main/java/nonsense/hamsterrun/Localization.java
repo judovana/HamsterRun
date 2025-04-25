@@ -62,4 +62,11 @@ public class Localization {
     public String baseDensityMinLabel() {
         return get("baseDensityMinLabel");
     }
+
+    public String gridConnectivityMinLabel() {
+        return get("gridConnectivityMinLabel");
+    }
+    public String gridConnectivityMaxLabel() {
+        return get("gridConnectivityMaxLabel");
+    }
 }

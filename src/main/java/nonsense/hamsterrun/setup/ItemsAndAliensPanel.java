@@ -10,6 +10,7 @@ import nonsense.hamsterrun.env.traps.Item;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -36,12 +37,7 @@ public class ItemsAndAliensPanel extends JPanel implements Localized, ChangeList
     public ItemsAndAliensPanel() {
         this.setLayout(new GridLayout(2, 1));
         JPanel controlls = new JPanel(new GridLayout(0, 1));
-        int i = 0;
-        for (BaseConfig.ItemsWithProbability iwp : BaseConfig.DEFAULT_ITEMS_PROBABILITIES) {
-            i++;
-            if (i == 20) {
-                break;
-            }
+        for (BaseConfig.ItemsWithProbability iwp : BaseConfig.getConfig().getItemsProbabilities()) {
             PreviewItemLine item = new PreviewItemLine(iwp);
             controlls.add(item);
         }
@@ -76,6 +72,12 @@ public class ItemsAndAliensPanel extends JPanel implements Localized, ChangeList
             JPanel b1 = new JPanel(new GridLayout(2, 1));
             JLabel ln = new JLabel(source.clazz.getSimpleName());
             ln.setToolTipText("Description");
+            ln.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    JOptionPane.showMessageDialog(ln, ln.getToolTipText());
+                }
+            });
             b1.add(ln);
             JButton sound = new JButton("<))");
             sound.addActionListener(new ActionListener() {

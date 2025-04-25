@@ -20,7 +20,6 @@ import java.awt.BorderLayout;
 public class SetupWindow {
     public static void main(String[] args) throws Exception {
         BaseConfig config = BaseConfig.getConfig();
-        BlockField.recalculateToBoundaries(BaseConfig.DEFAULT_ITEMS_PROBABILITIES);
         SpritesProvider.load();
         config.summUp();
         config.verify();

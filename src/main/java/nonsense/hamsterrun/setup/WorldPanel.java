@@ -37,10 +37,14 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner gridSizeSpinner;
     private final JLabel regSpeedLabel;
     private final JSpinner regSpeedSpinner;
-    private final JLabel baseDensityMaxLabel;
-    private final JSpinner baseDensityMaxSpinner;
     private final JLabel baseDensityMinLabel;
     private final JSpinner baseDensityMinSpinner;
+    private final JLabel baseDensityMaxLabel;
+    private final JSpinner baseDensityMaxSpinner;
+    private final JLabel gridConnectivityMinLabel;
+    private final JSpinner gridConnectivityMinSpinner;
+    private final JLabel gridConnectivityMaxLabel;
+    private final JSpinner gridConnectivityMaxSpinner;
     private World world;
     private final JPanel preview = new JPanel() {
         public void paint(Graphics g) {
@@ -93,6 +97,20 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         baseDensityMaxSpinner.addFocusListener(this);
         controls.add(baseDensityMaxSpinner);
 
+        gridConnectivityMinLabel = new JLabel("grid connectivity min");
+        controls.add(gridConnectivityMinLabel);
+        gridConnectivityMinSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getGridConnectivityMin(), 1, 999, 1));
+        gridConnectivityMinSpinner.addChangeListener(this);
+        gridConnectivityMinSpinner.addFocusListener(this);
+        controls.add(gridConnectivityMinSpinner);
+
+        gridConnectivityMaxLabel = new JLabel("base connectivity max");
+        controls.add(gridConnectivityMaxLabel);
+        gridConnectivityMaxSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getGridConnectivityMax(), 1, 999, 1));
+        gridConnectivityMaxSpinner.addChangeListener(this);
+        gridConnectivityMaxSpinner.addFocusListener(this);
+        controls.add(gridConnectivityMaxSpinner);
+
         regSpeedLabel = new JLabel("reg speed");
         controls.add(regSpeedLabel);
         regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 1));
@@ -118,6 +136,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         regSpeedLabel.setText(Localization.get().getRegSpeedLabel());
         baseDensityMaxLabel.setText(Localization.get().baseDensityMaxLabel());
         baseDensityMinLabel.setText(Localization.get().baseDensityMinLabel());
+        gridConnectivityMinLabel.setText(Localization.get().gridConnectivityMinLabel());
+        gridConnectivityMinLabel.setText(Localization.get().gridConnectivityMaxLabel());
     }
 
     @Override
@@ -127,6 +147,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         BaseConfig.getConfig().setRegSpeed(((Number) regSpeedSpinner.getValue()).intValue());
         BaseConfig.getConfig().setBaseDensityMin(((Number) baseDensityMinSpinner.getValue()).intValue());
         BaseConfig.getConfig().setBaseDensityMax(((Number) baseDensityMaxSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setGridConnectivityMin(((Number) gridConnectivityMinSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setGridConnectivityMax(((Number) gridConnectivityMaxSpinner.getValue()).intValue());
         try {
             BaseConfig.getConfig().verify();
         } catch (Exception ex) {
