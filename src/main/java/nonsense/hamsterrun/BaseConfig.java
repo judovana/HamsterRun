@@ -18,6 +18,7 @@ import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -47,6 +48,7 @@ public class BaseConfig {
     private static final Random seed = new Random();
     private static BaseConfig baseConfig = BaseConfig.small();
 
+    private List<ItemsWithProbability> items = null;
     private int baseSize = 10;
     private int baseDensityMin = 4;
     private int baseDensityMax = 7;
@@ -294,5 +296,13 @@ public class BaseConfig {
             this.ratio = ratio;
         }
 
+    }
+
+    public List<ItemsWithProbability> getItemsProbabilities() {
+        if (items == null) {
+            items =  new ArrayList<>();
+            items.addAll(Arrays.asList(DEFAULT_ITEMS_PROBABILITIES));
+        }
+        return items;
     }
 }

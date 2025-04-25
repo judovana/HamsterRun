@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class BlockField {
 
-    private static final List<ItemsWithBoundaries> recalcualted = recalculateToBoundaries(BaseConfig.DEFAULT_ITEMS_PROBABILITIES);
     private final Point coords;
     private final BaseBlock parent;
     private boolean passable;
@@ -31,16 +30,16 @@ public class BlockField {
         this.parent = parent;
     }
 
-    public static List<ItemsWithBoundaries> recalculateToBoundaries(BaseConfig.ItemsWithProbability[] itemsWithProbabilities) {
-        int maxSum = Arrays.stream(itemsWithProbabilities).map(a -> a.ratio).collect(Collectors.summingInt(Integer::intValue));
-        List<ItemsWithBoundaries> recalcualted = new ArrayList<>(itemsWithProbabilities.length);
+    public static List<ItemsWithBoundaries> recalculateToBoundaries(List<BaseConfig.ItemsWithProbability> itemsWithProbabilities) {
+        int maxSum = itemsWithProbabilities.stream().map(a -> a.ratio).collect(Collectors.summingInt(Integer::intValue));
+        List<ItemsWithBoundaries> recalcualted = new ArrayList<>(itemsWithProbabilities.size());
         int usedSum = 0;
         float probabCheck = 0;
         for (BaseConfig.ItemsWithProbability item : itemsWithProbabilities) {
             if (item.ratio > 0) {
                 recalcualted.add(new ItemsWithBoundaries(item.clazz, usedSum, usedSum + item.ratio));
                 usedSum = usedSum + item.ratio;
-                System.out.println("Adding " + item.clazz.getSimpleName() + " as " + recalcualted.size() + " of (max) " + itemsWithProbabilities.length);
+                System.out.println("Adding " + item.clazz.getSimpleName() + " as " + recalcualted.size() + " of (max) " + itemsWithProbabilities.size());
                 float probab = ((float) item.ratio / (float) maxSum * (float) 100);
                 probabCheck += probab;
                 System.out.println(" Probability is " + probab + " %");
@@ -106,8 +105,8 @@ public class BlockField {
         return Rat.toUniversalCoords(getParent().getCoords(), getCoords());
     }
 
-    //fixme - made this setup-able, absolutely.
     public void setRandomObstacle(Random seed) {
+        List<ItemsWithBoundaries> recalcualted = recalculateToBoundaries(BaseConfig.getConfig().getItemsProbabilities());
         int i = seed.nextInt(recalcualted.get(recalcualted.size() - 1).upper);
         for (ItemsWithBoundaries item : recalcualted) {
             if (i >= item.lower && i < item.upper) {
