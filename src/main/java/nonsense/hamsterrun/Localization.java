@@ -84,4 +84,8 @@ public class Localization {
     public String getColumnsLabel() {
         return get("columnsLabel");
     }
+
+    public String getStartGame() {
+        return get("startGame");
+    }
 }

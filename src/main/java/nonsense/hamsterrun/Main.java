@@ -91,12 +91,7 @@ public class Main {
             }
         }
         SpritesProvider.load();
-        config.summUp();
-        config.verify();
-
         worldDemo();
-
-        System.out.println("bye");
     }
 
     private static WorldAndRats generateGame() {
@@ -122,7 +117,9 @@ public class Main {
         return new WorldAndRats(world, ratsController);
     }
 
-    private static void worldDemo() {
+    public static void worldDemo() {
+        BaseConfig.getConfig().summUp();
+        BaseConfig.getConfig().verify();
         WorldAndRats result = generateGame();
         final World world = result.world;
         final RatsController ratsController = result.ratsController;
