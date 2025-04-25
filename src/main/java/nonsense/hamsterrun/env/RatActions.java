@@ -1,6 +1,5 @@
 package nonsense.hamsterrun.env;
 
-import java.awt.Point;
 import java.util.Random;
 
 public enum RatActions {

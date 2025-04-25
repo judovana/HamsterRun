@@ -9,7 +9,6 @@ import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,9 +19,9 @@ import java.util.Map;
 
 public class WavSoundPlayer {
 
+    private static final Map<String, byte[]> cache = new HashMap<>();
     private final String what;
     private boolean finished = false;
-    private static final Map<String, byte[]> cache = new HashMap<>();
 
     public WavSoundPlayer(String what) {
         this.what = what;

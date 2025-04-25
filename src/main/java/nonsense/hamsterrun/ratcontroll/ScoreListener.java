@@ -11,6 +11,7 @@ public class ScoreListener {
     private final JLabel label;
     private final Blinker blinker;
     private int lastScore = 0;
+
     public ScoreListener(JLabel scoreShow, Rat rat) {
         this.label = scoreShow;
         this.label.setOpaque(true);

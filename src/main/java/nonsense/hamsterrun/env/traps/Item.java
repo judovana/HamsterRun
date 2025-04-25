@@ -1,7 +1,6 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
-import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.SoundsBuffer;
 
 import java.awt.Color;
@@ -14,9 +13,18 @@ public interface Item {
 
 
     Color getMinimapColor();
+
     void playMainSoundFor(SoundsBuffer rat);
-    default void playSecondarySoundFor(SoundsBuffer rat){};
-    default void playTercialSoundFor(SoundsBuffer rat){};
+
+    default void playSecondarySoundFor(SoundsBuffer rat) {
+    }
+
+    ;
+
+    default void playTercialSoundFor(SoundsBuffer rat) {
+    }
+
+    ;
 
     //level: 1 floor, 2 before rats, rats, 3 over rats
     //missing somethign between floor and walls.. but nvm...

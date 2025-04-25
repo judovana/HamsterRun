@@ -1,7 +1,5 @@
 package nonsense.hamsterrun;
 
-import java.util.stream.Collectors;
-
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.ratcontroll.KeyboardControl1;
 import nonsense.hamsterrun.ratcontroll.KeyboardControl2;
@@ -9,6 +7,8 @@ import nonsense.hamsterrun.ratcontroll.KeyboardControl3;
 import nonsense.hamsterrun.ratcontroll.MouseControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.sprites.SpritesProvider;
+
+import java.util.stream.Collectors;
 
 public class RatSetup {
 
@@ -25,11 +25,6 @@ public class RatSetup {
         this.display = display;
         this.skin = skin;
         this.control = control;
-    }
-
-    @Override
-    public String toString() {
-        return control.id()+":"+skin+":"+display+":"+aiChaos;
     }
 
     //syntax control:skin:haveDisplay:aiModifier  eg k1:uhlicek:true  or pc:rat:false:10
@@ -74,6 +69,11 @@ public class RatSetup {
             }
         }
         return new RatSetup(def, aiChaos, display, skin, control);
+    }
+
+    @Override
+    public String toString() {
+        return control.id() + ":" + skin + ":" + display + ":" + aiChaos;
     }
 
 

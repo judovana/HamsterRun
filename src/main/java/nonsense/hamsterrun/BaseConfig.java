@@ -17,7 +17,6 @@ import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,33 +24,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class BaseConfig {
-
-    public static class ItemsWithProbability {
-        //0 == disabled
-        public final Class clazz;
-        public final int ratio;
-
-        public ItemsWithProbability(Class clazz, int ratio) {
-            this.clazz = clazz;
-            this.ratio = ratio;
-        }
-
-    }
-
-    private static final Random seed = new Random();
-    private static BaseConfig baseConfig = BaseConfig.small();
-
-    private int baseSize = 10;
-    private int baseDensityMin = 4;
-    private int baseDensityMax = 7;
-    private int gridSize = 5;
-    private int gridConnectivityMin = 1;
-    private int gridConnectivityMax = 4;
-    private int delayMs = 50;
-    private boolean keepRegenerating = true;
-    private int regSpeed = 200;
-    private List<RatSetup> rats = new ArrayList<>(10);
-    private int columns = 2;
 
     public static final ItemsWithProbability[] DEFAULT_ITEMS_PROBABILITIES = new ItemsWithProbability[]{
             new ItemsWithProbability(Empty.class, 50),
@@ -72,6 +44,20 @@ public class BaseConfig {
             new ItemsWithProbability(ColorfullFlask.class, 2),
 
     };
+    private static final Random seed = new Random();
+    private static BaseConfig baseConfig = BaseConfig.small();
+
+    private int baseSize = 10;
+    private int baseDensityMin = 4;
+    private int baseDensityMax = 7;
+    private int gridSize = 5;
+    private int gridConnectivityMin = 1;
+    private int gridConnectivityMax = 4;
+    private int delayMs = 50;
+    private boolean keepRegenerating = true;
+    private int regSpeed = 200;
+    private List<RatSetup> rats = new ArrayList<>(10);
+    private int columns = 2;
 
     BaseConfig() {
     }
@@ -121,7 +107,7 @@ public class BaseConfig {
         System.out.println("Each base element will be connected to each neighbour no more then  " + gridConnectivityMax + " lines");
         System.out.println("The max connectivity can no always be honoured, because the opposite nighbours may have no intersection. but engine is doing its best.");
         System.out.println("Constant regeneration of world is " + keepRegenerating);
-        System.out.println("rats in world is " + rats.size() + "/" + rats.stream().map(a->a.toString()).collect(Collectors.joining(",")));
+        System.out.println("rats in world is " + rats.size() + "/" + rats.stream().map(a -> a.toString()).collect(Collectors.joining(",")));
         System.out.println("  note, syntax is as --rat control:skin:haveDisplay:aiModifier  eg  --rat k1:uhlicek:true  -rat pc:rat:false:10");
         System.out.println("  note, available skins are: " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(", ")));
         System.out.println("  note, available controls  are: k1, k2, m1, pc");
@@ -145,11 +131,11 @@ public class BaseConfig {
         if (baseDensityMin > baseDensityMax) {
             throw new RuntimeException("base density min must be lower or equal to max, is not: " + baseDensityMin + "!<=" + baseDensityMax);
         }
-        if (baseDensityMin >= baseSize-2) {
-            throw new RuntimeException("base density min must be lower base size:  " + baseDensityMin + "!<" + (baseSize-2));
+        if (baseDensityMin >= baseSize - 2) {
+            throw new RuntimeException("base density min must be lower base size:  " + baseDensityMin + "!<" + (baseSize - 2));
         }
-        if (baseDensityMax >= baseSize-2) {
-            throw new RuntimeException("base density max must be lower base size:  " + baseDensityMax + "!<" + (baseSize-2));
+        if (baseDensityMax >= baseSize - 2) {
+            throw new RuntimeException("base density max must be lower base size:  " + baseDensityMax + "!<" + (baseSize - 2));
         }
         if (gridConnectivityMin > baseDensityMin) {
             throw new RuntimeException("connectivity min must be lower or equals  base density min " + gridConnectivityMin + "!<=" + baseDensityMin);
@@ -166,7 +152,7 @@ public class BaseConfig {
         if (gridSize % 2 == 0) {
             throw new RuntimeException("grid size must be odd. is not: " + gridSize);
         }
-        if (columns < 1 || columns>10) {
+        if (columns < 1 || columns > 10) {
             throw new RuntimeException("To few, to much columns");
         }
         if (rats.isEmpty()) {
@@ -178,24 +164,48 @@ public class BaseConfig {
         return baseSize;
     }
 
+    public void setBaseSize(int baseSize) {
+        this.baseSize = baseSize;
+    }
+
     public int getBaseDensityMin() {
         return baseDensityMin;
+    }
+
+    public void setBaseDensityMin(int baseDensityMin) {
+        this.baseDensityMin = baseDensityMin;
     }
 
     public int getBaseDensityMax() {
         return baseDensityMax;
     }
 
+    public void setBaseDensityMax(int baseDensityMax) {
+        this.baseDensityMax = baseDensityMax;
+    }
+
     public int getGridSize() {
         return gridSize;
+    }
+
+    public void setGridSize(int gridSize) {
+        this.gridSize = gridSize;
     }
 
     public int getGridConnectivityMin() {
         return gridConnectivityMin;
     }
 
+    public void setGridConnectivityMin(int gridConnectivityMin) {
+        this.gridConnectivityMin = gridConnectivityMin;
+    }
+
     public int getGridConnectivityMax() {
         return gridConnectivityMax;
+    }
+
+    public void setGridConnectivityMax(int gridConnectivityMax) {
+        this.gridConnectivityMax = gridConnectivityMax;
     }
 
     public int getDensity() {
@@ -210,6 +220,10 @@ public class BaseConfig {
         return keepRegenerating;
     }
 
+    public void setKeepRegenerating(boolean keepRegenerating) {
+        this.keepRegenerating = keepRegenerating;
+    }
+
     public void addRat(String def) {
         rats.add(RatSetup.parse(def));
     }
@@ -218,12 +232,16 @@ public class BaseConfig {
         return Collections.unmodifiableList(rats);
     }
 
+    public void setRats(List<RatSetup> rats) {
+        this.rats = rats;
+    }
+
     public long getDelayMs() {
         return delayMs;
     }
 
-    public void setColumns(int columns) {
-        this.columns = columns;
+    public void setDelayMs(int delayMs) {
+        this.delayMs = delayMs;
     }
 
     public int getColumns() {
@@ -232,6 +250,10 @@ public class BaseConfig {
             return 1;
         }
         return columns;
+    }
+
+    public void setColumns(int columns) {
+        this.columns = columns;
     }
 
     public int getViews() {
@@ -252,42 +274,6 @@ public class BaseConfig {
         this.regSpeed = regSpeed;
     }
 
-    public void setBaseSize(int baseSize) {
-        this.baseSize = baseSize;
-    }
-
-    public void setBaseDensityMin(int baseDensityMin) {
-        this.baseDensityMin = baseDensityMin;
-    }
-
-    public void setBaseDensityMax(int baseDensityMax) {
-        this.baseDensityMax = baseDensityMax;
-    }
-
-    public void setGridSize(int gridSize) {
-        this.gridSize = gridSize;
-    }
-
-    public void setGridConnectivityMin(int gridConnectivityMin) {
-        this.gridConnectivityMin = gridConnectivityMin;
-    }
-
-    public void setGridConnectivityMax(int gridConnectivityMax) {
-        this.gridConnectivityMax = gridConnectivityMax;
-    }
-
-    public void setDelayMs(int delayMs) {
-        this.delayMs = delayMs;
-    }
-
-    public void setKeepRegenerating(boolean keepRegenerating) {
-        this.keepRegenerating = keepRegenerating;
-    }
-
-    public void setRats(List<RatSetup> rats) {
-        this.rats = rats;
-    }
-
     public int getTunnelConfusionFactor() {
         //fixme do it configurable
         return 20;
@@ -296,5 +282,17 @@ public class BaseConfig {
     public long getMouseDelay() {
         //fixme do it configurable
         return 100;
+    }
+
+    public static class ItemsWithProbability {
+        //0 == disabled
+        public final Class clazz;
+        public final int ratio;
+
+        public ItemsWithProbability(Class clazz, int ratio) {
+            this.clazz = clazz;
+            this.ratio = ratio;
+        }
+
     }
 }

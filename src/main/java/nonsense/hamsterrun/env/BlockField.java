@@ -17,6 +17,19 @@ import java.util.stream.Collectors;
 public class BlockField {
 
     private static final List<ItemsWithBoundaries> recalcualted = recalculateToBoundaries(BaseConfig.DEFAULT_ITEMS_PROBABILITIES);
+    private final Point coords;
+    private final BaseBlock parent;
+    private boolean passable;
+    //to ahve only one item and one alien is simply simplification
+    private Item item = new Empty();
+    //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
+    //wreckingball, bat... to do, implement.. somwhen...
+    private MovingOne alien;
+    public BlockField(boolean passable, Point coords, BaseBlock parent) {
+        this.passable = passable;
+        this.coords = coords;
+        this.parent = parent;
+    }
 
     public static List<ItemsWithBoundaries> recalculateToBoundaries(BaseConfig.ItemsWithProbability[] itemsWithProbabilities) {
         int maxSum = Arrays.stream(itemsWithProbabilities).map(a -> a.ratio).collect(Collectors.summingInt(Integer::intValue));
@@ -37,25 +50,24 @@ public class BlockField {
         if (usedSum != maxSum) {
             throw new RuntimeException("Author can not count");
         }
-        if (recalcualted.isEmpty()){
+        if (recalcualted.isEmpty()) {
             throw new RuntimeException("At least empty wall must be present");
         }
         return recalcualted;
     }
 
-    private final Point coords;
-    private final BaseBlock parent;
-    private boolean passable;
-    //to ahve only one item and one alien is simply simplification
-    private Item item = new Empty();
-    //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
-    //wreckingball, bat... to do, implement.. somwhen...
-    private MovingOne alien;
+    public static Item itemClassToItemCatched(Class clazz) {
+        try {
+            return itemClassToItem(clazz);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public BlockField(boolean passable, Point coords, BaseBlock parent) {
-        this.passable = passable;
-        this.coords = coords;
-        this.parent = parent;
+    public static Item itemClassToItem(Class clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Constructor<?> ctor = clazz.getConstructor();
+        Object object = ctor.newInstance();
+        return (Item) object;
     }
 
     public boolean isPassable() {
@@ -94,6 +106,16 @@ public class BlockField {
         return Rat.toUniversalCoords(getParent().getCoords(), getCoords());
     }
 
+    //fixme - made this setup-able, absolutely.
+    public void setRandomObstacle(Random seed) {
+        int i = seed.nextInt(recalcualted.get(recalcualted.size() - 1).upper);
+        for (ItemsWithBoundaries item : recalcualted) {
+            if (i >= item.lower && i < item.upper) {
+                this.item = itemClassToItemCatched(item.clazz);
+                break;
+            }
+        }
+    }
 
     private static class ItemsWithBoundaries {
         //0 == disabled
@@ -106,29 +128,5 @@ public class BlockField {
             this.lower = lower;
             this.upper = upper;
         }
-    }
-
-    //fixme - made this setup-able, absolutely.
-    public void setRandomObstacle(Random seed) {
-        int i = seed.nextInt(recalcualted.get(recalcualted.size()-1).upper);
-        for (ItemsWithBoundaries item : recalcualted) {
-            if (i >= item.lower && i < item.upper) {
-                this.item = itemClassToItemCatched(item.clazz);
-                break;
-            }
-        }
-    }
-
-    public static Item itemClassToItemCatched(Class clazz) {
-        try {
-            return itemClassToItem(clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static Item itemClassToItem(Class clazz) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        Constructor<?> ctor = clazz.getConstructor();
-        Object object = ctor.newInstance();
-        return (Item) object;
     }
 }

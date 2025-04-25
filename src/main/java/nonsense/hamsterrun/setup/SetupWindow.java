@@ -1,6 +1,9 @@
 package nonsense.hamsterrun.setup;
 
-import java.awt.BorderLayout;
+import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.Localization;
+import nonsense.hamsterrun.env.BlockField;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,11 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-
-import nonsense.hamsterrun.BaseConfig;
-import nonsense.hamsterrun.Localization;
-import nonsense.hamsterrun.env.BlockField;
-import nonsense.hamsterrun.sprites.SpritesProvider;
+import java.awt.BorderLayout;
 
 
 /**
@@ -31,7 +30,8 @@ public class SetupWindow {
                 JFrame gameView = new JFrame(Localization.get().getMainTitle());
                 JTabbedPane tabs = new JTabbedPane();
                 JPanel rats = new JPanel(new BorderLayout());
-                rats.setName("rats");;
+                rats.setName("rats");
+                ;
                 rats.add(new JButton("Add rat"), BorderLayout.NORTH);
                 JPanel items = new ItemsAndAliensPanel();
                 tabs.add(rats);

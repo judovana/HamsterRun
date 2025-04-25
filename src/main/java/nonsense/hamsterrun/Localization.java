@@ -7,12 +7,11 @@ import java.util.ResourceBundle;
 public class Localization {
 
     private static Localization instance = new Localization();
+    private ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
     public static Localization get() {
         return instance;
     }
-
-    private ResourceBundle bundle = ResourceBundle.getBundle("messages");
 
     public String get(String key) {
         return bundle.getString(key);
@@ -21,7 +20,6 @@ public class Localization {
     public String getHello() {
         return get("hello");
     }
-
 
 
     public void toUs() {

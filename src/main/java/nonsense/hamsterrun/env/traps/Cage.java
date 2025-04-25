@@ -2,7 +2,6 @@ package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.BaseBlockNeigbours;
 import nonsense.hamsterrun.env.SoundsBuffer;
-import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -22,7 +21,7 @@ public class Cage implements Item {
 
     @Override
     public void drawThumbnail(Graphics2D g2d, int size) {
-        drawInto(g2d, 0,0, size, 2,null, 0, 0);
+        drawInto(g2d, 0, 0, size, 2, null, 0, 0);
     }
 
     @Override

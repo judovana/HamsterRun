@@ -1,14 +1,7 @@
 package nonsense.hamsterrun.ratcontroll;
 
-import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.Rat;
-import nonsense.hamsterrun.env.World;
 
-import java.awt.Point;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -99,12 +92,12 @@ public class RatsController implements RatsProvider {
             this.ratControl = ratControl;
         }
 
-        public void setRatControl(RatControl ratControl) {
-            this.ratControl = ratControl;
-        }
-
         public RatControl getRatControl() {
             return ratControl;
+        }
+
+        public void setRatControl(RatControl ratControl) {
+            this.ratControl = ratControl;
         }
     }
 }

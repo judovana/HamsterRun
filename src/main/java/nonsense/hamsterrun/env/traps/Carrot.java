@@ -6,9 +6,6 @@ import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Image;
-import java.awt.Point;
-import java.util.Collections;
-import java.util.List;
 
 public class Carrot extends Vegetable {
 
@@ -30,7 +27,6 @@ public class Carrot extends Vegetable {
             return 0;
         }
     }
-
 
 
 }

@@ -99,16 +99,6 @@ public class Main {
         System.out.println("bye");
     }
 
-    private static class WorldAndRats {
-        final World world;
-        final RatsController ratsController;
-
-        public WorldAndRats(World world, RatsController ratsController) {
-            this.world = world;
-            this.ratsController = ratsController;
-        }
-    }
-
     private static WorldAndRats generateGame() {
         final World world = new World(Maze.generate(BaseConfig.getConfig()));
         final RatsController ratsController = new RatsController();
@@ -248,6 +238,16 @@ public class Main {
                 gameView.setVisible(true);
             }
         });
+    }
+
+    private static class WorldAndRats {
+        final World world;
+        final RatsController ratsController;
+
+        public WorldAndRats(World world, RatsController ratsController) {
+            this.world = world;
+            this.ratsController = ratsController;
+        }
     }
 
 }

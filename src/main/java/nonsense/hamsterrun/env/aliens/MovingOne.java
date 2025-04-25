@@ -14,12 +14,12 @@ public abstract class MovingOne {
     protected static final int MAGICAL_FALL_CHANCE = 6;
     protected static final int relativeSizes = 5;
     protected AnimationCounrer anim = new AnimationCounrer();
-    private Point coordsInBaseBlock = new Point(-1, -1);
-    private Point coordsInMaze = new Point(-1, -1);
     protected RatActions action = RatActions.STAY;
     protected RatActions.Direction direction = RatActions.Direction.UP;
     protected Point relativeCoordInSquare = new Point(0, 0);
     protected int speed = 1; //can not go over relativeSizes*2
+    private Point coordsInBaseBlock = new Point(-1, -1);
+    private Point coordsInMaze = new Point(-1, -1);
 
     public MovingOne() {
     }
@@ -34,6 +34,10 @@ public abstract class MovingOne {
         this.coordsInMaze = new Point(worldx, worldy);
     }
 
+    public static Point toUniversalCoords(Point coordsInMaze, Point coordsInBaseBlock) {
+        return new Point(coordsInMaze.x * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.x,
+                coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
+    }
 
     public Point getCoordsInBaseBlock() {
         return coordsInBaseBlock;
@@ -62,12 +66,6 @@ public abstract class MovingOne {
     public Point getUniversalCoords() {
         return toUniversalCoords(coordsInMaze, coordsInBaseBlock);
     }
-
-    public static Point toUniversalCoords(Point coordsInMaze, Point coordsInBaseBlock) {
-        return new Point(coordsInMaze.x * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.x,
-                coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
-    }
-
 
     public void setUniversalCoords(Point target) {
         coordsInMaze.x = target.x / BaseConfig.getConfig().getBaseSize();
@@ -189,10 +187,11 @@ public abstract class MovingOne {
         }
     }
 
-    public void setAction(RatActions ratActions) {
-        action = ratActions;
-    }
     public RatActions getAction() {
         return action;
+    }
+
+    public void setAction(RatActions ratActions) {
+        action = ratActions;
     }
 }

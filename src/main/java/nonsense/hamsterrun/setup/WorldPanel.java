@@ -31,8 +31,6 @@ import java.util.List;
 
 public class WorldPanel extends JPanel implements Localized, ChangeListener, FocusListener {
 
-    private World world;
-    private Object lastIntValue;
     private final JLabel baseSizeLabel;
     private final JSpinner baseSizeSpinner;
     private final JLabel gridSizeLabel;
@@ -43,6 +41,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner baseDensityMaxSpinner;
     private final JLabel baseDensityMinLabel;
     private final JSpinner baseDensityMinSpinner;
+    private World world;
     private final JPanel preview = new JPanel() {
         public void paint(Graphics g) {
             super.paint(g);
@@ -56,6 +55,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
             }
         }
     };
+    private Object lastIntValue;
 
 
     //TODO extract shared min/max here and in config validate
