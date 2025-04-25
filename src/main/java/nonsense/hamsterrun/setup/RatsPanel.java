@@ -111,6 +111,7 @@ public class RatsPanel extends JPanel implements Localized {
             this.add(new JSpinner(new SpinnerNumberModel(RatsController.DEFAULT_CHAOS, 1, 10000, 1)));
             //set skin to thumbnail
             this.add(new JButton("remove me"));
+            this.add(new JLabel(""));
             this.add(new ThumbanilPanel(SpritesProvider.KNOWN_RATS.get(new Random().nextInt(SpritesProvider.KNOWN_RATS.size()))));
 //            Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 //            Border loweredbevel = BorderFactory.createLoweredBevelBorder();
