@@ -3,7 +3,6 @@ package nonsense.hamsterrun.setup;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
-import nonsense.hamsterrun.RatSetup;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.SoundsBuffer;
@@ -54,6 +53,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     //TODO
     //minKeysToEnterTheCage - multiplied by rats 0 disables it
     //minCumualtiveScoreToEnterCage - 0 disables it
+    //allRatsEnterTime - 0 disables and one is enough
 
     private World world;
     private final JPanel preview = new JPanel() {
