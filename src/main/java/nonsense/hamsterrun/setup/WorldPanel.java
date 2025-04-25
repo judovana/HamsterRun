@@ -12,6 +12,7 @@ import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,7 +27,6 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,11 +47,11 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner gridConnectivityMinSpinner;
     private final JLabel gridConnectivityMaxLabel;
     private final JSpinner gridConnectivityMaxSpinner;
-
-//    private int delayMs = 50; //game speed - minimal pauze between individualr epaints
-//    private boolean keepRegenerating = true; //disabled regeneration completly, only oin demand remain
+    private final JLabel delayMsLabel;
+    private final JSpinner delayMsSpinner;
+    private final JCheckBox keepRegenerating;
     //    private int columns =  - moved to rats
-
+    //TODO
     //minKeysToEnterTheCage - multiplied by rats 0 disables it
     //minCumualtiveScoreToEnterCage - 0 disables it
 
@@ -121,12 +121,25 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         gridConnectivityMaxSpinner.addFocusListener(this);
         controls.add(gridConnectivityMaxSpinner);
 
+
+        delayMsLabel = new JLabel("delay ms");
+        controls.add(delayMsLabel);
+        delayMsSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getDelayMs(), 1, 100000, 10));
+        delayMsSpinner.addChangeListener(this);
+        delayMsSpinner.addFocusListener(this);
+        controls.add(delayMsSpinner);
+
         regSpeedLabel = new JLabel("reg speed");
         controls.add(regSpeedLabel);
-        regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 1));
+        regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 10));
         regSpeedSpinner.addChangeListener(this);
         regSpeedSpinner.addFocusListener(this);
         controls.add(regSpeedSpinner);
+
+        keepRegenerating = new JCheckBox("keepRegenerating", BaseConfig.getConfig().isKeepRegenerating());
+        keepRegenerating.addChangeListener(this);
+        controls.add(new JLabel(""));
+        controls.add(keepRegenerating);
 
         ///controlsScroll.add(controls);
         add(controls);
@@ -147,27 +160,31 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         baseDensityMinLabel.setText(Localization.get().baseDensityMinLabel());
         gridConnectivityMinLabel.setText(Localization.get().gridConnectivityMinLabel());
         gridConnectivityMinLabel.setText(Localization.get().gridConnectivityMaxLabel());
+        delayMsLabel.setText(Localization.get().delayMs());
+        keepRegenerating.setText(Localization.get().getKeepRegenerating());
     }
 
     @Override
     public void stateChanged(ChangeEvent changeEvent) {
         BaseConfig.getConfig().setBaseSize(((Number) baseSizeSpinner.getValue()).intValue());
         BaseConfig.getConfig().setGridSize(((Number) gridSizeSpinner.getValue()).intValue());
-        BaseConfig.getConfig().setRegSpeed(((Number) regSpeedSpinner.getValue()).intValue());
         BaseConfig.getConfig().setBaseDensityMin(((Number) baseDensityMinSpinner.getValue()).intValue());
         BaseConfig.getConfig().setBaseDensityMax(((Number) baseDensityMaxSpinner.getValue()).intValue());
         BaseConfig.getConfig().setGridConnectivityMin(((Number) gridConnectivityMinSpinner.getValue()).intValue());
         BaseConfig.getConfig().setGridConnectivityMax(((Number) gridConnectivityMaxSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setRegSpeed(((Number) regSpeedSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setDelayMs(((Number) delayMsSpinner.getValue()).intValue());
+        BaseConfig.getConfig().setKeepRegenerating(keepRegenerating.isSelected());
         try {
             BaseConfig.getConfig().verify();
         } catch (Exception ex) {
-            if (changeEvent != null) {
+            if (changeEvent != null && changeEvent.getSource() instanceof  JSpinner){
                 ((JSpinner) changeEvent.getSource()).setValue(lastIntValue);
             }
             JOptionPane.showMessageDialog(null, ex);
             throw ex;
         }
-        if (changeEvent != null) {
+        if (changeEvent != null && changeEvent.getSource() instanceof  JSpinner) {
             lastIntValue = ((JSpinner) changeEvent.getSource()).getValue();
         }
         if (world != null) {

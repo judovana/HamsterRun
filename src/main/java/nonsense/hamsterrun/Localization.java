@@ -88,4 +88,12 @@ public class Localization {
     public String getStartGame() {
         return get("startGame");
     }
+
+    public String delayMs() {
+         return get("delayMs");
+    }
+
+    public String getKeepRegenerating() {
+        return get("keepRegenerating");
+    }
 }
