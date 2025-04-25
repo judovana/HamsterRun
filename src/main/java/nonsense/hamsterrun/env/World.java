@@ -175,7 +175,7 @@ public class World implements Runnable {
         this.repaintListeners.add(repaintListener);
     }
 
-    boolean isEnterable(Point coord, int vx, int vy) {
+    public boolean isEnterable(Point coord, int vx, int vy) {
         return isEnterable(coord.x + vx, coord.y + vy);
     }
 

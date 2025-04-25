@@ -1,7 +1,7 @@
 package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
-import nonsense.hamsterrun.env.aliens.Alien;
+import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Item;
 
@@ -49,7 +49,7 @@ public class BlockField {
     private Item item = new Empty();
     //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
     //wreckingball, bat... to do, implement.. somwhen...
-    private Alien alien;
+    private MovingOne alien;
 
     public BlockField(boolean passable, Point coords, BaseBlock parent) {
         this.passable = passable;

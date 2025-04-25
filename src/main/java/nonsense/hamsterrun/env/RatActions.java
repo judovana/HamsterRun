@@ -80,10 +80,4 @@ public enum RatActions {
         }
     }
 
-    public static class OptionalmetaData {
-        Point universalCoord;
-        Point mainCoord;
-        Point subCoord;
-        BaseBlock block;
-    }
 }

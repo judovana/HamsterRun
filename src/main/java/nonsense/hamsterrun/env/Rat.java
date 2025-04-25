@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.env.traps.ColorfullFlask;
 import nonsense.hamsterrun.env.traps.Fire;
@@ -24,43 +25,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
-public class Rat {
+public class Rat extends MovingOne {
 
-    private static final Random seed = new Random();
-    private static final int MAGICAL_FALL_CHANCE = 6;
-    private static final int relativeSizes = 5;
-    private AnimationCounrer anim = new AnimationCounrer();
     private SoundsBuffer sounds = new SoundsBuffer();
-    private Point coordsInBaseBlock = new Point(-1, -1);
-    private Point coordsInMaze = new Point(-1, -1);
-    private RatActions action = RatActions.STAY;
-    private RatActions.OptionalmetaData actionMetaData = null;
-    private RatActions.Direction direction = RatActions.Direction.UP;
-    private Point relativeCoordInSquare = new Point(0, 0);
-    private int speed = 1; //can not go over relativeSizes*2
     private int score = 1000;
     private String skin = "rat";
     private ScoreListener scoreListener;
 
-    public Rat() {
-    }
-
-    public Rat(Point world, Point block) {
-        this.coordsInBaseBlock = block;
-        this.coordsInMaze = world;
-    }
-
-    public Rat(int worldx, int worldy, int blockx, int blocky) {
-        this.coordsInBaseBlock = new Point(blockx, blocky);
-        this.coordsInMaze = new Point(worldx, worldy);
-    }
-
-    public static Point toUniversalCoords(Point coordsInMaze, Point coordsInBaseBlock) {
-        return new Point(coordsInMaze.x * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.x,
-                coordsInMaze.y * BaseConfig.getConfig().getBaseSize() + coordsInBaseBlock.y);
-    }
 
     public String getSkin() {
         return skin;
@@ -70,97 +42,7 @@ public class Rat {
         this.skin = skin;
     }
 
-    public Point getCoordsInBaseBlock() {
-        return coordsInBaseBlock;
-    }
 
-    public void setCoordsInBaseBlock(Point coordsInBaseBlock) {
-        this.coordsInBaseBlock = coordsInBaseBlock;
-    }
-
-    public Point getCoordsInMaze() {
-        return coordsInMaze;
-    }
-
-    public void setCoordsInMaze(Point coordsInMaze) {
-        this.coordsInMaze = coordsInMaze;
-    }
-
-    public void setCoordsInBaseBlock(int x, int y) {
-        this.coordsInBaseBlock = new Point(x, y);
-    }
-
-    public void setCoordsInMaze(int x, int y) {
-        this.coordsInMaze = new Point(x, y);
-    }
-
-    public Point getUniversalCoords() {
-        return toUniversalCoords(coordsInMaze, coordsInBaseBlock);
-    }
-
-    public void setUniversalCoords(Point target) {
-        coordsInMaze.x = target.x / BaseConfig.getConfig().getBaseSize();
-        coordsInMaze.y = target.y / BaseConfig.getConfig().getBaseSize();
-        coordsInBaseBlock.x = target.x % BaseConfig.getConfig().getBaseSize();
-        coordsInBaseBlock.y = target.y % BaseConfig.getConfig().getBaseSize();
-    }
-
-
-    private void forceMouseRight() {
-        coordsInBaseBlock.x++;
-        if (coordsInBaseBlock.x >= BaseConfig.getConfig().getBaseSize()) {
-            coordsInMaze.x++;
-            coordsInBaseBlock.x = 0;
-        }
-    }
-
-    private void forceMouseUp() {
-        coordsInBaseBlock.y--;
-        if (coordsInBaseBlock.y < 0) {
-            coordsInMaze.y--;
-            coordsInBaseBlock.y = BaseConfig.getConfig().getBaseSize() - 1;
-        }
-    }
-
-    private void forceMouseLeft() {
-        coordsInBaseBlock.x--;
-        if (coordsInBaseBlock.x < 0) {
-            coordsInMaze.x--;
-            coordsInBaseBlock.x = BaseConfig.getConfig().getBaseSize() - 1;
-        }
-    }
-
-    private void forceMouseDown() {
-        coordsInBaseBlock.y++;
-        if (coordsInBaseBlock.y >= BaseConfig.getConfig().getBaseSize()) {
-            coordsInMaze.y++;
-            coordsInBaseBlock.y = 0;
-        }
-    }
-
-    private void reallyMoveMouseRight(World world) {
-        if (world.isEnterable(getUniversalCoords(), 1, 0)) {
-            forceMouseRight();
-        }
-    }
-
-    private void reallyMoveMouseUp(World world) {
-        if (world.isEnterable(getUniversalCoords(), 0, -1)) {
-            forceMouseUp();
-        }
-    }
-
-    private void reallyMoveMouseLeft(World world) {
-        if (world.isEnterable(getUniversalCoords(), -1, 0)) {
-            forceMouseLeft();
-        }
-    }
-
-    private void reallyMoveMouseDown(World world) {
-        if (world.isEnterable(getUniversalCoords(), 0, 1)) {
-            forceMouseDown();
-        }
-    }
 
     //useInplaceSubMovement - in map false, in game true
     public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
@@ -205,62 +87,6 @@ public class Rat {
             return SpritesProvider.ratSprites.get(skin).getFall(direction.getSprite(), anim.mod(SpritesProvider.ratSprites.get(skin).getFalls()));
         } else {
             throw new RuntimeException("Unknown action " + action);
-        }
-    }
-
-    private void moveMouseRight(World world) {
-        relativeCoordInSquare.x += speed;
-        if (relativeCoordInSquare.y < 0) {
-            relativeCoordInSquare.y++;
-        }
-        if (relativeCoordInSquare.y > 0) {
-            relativeCoordInSquare.y--;
-        }
-        if (relativeCoordInSquare.x >= relativeSizes) {
-            relativeCoordInSquare.x = -relativeSizes;
-            reallyMoveMouseRight(world);
-        }
-    }
-
-    private void moveMouseUp(World world) {
-        relativeCoordInSquare.y -= speed;
-        if (relativeCoordInSquare.x < 0) {
-            relativeCoordInSquare.x++;
-        }
-        if (relativeCoordInSquare.x > 0) {
-            relativeCoordInSquare.x--;
-        }
-        if (relativeCoordInSquare.y <= -relativeSizes) {
-            relativeCoordInSquare.y = relativeSizes;
-            reallyMoveMouseUp(world);
-        }
-    }
-
-    private void moveMouseLeft(World world) {
-        relativeCoordInSquare.x -= speed;
-        if (relativeCoordInSquare.y < 0) {
-            relativeCoordInSquare.y++;
-        }
-        if (relativeCoordInSquare.y > 0) {
-            relativeCoordInSquare.y--;
-        }
-        if (relativeCoordInSquare.x <= -relativeSizes) {
-            relativeCoordInSquare.x = relativeSizes;
-            reallyMoveMouseLeft(world);
-        }
-    }
-
-    private void moveMouseDown(World world) {
-        relativeCoordInSquare.y += speed;
-        if (relativeCoordInSquare.x < 0) {
-            relativeCoordInSquare.x++;
-        }
-        if (relativeCoordInSquare.x > 0) {
-            relativeCoordInSquare.x--;
-        }
-        if (relativeCoordInSquare.y >= relativeSizes) {
-            relativeCoordInSquare.y = -relativeSizes;
-            reallyMoveMouseDown(world);
         }
     }
 
@@ -432,9 +258,6 @@ public class Rat {
         }
     }
 
-    public RatActions getAction() {
-        return action;
-    }
 
     public int getScore() {
         return score;
@@ -541,7 +364,4 @@ public class Rat {
         return sounds;
     }
 
-    public void setAction(RatActions ratActions) {
-        action = ratActions;
-    }
 }
