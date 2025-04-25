@@ -5,6 +5,7 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
@@ -22,13 +23,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class WorldPanel extends JPanel implements Localized, ChangeListener {
+public class WorldPanel extends JPanel implements Localized, ChangeListener, FocusListener {
 
     private World world;
+    private Object lastIntValue;
     private final JLabel baseSizeLabel;
     private final JSpinner baseSizeSpinner;
     private final JLabel gridSizeLabel;
@@ -64,30 +68,36 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         controls.add(baseSizeLabel);
         baseSizeSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getBaseSize(), 4, 10000, 1));
         baseSizeSpinner.addChangeListener(this);
+        baseSizeSpinner.addFocusListener(this);
         controls.add(baseSizeSpinner);
+
 
         gridSizeLabel = new JLabel("grid size");
         controls.add(gridSizeLabel);
         gridSizeSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getGridSize(), 3, 10001, 2));
         gridSizeSpinner.addChangeListener(this);
+        gridSizeSpinner.addFocusListener(this);
         controls.add(gridSizeSpinner);
 
         baseDensityMinLabel = new JLabel("base Density Min");
         controls.add(baseDensityMinLabel);
         baseDensityMinSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getBaseDensityMin(), 1, 999, 1));
         baseDensityMinSpinner.addChangeListener(this);
+        baseDensityMinSpinner.addFocusListener(this);
         controls.add(baseDensityMinSpinner);
 
         baseDensityMaxLabel = new JLabel("base Density Max");
         controls.add(baseDensityMaxLabel);
         baseDensityMaxSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getBaseDensityMax(), 1, 999, 1));
         baseDensityMaxSpinner.addChangeListener(this);
+        baseDensityMaxSpinner.addFocusListener(this);
         controls.add(baseDensityMaxSpinner);
 
         regSpeedLabel = new JLabel("reg speed");
         controls.add(regSpeedLabel);
         regSpeedSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getRegSpeed(), 4, 10000, 1));
         regSpeedSpinner.addChangeListener(this);
+        regSpeedSpinner.addFocusListener(this);
         controls.add(regSpeedSpinner);
 
         ///controlsScroll.add(controls);
@@ -119,17 +129,23 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         BaseConfig.getConfig().setBaseDensityMax(((Number) baseDensityMaxSpinner.getValue()).intValue());
         try {
             BaseConfig.getConfig().verify();
-        }catch (Exception ex) {
-            //((JSpinner)changeEvent.getSource()).setValue(orginalValue);
+        } catch (Exception ex) {
+            if (changeEvent != null) {
+                ((JSpinner) changeEvent.getSource()).setValue(lastIntValue);
+            }
             JOptionPane.showMessageDialog(null, ex);
             throw ex;
+        }
+        if (changeEvent != null) {
+            lastIntValue = ((JSpinner) changeEvent.getSource()).getValue();
         }
         if (world != null) {
             world.kill();
         }
         world = new World(Maze.generate(BaseConfig.getConfig()));
         world.setRatsProvider(new RatsProvider() {
-            private final Rat r = new Rat();
+            private final Rat r = new Rat(new SoundsBuffer.NoSound());
+
             @Override
             public List<Rat> getRats() {
                 return Arrays.asList(r);
@@ -147,5 +163,17 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener {
         });
         world.allRatsSpread(false);
         world.addRepaintListener(preview);
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        if (e.getSource() instanceof JSpinner) {
+            lastIntValue = ((JSpinner) e.getSource()).getValue();
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+
     }
 }
