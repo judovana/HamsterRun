@@ -58,7 +58,7 @@ public class RatsPanel extends JPanel implements Localized {
         //  private int columns = 2; //number of collumns on split screen
         JPanel bottomSpinner = new JPanel(new BorderLayout());
         columnsSpinnerLabel = new JLabel("set columns");
-        columnsSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getColumns(), 1, 10, 1));
+        columnsSpinner = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getColumnsDirect(), 1, 10, 1));
         columnsSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -73,7 +73,7 @@ public class RatsPanel extends JPanel implements Localized {
         this.add(bottomSpinner, BorderLayout.SOUTH);
         JPanel central = new JPanel(new GridLayout(2,1));
         this.add(central);
-        mousesWithView = new JPanel(new GridLayout(0,BaseConfig.getConfig().getColumns()));
+        mousesWithView = new JPanel(new GridLayout(0,BaseConfig.getConfig().getColumnsDirect()));
         mousesWithoutView = new JPanel(new GridLayout(1,0));
         central.add(mousesWithView);
         central.add(mousesWithoutView);
