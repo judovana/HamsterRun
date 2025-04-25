@@ -28,12 +28,9 @@ public class SetupWindow {
             public void run() {
                 JFrame gameView = new JFrame(Localization.get().getMainTitle());
                 JTabbedPane tabs = new JTabbedPane();
-                JPanel rats = new JPanel(new BorderLayout());
-                rats.setName("rats");
-                ;
-                rats.add(new JButton("Add rat"), BorderLayout.NORTH);
-                JPanel items = new ItemsAndAliensPanel();
+                JPanel rats = new RatsPanel();
                 tabs.add(rats);
+                JPanel items = new ItemsAndAliensPanel();
                 tabs.add(items);
                 tabs.add(new WorldPanel());
                 gameView.add(tabs);

@@ -3,6 +3,7 @@ package nonsense.hamsterrun.setup;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
+import nonsense.hamsterrun.RatSetup;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.SoundsBuffer;
@@ -25,6 +26,7 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +47,14 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner gridConnectivityMinSpinner;
     private final JLabel gridConnectivityMaxLabel;
     private final JSpinner gridConnectivityMaxSpinner;
+
+//    private int delayMs = 50; //game speed - minimal pauze between individualr epaints
+//    private boolean keepRegenerating = true; //disabled regeneration completly, only oin demand remain
+    //    private int columns =  - moved to rats
+
+    //minKeysToEnterTheCage - multiplied by rats 0 disables it
+    //minCumualtiveScoreToEnterCage - 0 disables it
+
     private World world;
     private final JPanel preview = new JPanel() {
         public void paint(Graphics g) {
@@ -125,7 +135,6 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         add(preview);
         setTitles();
         stateChanged(null);
-        ;
     }
 
     @Override

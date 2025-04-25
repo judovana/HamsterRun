@@ -246,6 +246,10 @@ public class BaseConfig {
         this.delayMs = delayMs;
     }
 
+    public int getColumnsDirect() {
+        return columns;
+    }
+
     public int getColumns() {
         int views = getViews();
         if (views <= 1) {

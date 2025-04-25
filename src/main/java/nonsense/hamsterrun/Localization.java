@@ -69,4 +69,19 @@ public class Localization {
     public String gridConnectivityMaxLabel() {
         return get("gridConnectivityMaxLabel");
     }
+
+    public String getRatsTitle() {
+        return get("ratsTitle");
+    }
+
+    public String getAddMousesButton1() {
+        return get("addMousesButton1");
+    }
+    public String getAddMousesButton2() {
+        return get("addMousesButton2");
+    }
+
+    public String getColumnsLabel() {
+        return get("columnsLabel");
+    }
 }
