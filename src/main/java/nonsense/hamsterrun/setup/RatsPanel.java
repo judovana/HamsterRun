@@ -99,13 +99,25 @@ public class RatsPanel extends JPanel implements Localized {
     private void repopulateWithout(){
         populateWith(mousesWithoutView, ratsWithoutView);
     }
+
     private void populateWith(JPanel view, List<VirtualRatSetup> orig) {
+        setMouses();
         view.removeAll();
         for (VirtualRatSetup rat : orig) {
             view.add(new RatConfig(rat));
         }
         view.revalidate();
         view.repaint();
+    }
+
+    private void setMouses() {
+        BaseConfig.getConfig().getRats().clear();
+        for(VirtualRatSetup rat: ratsWithView){
+            BaseConfig.getConfig().addRat(rat.toString());
+        }
+        for(VirtualRatSetup rat: ratsWithoutView){
+            BaseConfig.getConfig().addRat(rat.toString());
+        }
     }
 
     @Override
