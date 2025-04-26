@@ -96,21 +96,31 @@ public class RatsPanel extends JPanel implements Localized {
     }
 
     private static class RatConfig extends JPanel {
+        private final JComboBox<String> skin;
+        private final JComboBox<String> controls;
+        private final JCheckBox view;
+        private final JSpinner chaos;
+        private final JButton remove;
+
         public RatConfig(boolean view) {
             this.setLayout(new GridLayout(3, 3));
-            this.add(new JComboBox<String>(SpritesProvider.KNOWN_RATS.toArray(new String[0])));
+            this.skin=(new JComboBox<String>(SpritesProvider.KNOWN_RATS.toArray(new String[0])));
+            this.add(skin);
             if (view) {
-                this.add(new JComboBox<String>(new String[]{"k1", "k2", "k3", "m1", "pc"}));
+                this.controls=(new JComboBox<String>(new String[]{"k1", "k2", "k3", "m1", "pc"}));
             } else {
-                this.add(new JComboBox<String>(new String[]{"pc"}));
+                this.controls=(new JComboBox<String>(new String[]{"pc"}));
             }
-            JCheckBox jc = new JCheckBox("view", view);
-            jc.setEnabled(false);
-            this.add(jc);
+            this.add(controls);
+            this.view = new JCheckBox("view", view);
+            this.view.setEnabled(false);
+            this.add(this.view);
             this.add(new JLabel("ai chaos"));
-            this.add(new JSpinner(new SpinnerNumberModel(RatsController.DEFAULT_CHAOS, 1, 10000, 1)));
+            this.chaos=(new JSpinner(new SpinnerNumberModel(RatsController.DEFAULT_CHAOS, 1, 10000, 1)));
+            this.add(this.chaos);
             //set skin to thumbnail
-            this.add(new JButton("remove me"));
+            this.remove=(new JButton("remove me"));
+            this.add(this.remove);
             this.add(new JLabel(""));
             this.add(new ThumbanilPanel(SpritesProvider.KNOWN_RATS.get(new Random().nextInt(SpritesProvider.KNOWN_RATS.size()))));
 //            Border raisedbevel = BorderFactory.createRaisedBevelBorder();

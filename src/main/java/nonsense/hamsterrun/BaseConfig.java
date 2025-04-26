@@ -60,6 +60,9 @@ public class BaseConfig {
     private int regSpeed = 200;
     private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
+    //FIXME cmdline/gui setup
+    private int tunnelConfusion=20;
+    private int mouseSensitivity=200;
 
     BaseConfig() {
     }
@@ -231,7 +234,7 @@ public class BaseConfig {
     }
 
     public List<RatSetup> getRats() {
-        return Collections.unmodifiableList(rats);
+        return rats;
     }
 
     public void setRats(List<RatSetup> rats) {
@@ -281,13 +284,19 @@ public class BaseConfig {
     }
 
     public int getTunnelConfusionFactor() {
-        //fixme do it configurable
-        return 20;
+        return tunnelConfusion;
+    }
+
+    public void setTunnelConfusion(int tunnelConfusion) {
+        this.tunnelConfusion = tunnelConfusion;
     }
 
     public long getMouseDelay() {
-        //fixme do it configurable
-        return 100;
+        return mouseSensitivity;
+    }
+
+    public void setMouseSensitivity(int mouseSensitivity) {
+        this.mouseSensitivity = mouseSensitivity;
     }
 
     public static class ItemsWithProbability {
