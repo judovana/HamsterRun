@@ -159,7 +159,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         baseDensityMaxLabel.setText(Localization.get().baseDensityMaxLabel());
         baseDensityMinLabel.setText(Localization.get().baseDensityMinLabel());
         gridConnectivityMinLabel.setText(Localization.get().gridConnectivityMinLabel());
-        gridConnectivityMinLabel.setText(Localization.get().gridConnectivityMaxLabel());
+        gridConnectivityMaxLabel.setText(Localization.get().gridConnectivityMaxLabel());
         delayMsLabel.setText(Localization.get().delayMs());
         keepRegenerating.setText(Localization.get().getKeepRegenerating());
     }

@@ -293,7 +293,7 @@ public class Rat extends MovingOne {
         }
         Item field = w.getBlockField(this.getUniversalCoords()).getItem();
         if (field instanceof Torturer) {
-            adjustScore(-5 * speed * speed);
+            adjustScore(-5 * speed * speed * speed);
             if (speed == MAGICAL_FALL_CHANCE - 1) {
                 ((Torturer) w.getBlockField(this.getUniversalCoords()).getItem()).playMainSoundFor(this.getSounds());
             } else {
