@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 public class VirtualRatSetup {
 
-    final String def;
-    final int aiChaos;
-    final boolean display;
-    final String skin;
-    final String controlDef;
+    protected String def;
+    protected int aiChaos;
+    protected boolean display;
+    protected String skin;
+    protected String controlDef;
 
 
     public VirtualRatSetup(String def, int aiChaos, boolean display, String skin, String control) {
@@ -59,7 +59,7 @@ public class VirtualRatSetup {
         return new VirtualRatSetup(def, aiChaos, display, skin, control.id());
     }
 
-    protected static RatsController.RatControl stringToRatControl(String origDef, String param) {
+    public static RatsController.RatControl stringToRatControl(String origDef, String param) {
         RatsController.RatControl control;
         if (param.equalsIgnoreCase("pc")) {
             control = new ComputerControl();
@@ -82,5 +82,43 @@ public class VirtualRatSetup {
         return controlDef + ":" + skin + ":" + display + ":" + aiChaos;
     }
 
+    public String getDef() {
+        return def;
+    }
 
+    public int getAiChaos() {
+        return aiChaos;
+    }
+
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public String getSkin() {
+        return skin;
+    }
+
+    public String getControlDef() {
+        return controlDef;
+    }
+
+    public void setDef(String def) {
+        this.def = def;
+    }
+
+    public void setAiChaos(int aiChaos) {
+        this.aiChaos = aiChaos;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+
+    public void setSkin(String skin) {
+        this.skin = skin;
+    }
+
+    public void setControlDef(String controlDef) {
+        this.controlDef = controlDef;
+    }
 }

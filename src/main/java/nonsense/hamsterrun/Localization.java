@@ -96,4 +96,8 @@ public class Localization {
     public String getKeepRegenerating() {
         return get("keepRegenerating");
     }
+
+    public String getRemoveMe() {
+        return get("removeMe");
+    }
 }

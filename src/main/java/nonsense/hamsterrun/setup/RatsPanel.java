@@ -3,6 +3,7 @@ package nonsense.hamsterrun.setup;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
+import nonsense.hamsterrun.VirtualRatSetup;
 import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.sprites.SpritesProvider;
@@ -27,10 +28,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 public class RatsPanel extends JPanel implements Localized {
+
+    private final List<VirtualRatSetup> ratsWithView = new ArrayList<>();
+    private final List<VirtualRatSetup> ratsWithoutView = new ArrayList<>();
 
     private final JButton addButton1;
     private final JButton addButton2;
@@ -45,16 +51,16 @@ public class RatsPanel extends JPanel implements Localized {
         addButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mousesWithView.add(new RatConfig(true));
-                RatsPanel.super.revalidate();
+                ratsWithView.add(new VirtualRatSetup("none", RatsController.DEFAULT_CHAOS, true, getRandomSkin(), "k1"));
+                repopulateWith();
             }
         });
         addButton2 = new JButton("Add rat without view");
         addButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mousesWithoutView.add(new RatConfig(false));
-                RatsPanel.super.revalidate();
+                ratsWithoutView.add(new VirtualRatSetup("none", RatsController.DEFAULT_CHAOS, false, getRandomSkin(), "pc"));
+                repopulateWithout();
             }
         });
         JPanel upButtns = new JPanel(new GridLayout(1, 2));
@@ -87,6 +93,21 @@ public class RatsPanel extends JPanel implements Localized {
         setTitles();
     }
 
+    private void repopulateWith(){
+        populateWith(mousesWithView, ratsWithView);
+    }
+    private void repopulateWithout(){
+        populateWith(mousesWithoutView, ratsWithoutView);
+    }
+    private void populateWith(JPanel view, List<VirtualRatSetup> orig) {
+        view.removeAll();
+        for (VirtualRatSetup rat : orig) {
+            view.add(new RatConfig(rat));
+        }
+        view.revalidate();
+        view.repaint();
+    }
+
     @Override
     public void setTitles() {
         setName(Localization.get().getRatsTitle());
@@ -95,41 +116,56 @@ public class RatsPanel extends JPanel implements Localized {
         columnsSpinnerLabel.setText(Localization.get().getColumnsLabel());
     }
 
-    private static class RatConfig extends JPanel {
+    private class RatConfig extends JPanel {
         private final JComboBox<String> skin;
         private final JComboBox<String> controls;
         private final JCheckBox view;
         private final JSpinner chaos;
         private final JButton remove;
+        private final VirtualRatSetup rat;
 
-        public RatConfig(boolean view) {
+        public RatConfig(VirtualRatSetup rat) {
+            this.rat = rat;
             this.setLayout(new GridLayout(3, 3));
             this.skin=(new JComboBox<String>(SpritesProvider.KNOWN_RATS.toArray(new String[0])));
+            this.skin.setSelectedItem(rat.getSkin());
             this.add(skin);
-            if (view) {
+            if (rat.isDisplay()) {
                 this.controls=(new JComboBox<String>(new String[]{"k1", "k2", "k3", "m1", "pc"}));
             } else {
                 this.controls=(new JComboBox<String>(new String[]{"pc"}));
             }
+            this.controls.setToolTipText(VirtualRatSetup.stringToRatControl("none", rat.getControlDef()).toString());
             this.add(controls);
-            this.view = new JCheckBox("view", view);
+            this.view = new JCheckBox("view", rat.isDisplay());
             this.view.setEnabled(false);
             this.add(this.view);
             this.add(new JLabel("ai chaos"));
-            this.chaos=(new JSpinner(new SpinnerNumberModel(RatsController.DEFAULT_CHAOS, 1, 10000, 1)));
+            this.chaos=new JSpinner(new SpinnerNumberModel(rat.getAiChaos(), 1, 10000, 1));
             this.add(this.chaos);
             //set skin to thumbnail
-            this.remove=(new JButton("remove me"));
+            this.remove=new JButton(Localization.get().getRemoveMe());
+            remove.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (rat.isDisplay()) {
+                        ratsWithView.remove(rat);
+                        repopulateWith();
+                    }else {
+                        ratsWithoutView.remove(rat);
+                        repopulateWithout();
+                    }
+                }
+            });
             this.add(this.remove);
             this.add(new JLabel(""));
-            this.add(new ThumbanilPanel(SpritesProvider.KNOWN_RATS.get(new Random().nextInt(SpritesProvider.KNOWN_RATS.size()))));
+            this.add(new ThumbanilPanel(rat.getSkin()));
 //            Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 //            Border loweredbevel = BorderFactory.createLoweredBevelBorder();
 //            Border compound = BorderFactory.createCompoundBorder(
 //                    raisedbevel, loweredbevel);
 //            this.setBorder(compound);
             this.setBorder(new LineBorder(Color.black, 10));
-
         }
     }
 
@@ -158,6 +194,10 @@ public class RatsPanel extends JPanel implements Localized {
             BufferedImage bi = SpritesProvider.ratSprites.get(skin).getRun(RatActions.Direction.UP.getSprite(), i % (SpritesProvider.ratSprites.get(skin).getRuns()));
             g2d.drawImage(bi, 0, 0 , getWidth(), getHeight(), null);
         }
+    }
+
+    private static String getRandomSkin() {
+        return SpritesProvider.KNOWN_RATS.get(new Random().nextInt(SpritesProvider.KNOWN_RATS.size()));
     }
 
 }
