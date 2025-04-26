@@ -56,19 +56,19 @@ public class MouseControl extends HumanControl {
     }
 
     public void actC(Rat rat, MouseEvent em, World world) {
-        if ((em.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
+        if ((em.getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0) {
             //we actually need two maps - anymated and non anymated..
             map = !map;
         }
-        if ((em.getModifiers() & InputEvent.BUTTON1_MASK) != 0 && em.getClickCount() >= 2) {
+        if ((em.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0 && em.getClickCount() >= 2) {
             world.regenerateAll();
         }
         //keep those two? Made it configurable?
         //yes! per player? Yes!
-        if ((em.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && em.getClickCount() == 2) {
+        if ((em.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0 && em.getClickCount() == 2) {
             world.allRatsSpread(true);
         }
-        if ((em.getModifiers() & InputEvent.BUTTON3_MASK) != 0 && em.getClickCount() == 3) {
+        if ((em.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0 && em.getClickCount() == 3) {
             world.allRatsSpread(false);
         }
     }
