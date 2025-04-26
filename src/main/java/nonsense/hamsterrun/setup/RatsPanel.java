@@ -135,12 +135,23 @@ public class RatsPanel extends JPanel implements Localized {
         private final JSpinner chaos;
         private final JButton remove;
         private final VirtualRatSetup rat;
+        private final ThumbanilPanel thumbnail;
 
         public RatConfig(VirtualRatSetup rat) {
             this.rat = rat;
             this.setLayout(new GridLayout(3, 3));
             this.skin=(new JComboBox<String>(SpritesProvider.KNOWN_RATS.toArray(new String[0])));
             this.skin.setSelectedItem(rat.getSkin());
+            this.skin.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JComboBox<String> ee = (JComboBox<String>) e.getSource();
+                    String newSkin = (String) ee.getSelectedItem();
+                    thumbnail.setSkin(newSkin);
+                    rat.setSkin(newSkin);
+                    setMouses();
+                }
+            });
             this.add(skin);
             if (rat.isDisplay()) {
                 this.controls=(new JComboBox<String>(new String[]{"k1", "k2", "k3", "m1", "pc"}));
@@ -148,12 +159,31 @@ public class RatsPanel extends JPanel implements Localized {
                 this.controls=(new JComboBox<String>(new String[]{"pc"}));
             }
             this.controls.setToolTipText(VirtualRatSetup.stringToRatControl("none", rat.getControlDef()).toString());
+            this.controls.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JComboBox<String> ee = (JComboBox<String>) e.getSource();
+                    String newControl = (String) ee.getSelectedItem();
+                    ee.setToolTipText(VirtualRatSetup.stringToRatControl("none", newControl).toString());
+                    rat.setControlDef(newControl);
+                    setMouses();
+                }
+            });
             this.add(controls);
             this.view = new JCheckBox("view", rat.isDisplay());
             this.view.setEnabled(false);
             this.add(this.view);
             this.add(new JLabel("ai chaos"));
             this.chaos=new JSpinner(new SpinnerNumberModel(rat.getAiChaos(), 1, 10000, 1));
+            chaos.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    JSpinner ee = (JSpinner) e.getSource();
+                    int newChaos = ((Number) ee.getValue()).intValue();
+                    rat.setAiChaos(newChaos);
+                    setMouses();
+                }
+            });
             this.add(this.chaos);
             //set skin to thumbnail
             this.remove=new JButton(Localization.get().getRemoveMe());
@@ -171,7 +201,8 @@ public class RatsPanel extends JPanel implements Localized {
             });
             this.add(this.remove);
             this.add(new JLabel(""));
-            this.add(new ThumbanilPanel(rat.getSkin()));
+            thumbnail = (new ThumbanilPanel(rat.getSkin()));
+            this.add(thumbnail);
 //            Border raisedbevel = BorderFactory.createRaisedBevelBorder();
 //            Border loweredbevel = BorderFactory.createLoweredBevelBorder();
 //            Border compound = BorderFactory.createCompoundBorder(
@@ -205,6 +236,11 @@ public class RatsPanel extends JPanel implements Localized {
             Graphics2D g2d = (Graphics2D) g;
             BufferedImage bi = SpritesProvider.ratSprites.get(skin).getRun(RatActions.Direction.UP.getSprite(), i % (SpritesProvider.ratSprites.get(skin).getRuns()));
             g2d.drawImage(bi, 0, 0 , getWidth(), getHeight(), null);
+        }
+
+        public void setSkin(String skin) {
+            this.skin = skin;
+            repaint();
         }
     }
 
