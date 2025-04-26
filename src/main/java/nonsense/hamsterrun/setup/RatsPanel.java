@@ -141,17 +141,19 @@ public class RatsPanel extends JPanel implements Localized {
             this.rat = rat;
             this.setLayout(new GridLayout(3, 3));
             this.skin=(new JComboBox<String>(SpritesProvider.KNOWN_RATS.toArray(new String[0])));
-            this.skin.setSelectedItem(rat.getSkin());
             this.skin.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JComboBox<String> ee = (JComboBox<String>) e.getSource();
                     String newSkin = (String) ee.getSelectedItem();
-                    thumbnail.setSkin(newSkin);
+                    if (thumbnail!=null){
+                        thumbnail.setSkin(newSkin);
+                    }
                     rat.setSkin(newSkin);
                     setMouses();
                 }
             });
+            this.skin.setSelectedItem(rat.getSkin());
             this.add(skin);
             if (rat.isDisplay()) {
                 this.controls=(new JComboBox<String>(new String[]{"k1", "k2", "k3", "m1", "pc"}));
@@ -169,6 +171,7 @@ public class RatsPanel extends JPanel implements Localized {
                     setMouses();
                 }
             });
+            this.controls.setSelectedItem(rat.getControlDef());
             this.add(controls);
             this.view = new JCheckBox("view", rat.isDisplay());
             this.view.setEnabled(false);
