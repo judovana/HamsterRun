@@ -51,16 +51,20 @@ public class SetupWindow extends JFrame implements  Localized {
     }
 
     public static void main(String[] args) throws Exception {
-        BaseConfig config = BaseConfig.getConfig();
-        SpritesProvider.load();
-        config.summUp();
-        config.verify();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-               new SetupWindow();
-            }
-        });
+        if (args.length == 0) {
+            BaseConfig config = BaseConfig.getConfig();
+            SpritesProvider.load();
+            config.summUp();
+            config.verify();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new SetupWindow();
+                }
+            });
+        } else {
+            Main.main(args);
+        }
     }
 
     public void start() {

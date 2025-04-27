@@ -19,6 +19,7 @@ import nonsense.hamsterrun.env.traps.TwoWayTeleport;
 import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,6 +68,13 @@ public class BaseConfig {
     //FIXME cmdline/gui setup
     private int tunnelConfusion=20;
     private int mouseSensitivity=200;
+    //w and h ow space to draw to,
+    // if the drawn object is out,
+    // no need to draw it
+    //the view port is get as whole window
+    //to return the parts for each rat
+    //it have to be divided by columns and rats
+    private Point viewPort;
 
     BaseConfig() {
     }
@@ -303,6 +311,7 @@ public class BaseConfig {
         this.mouseSensitivity = mouseSensitivity;
     }
 
+
     public static class ItemsWithProbability {
         //0 == disabled
         public final Class clazz;
@@ -322,4 +331,31 @@ public class BaseConfig {
         }
         return items;
     }
+
+
+    //FIXME
+    public void addTrapModifier(String arg) {
+        String[] nameAndProbability = arg.split(":");
+        if (nameAndProbability.length == 1){
+            //set item nameAndProbability[0]  with its new probability 0 - disabled
+        } else {
+            //set item nameAndProbability[0] with its new probability nameAndProbability[1]
+        }
+    }
+
+    public void setWholeViewPort(int width, int height){
+        this.viewPort = new Point(width, height);
+    }
+
+    public Point getPartialViewPort() {
+        int wPart = viewPort.x/getColumns();
+        int hPart = viewPort.y/(getViews()/getColumns() + 1);
+        return new Point(wPart, hPart);
+    }
+
+    public boolean haveViewPort() {
+        return viewPort != null;
+    }
+
+
 }

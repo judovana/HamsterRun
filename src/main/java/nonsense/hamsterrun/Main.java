@@ -21,6 +21,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -84,6 +86,10 @@ public class Main {
                         x++;
                         config.setColumns(Integer.valueOf(args[x]));
                         break;
+                    case "item":
+                        x++;
+                        config.addTrapModifier(args[x]);
+                        break;
                     default:
                         throw new RuntimeException("Unknown parameter " + args[x]);
 
@@ -127,6 +133,12 @@ public class Main {
             @Override
             public void run() {
                 JFrame gameView = new JFrame(Localization.get().getMainTitle());
+                gameView.addComponentListener(new ComponentAdapter() {
+                    @Override
+                    public void componentResized(ComponentEvent e) {
+                        BaseConfig.getConfig().setWholeViewPort(gameView.getWidth(), gameView.getHeight());
+                    }
+                });
                 gameView.setLayout(new GridLayout(0, BaseConfig.getConfig().getColumns(), 2, 2));
                 if (BaseConfig.getConfig().getViews() == 0) {
                     RatsController.RatControl exControl = new KeyboardControl0();

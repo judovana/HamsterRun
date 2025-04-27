@@ -200,6 +200,14 @@ public class BaseBlock {
                     //this is aligning it with console and debugger output of [][]
                     int coordx = y * zoom + userx;
                     int coordy = x * zoom + usery;
+                    if (BaseConfig.getConfig().haveViewPort()) {
+                        if (coordx < 0 - 2 * zoom || coordy < 0 - 2 * zoom) {
+                            continue; //nothing should draw more then one field around
+                        }
+                        if (coordx > BaseConfig.getConfig().getPartialViewPort().x+2*zoom || coordy > BaseConfig.getConfig().getPartialViewPort().x+2*zoom) {
+                            continue; //nothing should draw more then one field around
+                        }
+                    }
                     if (mapOnly) {
                         g2d.setColor(map[x][y].getItem().getMinimapColor());
                         //on maps, all items are drawn before rats
