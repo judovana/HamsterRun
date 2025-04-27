@@ -228,7 +228,7 @@ public class World implements Runnable {
                 }
                 if (worldAnim % 5 == 0) {
                     for (Rat rat : getRats()) {
-                        ratsProvider.getRatControl(rat).selfAct(rat);
+                        ratsProvider.getRatControl(rat).selfAct(rat, this);
                     }
                 }
                 Thread.sleep(BaseConfig.getConfig().getDelayMs());

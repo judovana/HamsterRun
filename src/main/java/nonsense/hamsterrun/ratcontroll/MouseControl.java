@@ -40,15 +40,15 @@ public class MouseControl extends HumanControl {
         }
         if (Math.abs(lastPosition.x - em.getLocationOnScreen().x) > Math.abs(lastPosition.y - em.getLocationOnScreen().y)) {
             if (lastPosition.x - em.getLocationOnScreen().x < 0) {
-                rat.setMouseRight();
+                rat.setMouseRight(world);
             } else if (lastPosition.x - em.getLocationOnScreen().x > 0) {
-                rat.setMouseLeft();
+                rat.setMouseLeft(world);
             }
         } else if (Math.abs(lastPosition.x - em.getLocationOnScreen().x) < Math.abs(lastPosition.y - em.getLocationOnScreen().y)) {
             if (lastPosition.y - em.getLocationOnScreen().y < 0) {
-                rat.setMouseDown();
+                rat.setMouseDown(world);
             } else if (lastPosition.y - em.getLocationOnScreen().y > 0) {
-                rat.setMouseUp();
+                rat.setMouseUp(world);
             }
         }
         lastPosition = em.getLocationOnScreen();

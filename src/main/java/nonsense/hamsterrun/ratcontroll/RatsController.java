@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.ratcontroll;
 
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,7 @@ public class RatsController implements RatsProvider {
 
     public interface RatControl {
 
-        void selfAct(Rat rat);
+        void selfAct(Rat rat, World world);
 
         int getZoom();
 

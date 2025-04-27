@@ -9,6 +9,7 @@ import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
 import nonsense.hamsterrun.env.traps.Mushroom;
 import nonsense.hamsterrun.env.traps.Relocator;
+import nonsense.hamsterrun.env.traps.Salat;
 import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.Tunnel;
@@ -348,19 +349,40 @@ public class Rat extends MovingOne {
         }
     }
 
-    public void setMouseUp() {
+    private boolean returnOnSalat(World world) {
+        if (action == RatActions.EAT
+                && world.getBlockField(getUniversalCoords()).getItem() instanceof Salat
+                && !((Salat)(world.getBlockField(getUniversalCoords()).getItem())).eaten()){
+            return true;
+        }
+        return false;
+    }
+
+    public void setMouseUp(World world) {
+        if (returnOnSalat(world)){
+            return;
+        }
         setActionDirection(RatActions.WALK, RatActions.Direction.UP);
     }
 
-    public void setMouseLeft() {
+    public void setMouseLeft(World world) {
+        if (returnOnSalat(world)){
+            return;
+        }
         setActionDirection(RatActions.WALK, RatActions.Direction.LEFT);
     }
 
-    public void setMouseDown() {
+    public void setMouseDown(World world) {
+        if (returnOnSalat(world)){
+            return;
+        }
         setActionDirection(RatActions.WALK, RatActions.Direction.DOWN);
     }
 
-    public void setMouseRight() {
+    public void setMouseRight(World world) {
+        if (returnOnSalat(world)){
+            return;
+        }
         setActionDirection(RatActions.WALK, RatActions.Direction.RIGHT);
     }
 

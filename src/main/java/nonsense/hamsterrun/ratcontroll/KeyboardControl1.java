@@ -19,13 +19,13 @@ public class KeyboardControl1 extends KeyboardControl {
 
     public void act(Rat rat, KeyEvent e, World world) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            rat.setMouseLeft();
+            rat.setMouseLeft(world);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            rat.setMouseUp();
+            rat.setMouseUp(world);
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            rat.setMouseRight();
+            rat.setMouseRight(world);
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            rat.setMouseDown();
+            rat.setMouseDown(world);
         } else if (e.getKeyChar() == '+') {
             zoomIn();
         } else if (e.getKeyChar() == '-') {

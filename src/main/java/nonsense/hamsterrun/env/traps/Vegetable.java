@@ -11,8 +11,16 @@ import java.awt.Image;
 
 public abstract class Vegetable implements Item {
 
-    private static final float maxEnergy = 10;
-    int energy = seed.nextInt(((int) maxEnergy - 2)) + 2;
+    private  float maxEnergy = getMaxEnergy();
+    int energy = getStartEnergy();
+
+    protected float getMaxEnergy() {
+        return 10;
+    }
+
+    protected int getStartEnergy() {
+        return seed.nextInt(((int) maxEnergy - 2)) + 2;
+    }
 
     public Color getMinimapColor() {
         return Color.green;
@@ -26,10 +34,14 @@ public abstract class Vegetable implements Item {
 
     @Override
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
-        if (level == 2) {
+        if (level == targetLevel()) {
             int finalSize = (int) ((float) energy / maxEnergy * (float) zoom);
             g2d.drawImage(getSprite(), coordx + (zoom - finalSize) / 2, coordy + (zoom - finalSize) / 2, finalSize, finalSize, null);
         }
+    }
+
+    protected int targetLevel() {
+        return 2;
     }
 
     @Override

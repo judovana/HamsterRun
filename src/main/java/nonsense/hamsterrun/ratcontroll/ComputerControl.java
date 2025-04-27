@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.ratcontroll;
 
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.World;
 
 public class ComputerControl implements RatsController.RatControl {
     private int chaos = RatsController.DEFAULT_CHAOS;
@@ -16,19 +17,19 @@ public class ComputerControl implements RatsController.RatControl {
         return "chaos around 5 is really chaotic, above 50 is really apaptic";
     }
 
-    public void selfAct(Rat rat) {
+    public void selfAct(Rat rat, World world) {
         switch (RatsController.seed.nextInt(chaos)) {
             case 0:
-                rat.setMouseLeft();
+                rat.setMouseLeft(world);
                 break;
             case 1:
-                rat.setMouseRight();
+                rat.setMouseRight(world);
                 break;
             case 2:
-                rat.setMouseUp();
+                rat.setMouseUp(world);
                 break;
             case 3:
-                rat.setMouseDown();
+                rat.setMouseDown(world);
                 break;
             default: //ok
         }

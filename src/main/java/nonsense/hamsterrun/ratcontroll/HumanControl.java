@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.ratcontroll;
 
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.World;
 
 public abstract class HumanControl implements RatsController.RatControl {
     protected boolean map = false;
@@ -48,7 +49,7 @@ public abstract class HumanControl implements RatsController.RatControl {
     }
 
     @Override
-    public void selfAct(Rat rat) {
+    public void selfAct(Rat rat, World world) {
 
     }
 
