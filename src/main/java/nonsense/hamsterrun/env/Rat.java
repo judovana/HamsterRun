@@ -9,6 +9,7 @@ import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Item;
 import nonsense.hamsterrun.env.traps.Mushroom;
 import nonsense.hamsterrun.env.traps.Relocator;
+import nonsense.hamsterrun.env.traps.Repa;
 import nonsense.hamsterrun.env.traps.Salat;
 import nonsense.hamsterrun.env.traps.Teleport;
 import nonsense.hamsterrun.env.traps.Torturer;
@@ -29,12 +30,13 @@ import java.util.List;
 public class Rat extends MovingOne {
 
     private SoundsBuffer sounds = new SoundsBuffer();
+    private SoundsBuffer snail = new SoundsBuffer.NoSound();
     private int score = 1000;
     private String skin = "rat";
     private ScoreListener scoreListener;
 
     public Rat(SoundsBuffer sounds) {
-        this.sounds = sounds;
+        this.setSounds(sounds);
     }
 
     public Rat() {
@@ -109,17 +111,17 @@ public class Rat extends MovingOne {
             this.action = RatActions.EAT;
         } else {
             if (this.action != RatActions.STAY) {
-                sounds.addToEatQueue(SoundsBuffer.piskWeird);
+                getSounds().addToEatQueue(SoundsBuffer.piskWeird);
             }
             this.action = RatActions.STAY;
         }
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Mushroom) {
-            ((Mushroom) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
+            ((Mushroom) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.getSounds());
             world.swap(this);
             this.action = RatActions.STAY;
         }
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof ColorfullFlask) {
-            ((ColorfullFlask) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
+            ((ColorfullFlask) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.getSounds());
             this.skin = SpritesProvider.KNOWN_RATS.get(seed.nextInt(SpritesProvider.KNOWN_RATS.size()));
             this.action = RatActions.STAY;
         }
@@ -129,7 +131,7 @@ public class Rat extends MovingOne {
         if (this.action == RatActions.WALK && this.direction == direction) {
             speed++;
             if (speed == MAGICAL_FALL_CHANCE - 1) {
-                sounds.addToMoveQueue(SoundsBuffer.turbo);
+                getSounds().addToMoveQueue(SoundsBuffer.turbo);
             }
             if (speed >= relativeSizes * 2) {
                 speed = relativeSizes * 2;
@@ -155,14 +157,14 @@ public class Rat extends MovingOne {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
-                ((InvisibleTrapDoor) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
+                ((InvisibleTrapDoor) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.getSounds());
             }
         }
         if (world.getBlockField(getUniversalCoords()).getItem() instanceof Teleport && seed.nextInt(MAGICAL_FALL_CHANCE) + 1 > speed) {
             if (this.action != RatActions.FALLING) {
                 this.anim.reset();
                 this.action = RatActions.FALLING;
-                ((Teleport) world.getBlockField(getUniversalCoords()).getItem()).playMainSoundFor(this.sounds);
+                ((Teleport) world.getBlockField(getUniversalCoords()).getItem()).playMainSoundFor(this.getSounds());
             }
         }
         switch (action) {
@@ -185,9 +187,14 @@ public class Rat extends MovingOne {
         if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel) {
             if (seed.nextInt(BaseConfig.getConfig().getTunnelConfusionFactor()) == 0) {
                 direction = RatActions.Direction.getRandom();
-                ((Tunnel) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.sounds);
+                ((Tunnel) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.getSounds());
             }
-        } else if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Water) {
+        }else if ( world.getBlockField(getUniversalCoords()).getItem() instanceof Repa
+                && !((Repa) (world.getBlockField(getUniversalCoords()).getItem())).eaten()) {
+            if (action != RatActions.EAT) {
+                direction = RatActions.Direction.getRandom();
+            }
+         } else if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Water) {
             speed = 1;
             if (seed.nextInt(20) < 18) {
                 if (relativeCoordInSquare.x > 0) {
@@ -231,7 +238,7 @@ public class Rat extends MovingOne {
                 if (((Vegetable) world.getBlockField(origCoords).getItem()).eaten()) {
                     world.getBlockField(origCoords).clear();
                 } else {
-                    ((Vegetable) (world.getBlockField(origCoords).getItem())).playMainSoundFor(this.sounds);
+                    ((Vegetable) (world.getBlockField(origCoords).getItem())).playMainSoundFor(this.getSounds());
                 }
                 harm(world);
             }
@@ -306,7 +313,7 @@ public class Rat extends MovingOne {
             adjustScore(-20);
             if (!burned) {
                 burned = true;
-                ((Fire) field).playMainSoundFor(sounds);
+                ((Fire) field).playMainSoundFor(getSounds());
             }
         }
         BaseBlockNeigbours neighBase1 = w.getBaseBlockNeigboursByUniversal(this.getUniversalCoords().x, this.getUniversalCoords().y);
@@ -324,7 +331,7 @@ public class Rat extends MovingOne {
                     adjustScore(-5);
                     if (!burned) {
                         burned = true;
-                        ((Fire) (block1.getItem())).playSecondarySoundFor(sounds);
+                        ((Fire) (block1.getItem())).playSecondarySoundFor(getSounds());
                     }
                 }
                 BaseBlockNeigbours neighBase2 = w.getBaseBlockNeigboursByUniversal(block1.getUniversalCoords().y, block1.getUniversalCoords().x);
@@ -341,7 +348,7 @@ public class Rat extends MovingOne {
                         adjustScore(-1);
                         if (!burned) {
                             burned = true;
-                            ((Fire) (block2.getItem())).playTercialSoundFor(sounds);
+                            ((Fire) (block2.getItem())).playTercialSoundFor(getSounds());
                         }
                     }
                 }
@@ -387,7 +394,7 @@ public class Rat extends MovingOne {
     }
 
     public void disableSounds() {
-        this.sounds = new SoundsBuffer.NoSound();
+        this.setSounds(new SoundsBuffer.NoSound());
     }
 
     public void addScoreListener(ScoreListener scoreListener) {
@@ -395,7 +402,14 @@ public class Rat extends MovingOne {
     }
 
     public SoundsBuffer getSounds() {
-        return sounds;
+        if ("sneci".equals(skin)){
+            return snail;
+        } else {
+            return sounds;
+        }
     }
 
+    public void setSounds(SoundsBuffer sounds) {
+        this.sounds = sounds;
+    }
 }

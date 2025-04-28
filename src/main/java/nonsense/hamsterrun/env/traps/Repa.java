@@ -1,18 +1,21 @@
 package nonsense.hamsterrun.env.traps;
 
 import nonsense.hamsterrun.env.Rat;
+import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Image;
 
-//so delicious, that once in process of eating, can not be left
-public class Salat extends Vegetable {
+//so hard, that can not be crossed until eaten
+public class Repa extends Vegetable {
 
+    private  RatActions.Direction lock = null;
 
     protected Image getSprite() {
-        return SpritesProvider.salat;
+        return SpritesProvider.repa;
     }
+
 
     @Override
     protected float getMaxEnergy() {

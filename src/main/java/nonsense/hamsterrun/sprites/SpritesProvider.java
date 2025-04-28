@@ -22,6 +22,7 @@ public class SpritesProvider {
     public static BufferedImage pepper;
     public static BufferedImage carrot;
     public static BufferedImage salat;
+    public static BufferedImage repa;
     public static BufferedImage grass;
     public static BufferedImage[] trapdoor;
     public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
@@ -82,6 +83,8 @@ public class SpritesProvider {
         salat = ImageIO.read(salatU);
         URL grassU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/grass.png");
         grass = ImageIO.read(grassU);
+        URL repaU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/repa.png");
+        repa = ImageIO.read(repaU);
         URL pepperU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/pepper.png");
         pepper = ImageIO.read(pepperU);
         URL carrotU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/carrot.png");

@@ -11,6 +11,7 @@ import nonsense.hamsterrun.env.traps.InvisibleTrapDoor;
 import nonsense.hamsterrun.env.traps.Mushroom;
 import nonsense.hamsterrun.env.traps.OneWayTeleport;
 import nonsense.hamsterrun.env.traps.Pepper;
+import nonsense.hamsterrun.env.traps.Repa;
 import nonsense.hamsterrun.env.traps.Salat;
 import nonsense.hamsterrun.env.traps.Torturer;
 import nonsense.hamsterrun.env.traps.TrapDoor;
@@ -36,6 +37,7 @@ public class BaseConfig {
             new ItemsWithProbability(Pepper.class, 15),
             new ItemsWithProbability(Grass.class, 20),
             new ItemsWithProbability(Salat.class, 15),
+            new ItemsWithProbability(Repa.class, 15),
             new ItemsWithProbability(OneWayTeleport.class, 4),
             new ItemsWithProbability(TwoWayTeleport.class, 8),
             new ItemsWithProbability(AllWayTeleport.class, 4),
