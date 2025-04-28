@@ -20,7 +20,7 @@ public class Grass extends Vegetable {
     }
 
     protected int getStartEnergy() {
-        return seed.nextInt(((int) (getMaxEnergy() / 2))) + (int)(getMaxEnergy()/2);
+        return seed.nextInt(((int) (getMaxEnergy() / 2))) + (int) (getMaxEnergy() / 2);
     }
 
     @Override

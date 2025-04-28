@@ -204,7 +204,7 @@ public class BaseBlock {
                         if (coordx < 0 - 2 * zoom || coordy < 0 - 2 * zoom) {
                             continue; //nothing should draw more then one field around
                         }
-                        if (coordx > BaseConfig.getConfig().getPartialViewPort().x+2*zoom || coordy > BaseConfig.getConfig().getPartialViewPort().x+2*zoom) {
+                        if (coordx > BaseConfig.getConfig().getPartialViewPort().x + 2 * zoom || coordy > BaseConfig.getConfig().getPartialViewPort().x + 2 * zoom) {
                             continue; //nothing should draw more then one field around
                         }
                     }

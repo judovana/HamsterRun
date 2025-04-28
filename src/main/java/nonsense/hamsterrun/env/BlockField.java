@@ -9,7 +9,6 @@ import java.awt.Point;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -24,6 +23,7 @@ public class BlockField {
     //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
     //wreckingball, bat... to do, implement.. somwhen...
     private MovingOne alien;
+
     public BlockField(boolean passable, Point coords, BaseBlock parent) {
         this.passable = passable;
         this.coords = coords;

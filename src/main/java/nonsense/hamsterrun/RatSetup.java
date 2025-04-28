@@ -3,7 +3,7 @@ package nonsense.hamsterrun;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 
 
-public class RatSetup extends  VirtualRatSetup{
+public class RatSetup extends VirtualRatSetup {
 
     final RatsController.RatControl control;
 

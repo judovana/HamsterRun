@@ -32,11 +32,6 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
     private JPanel controlls;
 
 
-    private static String getPercentText(int ratio, int summ) {
-        float probab = ((float) ratio / (float) summ * (float) 100);
-        return ratio + "/" + summ + "->" + probab + "%";
-    }
-
     //TODO extract shared min/max here and in config validate
     public ItemsAndAliensPanel() {
         this.setLayout(new GridLayout(2, 1));
@@ -47,16 +42,21 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         setTitles();
     }
 
+    private static String getPercentText(int ratio, int summ) {
+        float probab = ((float) ratio / (float) summ * (float) 100);
+        return ratio + "/" + summ + "->" + probab + "%";
+    }
+
     private void regenerateItems(boolean recreate) {
-        if (recreate){
+        if (recreate) {
             controlls.removeAll();
         }
         int sum = 0;
         int origSum = 0;
-        for(BaseConfig.ItemsWithProbability item: BaseConfig.getConfig().getItemsProbabilities()) {
+        for (BaseConfig.ItemsWithProbability item : BaseConfig.getConfig().getItemsProbabilities()) {
             int origRatio = BaseConfig.getConfig().getDefaultItemProbability(item.clazz);
-            origSum+=origRatio;
-            sum+=item.ratio;
+            origSum += origRatio;
+            sum += item.ratio;
         }
         int counter = 0;
         for (BaseConfig.ItemsWithProbability iwp : BaseConfig.getConfig().getItemsProbabilities()) {
@@ -64,7 +64,7 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
                 PreviewItemLine item = new PreviewItemLine(iwp, origSum, sum);
                 controlls.add(item);
             } else {
-                ((PreviewItemLine)(controlls.getComponent(counter))).refreshCountes(iwp, origSum, sum);
+                ((PreviewItemLine) (controlls.getComponent(counter))).refreshCountes(iwp, origSum, sum);
             }
             counter++;
         }
@@ -76,6 +76,13 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         regenerateItems(true);
     }
 
+    private static class PreviewAlienLine extends JPanel {
+        private final MovingOne alien;
+
+        public PreviewAlienLine(MovingOne alien) {
+            this.alien = alien;
+        }
+    }
 
     private class PreviewItemLine extends JPanel {
         private final Item item;
@@ -121,6 +128,7 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
             js.setToolTipText("If set to 0, then it is disabled");
             b2.add(js);
             is = new JLabel();
+            refreshCountes(iwp, origSum, sum);
             b2.add(is);
             this.add(b2);
 
@@ -148,14 +156,6 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
                 Graphics2D g2d = (Graphics2D) g;
                 item.drawThumbnail(g2d, this.getHeight());
             }
-        }
-    }
-
-    private static class PreviewAlienLine extends JPanel {
-        private final MovingOne alien;
-
-        public PreviewAlienLine(MovingOne alien) {
-            this.alien = alien;
         }
     }
 }

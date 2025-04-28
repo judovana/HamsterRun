@@ -352,35 +352,35 @@ public class Rat extends MovingOne {
     private boolean returnOnSalat(World world) {
         if (action == RatActions.EAT
                 && world.getBlockField(getUniversalCoords()).getItem() instanceof Salat
-                && !((Salat)(world.getBlockField(getUniversalCoords()).getItem())).eaten()){
+                && !((Salat) (world.getBlockField(getUniversalCoords()).getItem())).eaten()) {
             return true;
         }
         return false;
     }
 
     public void setMouseUp(World world) {
-        if (returnOnSalat(world)){
+        if (returnOnSalat(world)) {
             return;
         }
         setActionDirection(RatActions.WALK, RatActions.Direction.UP);
     }
 
     public void setMouseLeft(World world) {
-        if (returnOnSalat(world)){
+        if (returnOnSalat(world)) {
             return;
         }
         setActionDirection(RatActions.WALK, RatActions.Direction.LEFT);
     }
 
     public void setMouseDown(World world) {
-        if (returnOnSalat(world)){
+        if (returnOnSalat(world)) {
             return;
         }
         setActionDirection(RatActions.WALK, RatActions.Direction.DOWN);
     }
 
     public void setMouseRight(World world) {
-        if (returnOnSalat(world)){
+        if (returnOnSalat(world)) {
             return;
         }
         setActionDirection(RatActions.WALK, RatActions.Direction.RIGHT);

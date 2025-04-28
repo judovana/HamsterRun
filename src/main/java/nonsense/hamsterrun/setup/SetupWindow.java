@@ -3,7 +3,6 @@ package nonsense.hamsterrun.setup;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.Main;
-import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JButton;
@@ -21,7 +20,7 @@ import java.awt.event.ActionListener;
 /**
  * Hello world!
  */
-public class SetupWindow extends JFrame implements  Localized {
+public class SetupWindow extends JFrame implements Localized {
 
     private final JButton startButton;
 

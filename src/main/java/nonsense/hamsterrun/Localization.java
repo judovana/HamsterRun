@@ -66,6 +66,7 @@ public class Localization {
     public String gridConnectivityMinLabel() {
         return get("gridConnectivityMinLabel");
     }
+
     public String gridConnectivityMaxLabel() {
         return get("gridConnectivityMaxLabel");
     }
@@ -77,6 +78,7 @@ public class Localization {
     public String getAddMousesButton1() {
         return get("addMousesButton1");
     }
+
     public String getAddMousesButton2() {
         return get("addMousesButton2");
     }
@@ -90,7 +92,7 @@ public class Localization {
     }
 
     public String delayMs() {
-         return get("delayMs");
+        return get("delayMs");
     }
 
     public String getKeepRegenerating() {

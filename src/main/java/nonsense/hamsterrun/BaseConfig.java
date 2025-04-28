@@ -21,8 +21,6 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,12 +49,9 @@ public class BaseConfig {
             new ItemsWithProbability(ColorfullFlask.class, 2),
 
     };
-
-    private final Map<Class, Integer> itemsWithProbabilityOverride = new HashMap<>();
-
     private static final Random seed = new Random();
     private static BaseConfig baseConfig = BaseConfig.small();
-
+    private final Map<Class, Integer> itemsWithProbabilityOverride = new HashMap<>();
     private int baseSize = 10;
     private int baseDensityMin = 4;
     private int baseDensityMax = 7;
@@ -69,8 +64,8 @@ public class BaseConfig {
     private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
     //FIXME cmdline/gui setup
-    private int tunnelConfusion=20;
-    private int mouseSensitivity=200;
+    private int tunnelConfusion = 20;
+    private int mouseSensitivity = 200;
     //w and h ow space to draw to,
     // if the drawn object is out,
     // no need to draw it
@@ -114,6 +109,11 @@ public class BaseConfig {
 
     private static int getBaseConfigRandom(int min, int max) {
         return seed.nextInt(max - min + 1) + min;
+    }
+
+    static Class getTrapClassByName(String name) throws ClassNotFoundException {
+        Class clazz = Class.forName(Empty.class.getPackageName() + "." + name);
+        return clazz;
     }
 
     public void summUp() {
@@ -314,44 +314,34 @@ public class BaseConfig {
         this.mouseSensitivity = mouseSensitivity;
     }
 
-
-    public static class ItemsWithProbability {
-        //0 == disabled
-        public final Class clazz;
-        public final int ratio;
-
-        public ItemsWithProbability(Class clazz, int ratio) {
-            this.clazz = clazz;
-            this.ratio = ratio;
-        }
-
-    }
-    public Integer getDefaultItemProbability(String  name){
+    public Integer getDefaultItemProbability(String name) {
         try {
             return getDefaultItemProbabilityThrows(name);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public Integer getDefaultItemProbabilityThrows(String  name) throws ClassNotFoundException {
+    public Integer getDefaultItemProbabilityThrows(String name) throws ClassNotFoundException {
         Class clazz = getTrapClassByName(name);
         return getDefaultItemProbability(clazz);
     }
+
     public Integer getDefaultItemProbability(Class key) {
         List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
         for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
-                if (origItem.clazz.equals(key)) {
-                    return origItem.ratio;
-                }
+            if (origItem.clazz.equals(key)) {
+                return origItem.ratio;
+            }
         }
         return null;
     }
+
     public List<ItemsWithProbability> getItemsProbabilities() {
         List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
-        for (ItemsWithProbability origItem: DEFAULT_ITEMS_PROBABILITIES) {
+        for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
             Integer i = itemsWithProbabilityOverride.get(origItem.clazz);
-            if (i == null){
+            if (i == null) {
                 items.add(new ItemsWithProbability(origItem.clazz, origItem.ratio));
             } else {
                 items.add(new ItemsWithProbability(origItem.clazz, i));
@@ -363,41 +353,50 @@ public class BaseConfig {
     public void addTrapModifier(String arg) {
         try {
             addTrapModifierThrows(arg);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
+
     public void addTrapModifierThrows(String arg) throws ClassNotFoundException {
         String[] nameAndProbability = arg.split(":");
         Class clazz = getTrapClassByName(nameAndProbability[0]);
-        if (nameAndProbability.length == 1){
+        if (nameAndProbability.length == 1) {
             addTrapModifierSafe(clazz, 0);
         } else {
             addTrapModifierSafe(clazz, Integer.valueOf(nameAndProbability[1]));
         }
     }
-     public void addTrapModifierSafe(Class clazz, Integer prob) {
-            itemsWithProbabilityOverride.put(clazz, Integer.valueOf(prob));
+
+    public void addTrapModifierSafe(Class clazz, Integer prob) {
+        itemsWithProbabilityOverride.put(clazz, Integer.valueOf(prob));
 
     }
 
-    static Class getTrapClassByName(String name) throws ClassNotFoundException {
-        Class clazz = Class.forName(Empty.class.getPackageName() + "." + name);
-        return clazz;
-    }
-
-    public void setWholeViewPort(int width, int height){
+    public void setWholeViewPort(int width, int height) {
         this.viewPort = new Point(width, height);
     }
 
     public Point getPartialViewPort() {
-        int wPart = viewPort.x/getColumns();
-        int hPart = viewPort.y/(getViews()/getColumns() + 1);
+        int wPart = viewPort.x / getColumns();
+        int hPart = viewPort.y / (getViews() / getColumns() + 1);
         return new Point(wPart, hPart);
     }
 
     public boolean haveViewPort() {
         return viewPort != null;
+    }
+
+    public static class ItemsWithProbability {
+        //0 == disabled
+        public final Class clazz;
+        public final int ratio;
+
+        public ItemsWithProbability(Class clazz, int ratio) {
+            this.clazz = clazz;
+            this.ratio = ratio;
+        }
+
     }
 
 

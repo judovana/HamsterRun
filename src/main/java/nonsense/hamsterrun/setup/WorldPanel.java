@@ -178,13 +178,13 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         try {
             BaseConfig.getConfig().verify();
         } catch (Exception ex) {
-            if (changeEvent != null && changeEvent.getSource() instanceof  JSpinner){
+            if (changeEvent != null && changeEvent.getSource() instanceof JSpinner) {
                 ((JSpinner) changeEvent.getSource()).setValue(lastIntValue);
             }
             JOptionPane.showMessageDialog(null, ex);
             throw ex;
         }
-        if (changeEvent != null && changeEvent.getSource() instanceof  JSpinner) {
+        if (changeEvent != null && changeEvent.getSource() instanceof JSpinner) {
             lastIntValue = ((JSpinner) changeEvent.getSource()).getValue();
         }
         if (world != null) {

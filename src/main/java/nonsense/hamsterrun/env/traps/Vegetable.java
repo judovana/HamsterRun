@@ -11,7 +11,7 @@ import java.awt.Image;
 
 public abstract class Vegetable implements Item {
 
-    private  float maxEnergy = getMaxEnergy();
+    private float maxEnergy = getMaxEnergy();
     int energy = getStartEnergy();
 
     protected float getMaxEnergy() {

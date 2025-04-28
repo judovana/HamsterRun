@@ -86,36 +86,36 @@ public class VirtualRatSetup {
         return def;
     }
 
-    public int getAiChaos() {
-        return aiChaos;
-    }
-
-    public boolean isDisplay() {
-        return display;
-    }
-
-    public String getSkin() {
-        return skin;
-    }
-
-    public String getControlDef() {
-        return controlDef;
-    }
-
     public void setDef(String def) {
         this.def = def;
+    }
+
+    public int getAiChaos() {
+        return aiChaos;
     }
 
     public void setAiChaos(int aiChaos) {
         this.aiChaos = aiChaos;
     }
 
+    public boolean isDisplay() {
+        return display;
+    }
+
     public void setDisplay(boolean display) {
         this.display = display;
     }
 
+    public String getSkin() {
+        return skin;
+    }
+
     public void setSkin(String skin) {
         this.skin = skin;
+    }
+
+    public String getControlDef() {
+        return controlDef;
     }
 
     public void setControlDef(String controlDef) {
