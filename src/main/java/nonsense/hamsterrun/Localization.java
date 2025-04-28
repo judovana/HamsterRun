@@ -39,6 +39,10 @@ public class Localization {
         return get("worldTitle");
     }
 
+    public String getMiscTitle() {
+        return get("miscTitle");
+    }
+
     public String getItemsTitle() {
         return get("itemsTitle");
     }

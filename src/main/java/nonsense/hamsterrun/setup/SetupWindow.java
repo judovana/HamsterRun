@@ -31,8 +31,7 @@ public class SetupWindow extends JFrame implements Localized {
         JPanel items = new ItemsAndAliensPanel();
         tabs.add(items);
         tabs.add(new WorldPanel());
-        JPanel allowedControls = new JPanel();
-        allowedControls.setName("Enabled controls - map, regenerate, call, spread...even directions?-)");
+        JPanel allowedControls = new MiscPanel();
         tabs.add(allowedControls);
         add(tabs);
         startButton = new JButton("start");

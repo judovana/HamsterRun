@@ -50,10 +50,6 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner delayMsSpinner;
     private final JCheckBox keepRegenerating;
     //    private int columns =  - moved to rats
-    //TODO
-    //minKeysToEnterTheCage - multiplied by rats 0 disables it
-    //minCumualtiveScoreToEnterCage - 0 disables it
-    //allRatsEnterTime - 0 disables and one is enough
 
     private World world;
     private final JPanel preview = new JPanel() {

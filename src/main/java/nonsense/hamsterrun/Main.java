@@ -91,6 +91,14 @@ public class Main {
                         x++;
                         config.addTrapModifier(args[x]);
                         break;
+                    case "tunnel":
+                        x++;
+                        config.setTunnelConfusion(Integer.valueOf(args[x]));
+                        break;
+                    case "mouse-sensitivity":
+                        x++;
+                        config.setMouseSensitivity(Integer.valueOf(args[x]));
+                        break;
                     default:
                         throw new RuntimeException("Unknown parameter " + args[x]);
 
