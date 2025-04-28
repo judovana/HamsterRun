@@ -23,18 +23,19 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 public class BaseConfig {
 
-    public static final ItemsWithProbability[] DEFAULT_ITEMS_PROBABILITIES = new ItemsWithProbability[]{
+    private static final ItemsWithProbability[] DEFAULT_ITEMS_PROBABILITIES = new ItemsWithProbability[]{
             new ItemsWithProbability(Empty.class, 50),
             new ItemsWithProbability(Cucumber.class, 30),
             new ItemsWithProbability(Carrot.class, 15),
             new ItemsWithProbability(Pepper.class, 15),
-            new ItemsWithProbability(Cucumber.class, 30),
             new ItemsWithProbability(Grass.class, 20),
             new ItemsWithProbability(Salat.class, 15),
             new ItemsWithProbability(OneWayTeleport.class, 4),
@@ -50,10 +51,12 @@ public class BaseConfig {
             new ItemsWithProbability(ColorfullFlask.class, 2),
 
     };
+
+    private final Map<Class, Integer> itemsWithProbabilityOverride = new HashMap<>();
+
     private static final Random seed = new Random();
     private static BaseConfig baseConfig = BaseConfig.small();
 
-    private List<ItemsWithProbability> items = null;
     private int baseSize = 10;
     private int baseDensityMin = 4;
     private int baseDensityMax = 7;
@@ -323,24 +326,64 @@ public class BaseConfig {
         }
 
     }
+    public Integer getDefaultItemProbability(String  name){
+        try {
+            return getDefaultItemProbabilityThrows(name);
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
+    public Integer getDefaultItemProbabilityThrows(String  name) throws ClassNotFoundException {
+        Class clazz = getTrapClassByName(name);
+        return getDefaultItemProbability(clazz);
+    }
+    public Integer getDefaultItemProbability(Class key) {
+        List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
+        for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
+                if (origItem.clazz.equals(key)) {
+                    return origItem.ratio;
+                }
+        }
+        return null;
+    }
     public List<ItemsWithProbability> getItemsProbabilities() {
-        if (items == null) {
-            items =  new ArrayList<>();
-            items.addAll(Arrays.asList(DEFAULT_ITEMS_PROBABILITIES));
+        List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
+        for (ItemsWithProbability origItem: DEFAULT_ITEMS_PROBABILITIES) {
+            Integer i = itemsWithProbabilityOverride.get(origItem.clazz);
+            if (i == null){
+                items.add(new ItemsWithProbability(origItem.clazz, origItem.ratio));
+            } else {
+                items.add(new ItemsWithProbability(origItem.clazz, i));
+            }
         }
         return items;
     }
 
-
-    //FIXME
     public void addTrapModifier(String arg) {
-        String[] nameAndProbability = arg.split(":");
-        if (nameAndProbability.length == 1){
-            //set item nameAndProbability[0]  with its new probability 0 - disabled
-        } else {
-            //set item nameAndProbability[0] with its new probability nameAndProbability[1]
+        try {
+            addTrapModifierThrows(arg);
+        } catch(Exception ex) {
+            throw new RuntimeException(ex);
         }
+    }
+    public void addTrapModifierThrows(String arg) throws ClassNotFoundException {
+        String[] nameAndProbability = arg.split(":");
+        Class clazz = getTrapClassByName(nameAndProbability[0]);
+        if (nameAndProbability.length == 1){
+            addTrapModifierSafe(clazz, 0);
+        } else {
+            addTrapModifierSafe(clazz, Integer.valueOf(nameAndProbability[1]));
+        }
+    }
+     public void addTrapModifierSafe(Class clazz, Integer prob) {
+            itemsWithProbabilityOverride.put(clazz, Integer.valueOf(prob));
+
+    }
+
+    static Class getTrapClassByName(String name) throws ClassNotFoundException {
+        Class clazz = Class.forName(Empty.class.getPackageName() + "." + name);
+        return clazz;
     }
 
     public void setWholeViewPort(int width, int height){

@@ -40,4 +40,11 @@ public class BaseConfigTest {
             Assertions.assertEquals(2, d);
         }
     }
+
+    @Test
+    public void getTrapByNameTest() throws ClassNotFoundException {
+        Class clazz = BaseConfig.getTrapClassByName("Item");
+        Assertions.assertNotNull(clazz);
+    }
+
 }

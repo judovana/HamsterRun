@@ -24,48 +24,66 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 
-public class ItemsAndAliensPanel extends JPanel implements Localized, ChangeListener {
+public class ItemsAndAliensPanel extends JPanel implements Localized {
 
     private static final SoundsBuffer examples = new SoundsBuffer();
-    private static final int origSum = Arrays.stream(BaseConfig.DEFAULT_ITEMS_PROBABILITIES).map(a -> a.ratio).collect(Collectors.summingInt(Integer::intValue));
+    private JPanel controlls;
+
+
+    private static String getPercentText(int ratio, int summ) {
+        float probab = ((float) ratio / (float) summ * (float) 100);
+        return ratio + "/" + summ + "->" + probab + "%";
+    }
 
     //TODO extract shared min/max here and in config validate
     public ItemsAndAliensPanel() {
         this.setLayout(new GridLayout(2, 1));
-        JPanel controlls = new JPanel(new GridLayout(0, 1));
-        for (BaseConfig.ItemsWithProbability iwp : BaseConfig.getConfig().getItemsProbabilities()) {
-            PreviewItemLine item = new PreviewItemLine(iwp);
-            controlls.add(item);
-        }
+        controlls = new JPanel(new GridLayout(0, 1));
         JScrollPane controlsScroll = new JScrollPane(controlls);
         add(controlsScroll);
-//        add(items);
 //        add(aliens);
         setTitles();
-        stateChanged(null);
-        ;
+    }
+
+    private void regenerateItems(boolean recreate) {
+        if (recreate){
+            controlls.removeAll();
+        }
+        int sum = 0;
+        int origSum = 0;
+        for(BaseConfig.ItemsWithProbability item: BaseConfig.getConfig().getItemsProbabilities()) {
+            int origRatio = BaseConfig.getConfig().getDefaultItemProbability(item.clazz);
+            origSum+=origRatio;
+            sum+=item.ratio;
+        }
+        int counter = 0;
+        for (BaseConfig.ItemsWithProbability iwp : BaseConfig.getConfig().getItemsProbabilities()) {
+            if (recreate) {
+                PreviewItemLine item = new PreviewItemLine(iwp, origSum, sum);
+                controlls.add(item);
+            } else {
+                ((PreviewItemLine)(controlls.getComponent(counter))).refreshCountes(iwp, origSum, sum);
+            }
+            counter++;
+        }
     }
 
     @Override
     public void setTitles() {
         setName(Localization.get().getItemsTitle());
-
+        regenerateItems(true);
     }
 
-    @Override
-    public void stateChanged(ChangeEvent changeEvent) {
 
-    }
-
-    private static class PreviewItemLine extends JPanel {
+    private class PreviewItemLine extends JPanel {
         private final Item item;
         private final BaseConfig.ItemsWithProbability source;
+        private final JLabel is;
 
-        public PreviewItemLine(BaseConfig.ItemsWithProbability iwp) {
+        public PreviewItemLine(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
+            //TODO localize
             this.setLayout(new GridLayout(1, 3));
             this.item = BlockField.itemClassToItemCatched(iwp.clazz);
             this.source = iwp;
@@ -84,6 +102,8 @@ public class ItemsAndAliensPanel extends JPanel implements Localized, ChangeList
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     item.playMainSoundFor(examples);
+                    item.playSecondarySoundFor(examples);
+                    item.playTercialSoundFor(examples);
                 }
             });
             b1.add(sound);
@@ -91,14 +111,24 @@ public class ItemsAndAliensPanel extends JPanel implements Localized, ChangeList
             this.add(new ThumbanilPanel());
             JPanel b2 = new JPanel(new GridLayout(2, 1));
             JSpinner js = new JSpinner(new SpinnerNumberModel(iwp.ratio, 0, 10000, 1));
+            js.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    BaseConfig.getConfig().addTrapModifierSafe(iwp.clazz, ((Number) js.getValue()).intValue());
+                    regenerateItems(false);
+                }
+            });
             js.setToolTipText("If set to 0, then it is disabled");
             b2.add(js);
-            JLabel is = new JLabel("is: ");
-            float probab = ((float) iwp.ratio / (float) origSum * (float) 100);
-            is.setToolTipText("was: " + iwp.ratio + "/" + origSum + "->" + probab + "%");
+            is = new JLabel();
             b2.add(is);
             this.add(b2);
 
+        }
+
+        public void refreshCountes(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
+            is.setText("is: " + getPercentText(iwp.ratio, sum));
+            is.setToolTipText("was: " + getPercentText(BaseConfig.getConfig().getDefaultItemProbability(iwp.clazz), origSum));
         }
 
         private class ThumbanilPanel extends JPanel {

@@ -87,6 +87,7 @@ public class Main {
                         config.setColumns(Integer.valueOf(args[x]));
                         break;
                     case "item":
+                    case "trap":
                         x++;
                         config.addTrapModifier(args[x]);
                         break;
