@@ -106,4 +106,16 @@ public class Localization {
     public String getRemoveMe() {
         return get("removeMe");
     }
+
+    public String getNoPreview() {
+        return get("noPreview");
+    }
+
+    public String getImagePreview() {
+        return get("imagePreview");
+    }
+
+    public String getFullPreview() {
+        return get("fullPreview");
+    }
 }

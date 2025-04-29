@@ -11,6 +11,7 @@ import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -65,6 +66,8 @@ public class MiscPanel extends JPanel implements Localized {
         this.add(new JCheckBox("map", true));
         this.add(new JCheckBox("call", true));
         this.add(new JCheckBox("spread", true));
+        this.add(new JButton("save config"));
+        this.add(new JButton("load config"));
         setTitles();
     }
 

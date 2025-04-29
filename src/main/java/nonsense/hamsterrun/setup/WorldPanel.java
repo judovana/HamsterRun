@@ -3,6 +3,7 @@ package nonsense.hamsterrun.setup;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
+import nonsense.hamsterrun.Utils;
 import nonsense.hamsterrun.env.Maze;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.SoundsBuffer;
@@ -11,7 +12,10 @@ import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,13 +23,17 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,20 +58,29 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner delayMsSpinner;
     private final JCheckBox keepRegenerating;
     //    private int columns =  - moved to rats
+    private final JComboBox previewType;
 
     private World world;
+    private BufferedImage staticWorld;
     private final JPanel preview = new JPanel() {
         public void paint(Graphics g) {
             super.paint(g);
             Graphics2D g2d = (Graphics2D) g;
-            if (world != null) {
-                int worldWidth = BaseConfig.getConfig().getBaseSize() * BaseConfig.getConfig().getGridSize();
-                int worldHeight = BaseConfig.getConfig().getBaseSize() * BaseConfig.getConfig().getGridSize();
-                int wZoopm = this.getWidth() / worldWidth;
-                int hZoopm = this.getHeight() / worldHeight;
-                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, Math.min(hZoopm, wZoopm), null, true);
+            if (previewType.getSelectedIndex() == 2 ) {
+                if (world != null) {
+                    int zoom = getZoom(this);
+                    world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, zoom, null, true);
+                }
+            } else if (previewType.getSelectedIndex() == 1 ) {
+                if (staticWorld != null) {
+                    int wh = Math.min(this.getWidth(), this.getHeight());
+                    g2d.drawImage(staticWorld, (this.getWidth()-wh)/2,(this.getHeight()-wh)/2, wh, wh, null);
+                }
+            } else {
+                //will be cleaned?
             }
         }
+
     };
     private Object lastIntValue;
 
@@ -141,7 +158,17 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         add(controls);
 
         preview.setBackground(Color.BLACK);
-        add(preview);
+        JPanel previewHolder = new JPanel(new BorderLayout());
+        previewHolder.add(preview, BorderLayout.CENTER);
+        previewType = new JComboBox();
+        previewType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WorldPanel.this.stateChanged(null);
+            }
+        });
+        previewHolder.add(previewType, BorderLayout.SOUTH);
+        add(previewHolder);
         setTitles();
         stateChanged(null);
     }
@@ -158,6 +185,20 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         gridConnectivityMaxLabel.setText(Localization.get().gridConnectivityMaxLabel());
         delayMsLabel.setText(Localization.get().delayMs());
         keepRegenerating.setText(Localization.get().getKeepRegenerating());
+        int index = previewType.getSelectedIndex();
+        if (index<0) {
+            index=0;
+        }
+        previewType.setModel(getLocalisedPreviewTypes());
+        previewType.setSelectedIndex(index);
+    }
+
+    private ComboBoxModel getLocalisedPreviewTypes() {
+        return new DefaultComboBoxModel(new String[]{
+                Localization.get().getNoPreview(),
+                Localization.get().getImagePreview(),
+                Localization.get().getFullPreview()
+        });
     }
 
     @Override
@@ -186,8 +227,32 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         if (world != null) {
             world.kill();
         }
-        world = new World(Maze.generate(BaseConfig.getConfig()));
-        world.setRatsProvider(new RatsProvider() {
+        if (previewType.getSelectedIndex() == 2) {
+            world = createFullnewWorld();
+            staticWorld = null;
+        } else if (previewType.getSelectedIndex() == 1) {
+            world = null;
+            Maze maze = Maze.generate(BaseConfig.getConfig());
+            staticWorld = Utils.toImage(maze, getZoom(preview), BaseConfig.getConfig(), true);
+        } else {
+            world = null;
+            staticWorld = null;
+        }
+        preview.repaint();
+    }
+
+    private static int getZoom(JPanel that) {
+        int worldWidth = BaseConfig.getConfig().getBaseSize() * BaseConfig.getConfig().getGridSize();
+        int worldHeight = BaseConfig.getConfig().getBaseSize() * BaseConfig.getConfig().getGridSize();
+        int wZoopm = that.getWidth() / worldWidth;
+        int hZoopm = that.getHeight() / worldHeight;
+        int zoom = Math.min(hZoopm, wZoopm);
+        return zoom;
+    }
+
+    private World createFullnewWorld() {
+        World lworld = new World(Maze.generate(BaseConfig.getConfig()));
+        lworld.setRatsProvider(new RatsProvider() {
             private final Rat r = new Rat(new SoundsBuffer.NoSound());
 
             @Override
@@ -205,8 +270,9 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
 
             }
         });
-        world.allRatsSpread(false);
-        world.addRepaintListener(preview);
+        lworld.allRatsSpread(false);
+        lworld.addRepaintListener(preview);
+        return lworld;
     }
 
     @Override
