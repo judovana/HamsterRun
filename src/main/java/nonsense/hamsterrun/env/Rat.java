@@ -410,6 +410,9 @@ public class Rat extends MovingOne {
     }
 
     public void setSounds(SoundsBuffer sounds) {
+        if (sounds!=null){
+            sounds.kill();
+        }
         this.sounds = sounds;
     }
 }
