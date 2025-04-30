@@ -36,11 +36,25 @@ public class SoundsBuffer {
         harmQueue.enqueue(clip);
     }
 
+    public void kill() {
+        if (harmQueue!=null) {
+            harmQueue.kill();
+        }
+        if (eatQueue!=null) {
+            eatQueue.kill();
+        }
+        if (moveQueue!=null) {
+            moveQueue.kill();
+        }
+
+    }
+
     private static class SoundQueue implements Runnable {
         private static int id;
         private static int LIMIT = 15;
         List<String> queue = new ArrayList<>(10);
         WavSoundPlayer player = null;
+        private boolean live = true;
 
         public SoundQueue() {
             id++;
@@ -52,7 +66,7 @@ public class SoundsBuffer {
 
         @Override
         public void run() {
-            while (true) {
+            while (live) {
                 try {
                     Thread.sleep(50);
                     String what = peak();
@@ -100,6 +114,10 @@ public class SoundsBuffer {
             } else {
                 return null;
             }
+        }
+
+        public void kill() {
+            live=false;
         }
     }
 

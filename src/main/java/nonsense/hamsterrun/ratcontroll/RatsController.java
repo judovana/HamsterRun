@@ -54,6 +54,14 @@ public class RatsController implements RatsProvider {
 
     }
 
+    @Override
+    public void kill() {
+        for (Rat rat: this.getRats()) {
+            rat.getSounds().kill();
+        }
+        rats.clear();
+    }
+
     public KeyboardControl getNulLControl() {
         for (RatWithControls ratsconts : rats) {
             if (ratsconts.rat == null) {

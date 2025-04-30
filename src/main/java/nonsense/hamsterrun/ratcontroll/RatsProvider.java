@@ -11,4 +11,6 @@ public interface RatsProvider {
     public RatsController.RatControl getRatControl(Rat rat);
 
     void swap(Rat rat);
+
+    void kill();
 }

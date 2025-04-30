@@ -211,6 +211,7 @@ public class World implements Runnable {
 
     public void kill() {
         live = false;
+        ratsProvider.kill();
     }
 
     public void run() {
