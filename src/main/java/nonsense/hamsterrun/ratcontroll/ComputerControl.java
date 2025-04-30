@@ -2,6 +2,7 @@ package nonsense.hamsterrun.ratcontroll;
 
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
+import nonsense.hamsterrun.env.aliens.MovingOne;
 
 public class ComputerControl implements RatsController.RatControl {
     private int chaos = RatsController.DEFAULT_CHAOS;
@@ -18,7 +19,11 @@ public class ComputerControl implements RatsController.RatControl {
     }
 
     public void selfAct(Rat rat, World world) {
-        switch (RatsController.seed.nextInt(chaos)) {
+            dummyMove(rat, world, chaos);
+    }
+
+    public static void dummyMove(MovingOne rat, World world, int chaosFactor) {
+        switch (RatsController.seed.nextInt(chaosFactor)) {
             case 0:
                 rat.setMouseLeft(world);
                 break;
@@ -34,7 +39,6 @@ public class ComputerControl implements RatsController.RatControl {
             default: //ok
         }
     }
-
     @Override
     public int getZoom() {
         return 64;

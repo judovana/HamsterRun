@@ -193,7 +193,7 @@ public class SpritesProvider {
         return SpritesProvider.allWayTeleport[i];
     }
 
-    public static Image getMushroom(int anim) {
+    public static BufferedImage getMushroom(int anim) {
         return houbicky[anim];
     }
 }

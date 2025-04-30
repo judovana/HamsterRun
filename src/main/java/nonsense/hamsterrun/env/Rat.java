@@ -50,6 +50,7 @@ public class Rat extends MovingOne {
         super(worldx, worldy, blockx, blocky);
     }
 
+    @Override
     public String getSkin() {
         return skin;
     }
@@ -58,40 +59,8 @@ public class Rat extends MovingOne {
         this.skin = skin;
     }
 
-
-    //useInplaceSubMovement - in map false, in game true
-    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
-        Point coord = getUniversalCoords();
-        Point relativeShift = new Point(0, 0);
-        if (useInplaceSubMovement) {
-            //it goes from (relativeSizes..0...-relativeSizes) (without the edges)
-            //so for relativeSizes 1 the total to walk is 0
-            //so for relativeSizes 2 the total to walk is 3 (1,0,-1)...
-            //so for relativeSizes 5 the total to walk is 9 (4,3,2,1,0,-1,-2,-3,-4)...
-            float relativeSizesCalc = relativeSizes * 2 - 1;
-            float step = zoom / relativeSizesCalc;
-            //so for relativeSizes 5 the it goes from 1 to 9 inclusive
-            float relativeX = (relativeCoordInSquare.x) * step;
-            float relativeY = (relativeCoordInSquare.y) * step;
-            relativeShift.x = (int) relativeX;
-            relativeShift.y = (int) relativeY;
-            BufferedImage img = getImageForAction(skin);
-            int usedZoom = zoom;
-            if (action == RatActions.FALLING) {
-                usedZoom = Math.max(1, zoom - (zoom / 50 + 1) * anim.anim);
-            }
-            g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, usedZoom, usedZoom, null);
-        } else {
-            g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
-            if (higlight) {
-                g2d.setColor(Color.red);
-                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x - anim.modMap(), leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y - anim.modMap(), zoom + 2 * anim.modMap(), zoom + 2 * +anim.modMap());
-
-            }
-        }
-    }
-
-    private BufferedImage getImageForAction(String skin) {
+    @Override
+    protected BufferedImage getImageForAction(String skin) {
         if (RatActions.isStay(action)) {
             return SpritesProvider.ratSprites.get(skin).getSit(direction.getSprite(), anim.ignore());
         } else if (action == RatActions.EAT) {
@@ -127,7 +96,8 @@ public class Rat extends MovingOne {
         }
     }
 
-    public void setActionDirection(RatActions action, RatActions.Direction direction) {
+    @Override
+    public void adjustSpeedBeforeActionDirection() {
         if (this.action == RatActions.WALK && this.direction == direction) {
             speed++;
             if (speed == MAGICAL_FALL_CHANCE - 1) {
@@ -139,10 +109,8 @@ public class Rat extends MovingOne {
         } else {
             speed = 1;
         }
-        this.action = action;
-        this.direction = direction;
-
     }
+
 
     public void act(World world) {
         anim.addLimited();
@@ -212,20 +180,7 @@ public class Rat extends MovingOne {
             }
         }
         harm(world);
-        switch (direction) {
-            case DOWN:
-                moveMouseDown(world);
-                break;
-            case UP:
-                moveMouseUp(world);
-                break;
-            case LEFT:
-                moveMouseLeft(world);
-                break;
-            case RIGHT:
-                moveMouseRight(world);
-                break;
-        }
+        move(world);
     }
 
     private void eat(World world) {
@@ -356,43 +311,6 @@ public class Rat extends MovingOne {
         }
     }
 
-    private boolean returnOnSalat(World world) {
-        if (action == RatActions.EAT
-                && world.getBlockField(getUniversalCoords()).getItem() instanceof Salat
-                && !((Salat) (world.getBlockField(getUniversalCoords()).getItem())).eaten()) {
-            return true;
-        }
-        return false;
-    }
-
-    public void setMouseUp(World world) {
-        if (returnOnSalat(world)) {
-            return;
-        }
-        setActionDirection(RatActions.WALK, RatActions.Direction.UP);
-    }
-
-    public void setMouseLeft(World world) {
-        if (returnOnSalat(world)) {
-            return;
-        }
-        setActionDirection(RatActions.WALK, RatActions.Direction.LEFT);
-    }
-
-    public void setMouseDown(World world) {
-        if (returnOnSalat(world)) {
-            return;
-        }
-        setActionDirection(RatActions.WALK, RatActions.Direction.DOWN);
-    }
-
-    public void setMouseRight(World world) {
-        if (returnOnSalat(world)) {
-            return;
-        }
-        setActionDirection(RatActions.WALK, RatActions.Direction.RIGHT);
-    }
-
     public void disableSounds() {
         this.setSounds(new SoundsBuffer.NoSound());
     }
@@ -414,5 +332,20 @@ public class Rat extends MovingOne {
             sounds.kill();
         }
         this.sounds = sounds;
+    }
+
+    @Override
+     protected boolean returnOnSalat(World world) {
+        if (action == RatActions.EAT
+                && world.getBlockField(getUniversalCoords()).getItem() instanceof Salat
+                && !((Salat) (world.getBlockField(getUniversalCoords()).getItem())).eaten()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void selfAct(World world) {
+        throw new RuntimeException("Rat is moved by its controller");
     }
 }

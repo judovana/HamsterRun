@@ -3,6 +3,7 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.aliens.MovingOne;
+import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JComponent;
@@ -31,6 +32,8 @@ public class World implements Runnable {
 
     public World(Maze maze) {
         this.maze = maze;
+        aliens.add(new SmallBats());
+        allAliensSpread(false);
         allRatsSpread(true);
         this.repl = new Thread(this);
         repl.setDaemon(true);
@@ -40,7 +43,7 @@ public class World implements Runnable {
 
     }
 
-    public void teleportMouse(Rat rat, boolean center, boolean forceAlone) {
+    public void teleportMouse(MovingOne rat, boolean center, boolean forceAlone) {
         Point[] start = new Point[]{new Point(-1, -1), new Point(-1, -1)};
         int aloneAttempts = 10;
         int totalAttempts = 100;
@@ -118,12 +121,22 @@ public class World implements Runnable {
     }
 
     public void allRatsSpread(boolean center) {
-        for (Rat rat : getRats()) {
+        allSpread(getRats(), center);
+    }
+
+    public void allAliensSpread(boolean center) {
+        allSpread(aliens, center);
+    }
+
+    public void allSpread(List<? extends  MovingOne> rats, boolean center) {
+        for (MovingOne rat : rats) {
             teleportMouse(rat, center, false);
         }
     }
 
-    private boolean isMouseOcupied(Rat currentMouse, Point[] start) {
+
+
+    private boolean isMouseOcupied(MovingOne currentMouse, Point[] start) {
         boolean mouseOcupied = false;
         for (Rat rat : getRats()) {
             //really ==
@@ -163,6 +176,10 @@ public class World implements Runnable {
                 selected = true;
             }
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
+        }
+        for(MovingOne alien: aliens){
+            g2d.setColor(new Color(0,250 - i * (250 / getRats().size()), 0));
+            alien.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, false);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
         //debug texts
@@ -232,6 +249,9 @@ public class World implements Runnable {
                 if (worldAnim % 5 == 0) {
                     for (Rat rat : getRats()) {
                         ratsProvider.getRatControl(rat).selfAct(rat, this);
+                    }
+                    for (MovingOne alien : aliens) {
+                        alien.selfAct(this);
                     }
                 }
                 Thread.sleep(BaseConfig.getConfig().getDelayMs());

@@ -5,7 +5,10 @@ import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public abstract class MovingOne {
@@ -194,4 +197,94 @@ public abstract class MovingOne {
     public void setAction(RatActions ratActions) {
         action = ratActions;
     }
+
+
+    public void setMouseUp(World world) {
+        if (returnOnSalat(world)) {
+            return;
+        }
+        setActionDirection(RatActions.WALK, RatActions.Direction.UP);
+    }
+
+    public void setMouseLeft(World world) {
+        if (returnOnSalat(world)) {
+            return;
+        }
+        setActionDirection(RatActions.WALK, RatActions.Direction.LEFT);
+    }
+
+    public void setMouseDown(World world) {
+        if (returnOnSalat(world)) {
+            return;
+        }
+        setActionDirection(RatActions.WALK, RatActions.Direction.DOWN);
+    }
+
+    public void setMouseRight(World world) {
+        if (returnOnSalat(world)) {
+            return;
+        }
+        setActionDirection(RatActions.WALK, RatActions.Direction.RIGHT);
+    }
+
+    public void setActionDirection(RatActions action, RatActions.Direction direction) {
+        adjustSpeedBeforeActionDirection();
+        this.action = action;
+        this.direction = direction;
+    }
+
+    //useInplaceSubMovement - in map false, in game true
+    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
+        Point coord = getUniversalCoords();
+        Point relativeShift = new Point(0, 0);
+        if (useInplaceSubMovement) {
+            //it goes from (relativeSizes..0...-relativeSizes) (without the edges)
+            //so for relativeSizes 1 the total to walk is 0
+            //so for relativeSizes 2 the total to walk is 3 (1,0,-1)...
+            //so for relativeSizes 5 the total to walk is 9 (4,3,2,1,0,-1,-2,-3,-4)...
+            float relativeSizesCalc = relativeSizes * 2 - 1;
+            float step = zoom / relativeSizesCalc;
+            //so for relativeSizes 5 the it goes from 1 to 9 inclusive
+            float relativeX = (relativeCoordInSquare.x) * step;
+            float relativeY = (relativeCoordInSquare.y) * step;
+            relativeShift.x = (int) relativeX;
+            relativeShift.y = (int) relativeY;
+            BufferedImage img = getImageForAction(getSkin());
+            int usedZoom = zoom;
+            if (action == RatActions.FALLING) {
+                usedZoom = Math.max(1, zoom - (zoom / 50 + 1) * anim.anim);
+            }
+            g2d.drawImage(img, leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, usedZoom, usedZoom, null);
+        } else {
+            g2d.fillRect(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x, leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y, zoom, zoom);
+            if (higlight) {
+                g2d.setColor(Color.red);
+                g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x - anim.modMap(), leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y - anim.modMap(), zoom + 2 * anim.modMap(), zoom + 2 * +anim.modMap());
+
+            }
+        }
+    }
+
+    public void move(World world){
+        switch (direction) {
+            case DOWN:
+                moveMouseDown(world);
+                break;
+            case UP:
+                moveMouseUp(world);
+                break;
+            case LEFT:
+                moveMouseLeft(world);
+                break;
+            case RIGHT:
+                moveMouseRight(world);
+                break;
+        }
+    }
+
+    protected abstract boolean returnOnSalat(World world);
+    public abstract void selfAct(World world);
+    protected abstract void adjustSpeedBeforeActionDirection();
+    protected abstract BufferedImage getImageForAction(String skin);
+    protected abstract String getSkin();
 }
