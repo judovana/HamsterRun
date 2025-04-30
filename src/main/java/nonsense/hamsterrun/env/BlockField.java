@@ -20,9 +20,6 @@ public class BlockField {
     private boolean passable;
     //to ahve only one item and one alien is simply simplification
     private Item item = new Empty();
-    //unlike item, they move. if two aliens meet, they anhilate to one or none (if they are of same strength.. explosion?)
-    //wreckingball, bat... to do, implement.. somwhen...
-    private MovingOne alien;
 
     public BlockField(boolean passable, Point coords, BaseBlock parent) {
         this.passable = passable;

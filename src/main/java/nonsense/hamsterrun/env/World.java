@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JComponent;
@@ -26,6 +27,7 @@ public class World implements Runnable {
     private boolean live = true;
     private int worldAnim = 0;
     private RatsProvider ratsProvider;
+    private ArrayList<MovingOne> aliens = new ArrayList<>();
 
     public World(Maze maze) {
         this.maze = maze;
