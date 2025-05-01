@@ -4,6 +4,7 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -282,9 +283,13 @@ public abstract class MovingOne {
         }
     }
 
+
+    protected BufferedImage getImageForAction(String skin) {
+        return SpritesProvider.getAlien(getSkin(), anim.anim);
+    }
+
     protected abstract boolean returnOnSalat(World world);
     public abstract void selfAct(World world);
     protected abstract void adjustSpeedBeforeActionDirection();
-    protected abstract BufferedImage getImageForAction(String skin);
     protected abstract String getSkin();
 }

@@ -2,7 +2,6 @@ package nonsense.hamsterrun.sprites;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -14,7 +13,9 @@ import java.util.Map;
 public class SpritesProvider {
 
     public static final List<String> KNOWN_RATS = List.of("virecek", "hnedulka", "brownie", "uhlicek", "sneci", "rat");
+    public static final List<String> KNOWN_ALIENS = List.of("bigBats", "bigFlies", "boulder", "key", "smallBats", "smallFlies");
     public static final Map<String, RatSpriteSet> ratSprites = new HashMap<>();
+    public static final Map<String, List<BufferedImage>> alienSprites = new HashMap<>();
     public static BufferedImage wall;
     public static BufferedImage tunnelOpened;
     public static BufferedImage[] tunnelClosed = new BufferedImage[4];
@@ -135,6 +136,12 @@ public class SpritesProvider {
         for (int z = 1; z < 10; z++) {
             floor.add(multiply(floorI, z));
         }
+
+        for (String alien : KNOWN_ALIENS) {
+            URL au = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/aliens/" + alien + ".gif");
+            List<BufferedImage> imgs = GifToImages.decodeCatched(au);
+            alienSprites.put(alien, imgs);
+        }
     }
 
     public static BufferedImage getFloor(int zoom) {
@@ -195,5 +202,14 @@ public class SpritesProvider {
 
     public static BufferedImage getMushroom(int anim) {
         return houbicky[anim];
+    }
+
+    public static BufferedImage getAlien(String name, int anim) {
+        System.out.println( anim + " for " + name + " from " + getAlienSize(name));
+        return alienSprites.get(name).get(anim % getAlienSize(name));
+    }
+
+    public static int getAlienSize(String name) {
+        return alienSprites.get(name).size();
     }
 }

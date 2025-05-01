@@ -6,17 +6,15 @@ import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import java.awt.image.BufferedImage;
-
 //moving chaotically aka ai mouse
 //must be faster then rats... maybe different thread then repl? Maybe special % in repl?
-public class SmallBats extends MovingOne {
+public class BigBats extends MovingOne {
 
-    protected int chaos = seed.nextInt(30) + 10;
+    protected int chaos = seed.nextInt(5) + 10;
     protected boolean moving = false;
 
-    public SmallBats() {
-        this.speed = seed.nextInt(4)+3;
+    public BigBats() {
+        this.speed = seed.nextInt(2)+2;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }
@@ -52,6 +50,6 @@ public class SmallBats extends MovingOne {
 
     @Override
     protected String getSkin() {
-        return "smallBats";
+        return "bigBats";
     }
 }

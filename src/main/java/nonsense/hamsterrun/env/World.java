@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.aliens.BigBats;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
@@ -33,6 +34,7 @@ public class World implements Runnable {
     public World(Maze maze) {
         this.maze = maze;
         aliens.add(new SmallBats());
+        aliens.add(new BigBats());
         allAliensSpread(false);
         allRatsSpread(true);
         this.repl = new Thread(this);
@@ -178,7 +180,7 @@ public class World implements Runnable {
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
         }
         for(MovingOne alien: aliens){
-            g2d.setColor(new Color(0,250 - i * (250 / getRats().size()), 0));
+            g2d.setColor(new Color(250 - i * (250 / aliens.size()),250 - i * (250 / aliens.size()), 0));
             alien.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, false);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
