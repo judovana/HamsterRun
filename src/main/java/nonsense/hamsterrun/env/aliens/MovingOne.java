@@ -292,4 +292,9 @@ public abstract class MovingOne {
     public abstract void selfAct(World world);
     protected abstract void adjustSpeedBeforeActionDirection();
     protected abstract String getSkin();
+
+    //usual act is only in some occurences of REPL, if you need each turn, use this
+    //eg for super quick animations...
+    public void unfilteredAct(World world) {
+    }
 }

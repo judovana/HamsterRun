@@ -205,7 +205,6 @@ public class SpritesProvider {
     }
 
     public static BufferedImage getAlien(String name, int anim) {
-        System.out.println( anim + " for " + name + " from " + getAlienSize(name));
         return alienSprites.get(name).get(anim % getAlienSize(name));
     }
 

@@ -256,6 +256,10 @@ public class World implements Runnable {
                         alien.selfAct(this);
                     }
                 }
+
+                for (MovingOne alien : aliens) {
+                    alien.unfilteredAct(this);
+                }
                 Thread.sleep(BaseConfig.getConfig().getDelayMs());
                 for (Rat rat : getRats()) {
                     rat.act(this);
