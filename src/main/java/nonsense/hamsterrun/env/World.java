@@ -3,8 +3,10 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.aliens.BigBats;
+import nonsense.hamsterrun.env.aliens.BigFlies;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.aliens.SmallBats;
+import nonsense.hamsterrun.env.aliens.SmallFlies;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JComponent;
@@ -33,8 +35,10 @@ public class World implements Runnable {
 
     public World(Maze maze) {
         this.maze = maze;
-        aliens.add(new SmallBats());
-        aliens.add(new BigBats());
+        //aliens.add(new SmallBats());
+        //aliens.add(new BigBats());
+        aliens.add(new SmallFlies());
+        aliens.add(new BigFlies());
         allAliensSpread(false);
         allRatsSpread(true);
         this.repl = new Thread(this);
@@ -254,6 +258,11 @@ public class World implements Runnable {
                     }
                     for (MovingOne alien : aliens) {
                         alien.selfAct(this);
+                        for (Rat rat : getRats()) {
+                            if (alien.getUniversalCoords().equals(rat.getUniversalCoords())) {
+                                alien.interact(rat);
+                            }
+                        }
                     }
                 }
 

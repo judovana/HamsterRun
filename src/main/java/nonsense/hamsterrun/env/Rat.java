@@ -348,4 +348,9 @@ public class Rat extends MovingOne {
     public void selfAct(World world) {
         throw new RuntimeException("Rat is moved by its controller");
     }
+
+    @Override
+    public void interact(Rat world) {
+        throw new RuntimeException("Rat can not interact");
+    }
 }

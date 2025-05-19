@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env.aliens;
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
@@ -288,6 +289,7 @@ public abstract class MovingOne {
         return SpritesProvider.getAlien(getSkin(), anim.anim);
     }
 
+    public abstract void interact(Rat rat);
     protected abstract boolean returnOnSalat(World world);
     public abstract void selfAct(World world);
     protected abstract void adjustSpeedBeforeActionDirection();

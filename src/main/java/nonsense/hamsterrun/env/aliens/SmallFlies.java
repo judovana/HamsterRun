@@ -8,16 +8,14 @@ import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import java.awt.image.BufferedImage;
-
 //moving chaotically aka ai mouse
 //must be faster then rats... maybe different thread then repl? Maybe special % in repl?
-public class SmallBats extends MovingOne {
+public class SmallFlies extends MovingOne {
 
     protected int chaos = seed.nextInt(30) + 10;
     protected boolean moving = false;
 
-    public SmallBats() {
+    public SmallFlies() {
         this.speed = seed.nextInt(4)+3;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
@@ -54,12 +52,20 @@ public class SmallBats extends MovingOne {
 
     @Override
     protected String getSkin() {
-        return "smallBats";
+        return "smallFlies";
     }
 
     @Override
     public void interact(Rat rat) {
-        rat.getSounds().addToHarmQueue(SoundsBuffer.piskMuch);
-        rat.adjustScore(-10);
+        if (rat.getAction() == RatActions.STAY || rat.getAction() == RatActions.EAT){
+            rat.getSounds().addToHarmQueue(SoundsBuffer.brbliTunel);
+            rat.setActionDirection(RatActions.WALK, RatActions.Direction.getRandom());
+            rat.speed=relativeSizes;
+        } if (rat.getAction() == RatActions.WALK){
+            rat.getSounds().addToHarmQueue(SoundsBuffer.brbliTunel);
+            rat.setActionDirection(RatActions.WALK, rat.direction);
+            rat.speed=relativeSizes;
+
+        }
     }
 }

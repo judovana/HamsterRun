@@ -13,7 +13,7 @@ import java.util.Map;
 public class SpritesProvider {
 
     public static final List<String> KNOWN_RATS = List.of("virecek", "hnedulka", "brownie", "uhlicek", "sneci", "rat");
-    public static final List<String> KNOWN_ALIENS = List.of("bigBats", "bigFlies", "boulder", "key", "smallBats", "smallFlies");
+    public static final List<String> KNOWN_ALIENS = List.of("bigBats", "bigFlies", "boulder", "key", "smallBats", "smallFlies", "falcon", "cat1", "cat2");
     public static final Map<String, RatSpriteSet> ratSprites = new HashMap<>();
     public static final Map<String, List<BufferedImage>> alienSprites = new HashMap<>();
     public static BufferedImage wall;

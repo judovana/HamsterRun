@@ -1,6 +1,8 @@
 package nonsense.hamsterrun.env.aliens;
 
+import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.RatActions;
+import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
@@ -51,5 +53,11 @@ public class BigBats extends MovingOne {
     @Override
     protected String getSkin() {
         return "bigBats";
+    }
+
+    @Override
+    public void interact(Rat rat) {
+        rat.getSounds().addToHarmQueue(SoundsBuffer.piskMuch);
+        rat.adjustScore(-50);
     }
 }
