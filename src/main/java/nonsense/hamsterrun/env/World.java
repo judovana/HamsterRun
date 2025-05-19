@@ -4,6 +4,7 @@ package nonsense.hamsterrun.env;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.aliens.BigBats;
 import nonsense.hamsterrun.env.aliens.BigFlies;
+import nonsense.hamsterrun.env.aliens.Boulder;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.env.aliens.SmallFlies;
@@ -39,6 +40,10 @@ public class World implements Runnable {
         //aliens.add(new BigBats());
         aliens.add(new SmallFlies());
         aliens.add(new BigFlies());
+        aliens.add(new Boulder());
+        aliens.add(new Boulder());
+        aliens.add(new Boulder());
+        aliens.add(new Boulder());
         allAliensSpread(false);
         allRatsSpread(true);
         this.repl = new Thread(this);
@@ -200,22 +205,24 @@ public class World implements Runnable {
         this.repaintListeners.add(repaintListener);
     }
 
-    public boolean isEnterable(Point coord, int vx, int vy) {
-        return isEnterable(coord.x + vx, coord.y + vy);
+    public boolean isEnterable(Point coord, int vx, int vy, boolean mouseBlock) {
+        return isEnterable(coord.x + vx, coord.y + vy, mouseBlock);
     }
 
-    boolean isEnterable(int x, int y) {
-        return isEnterable(new Point(x, y));
+    boolean isEnterable(int x, int y, boolean mouseBlock) {
+        return isEnterable(new Point(x, y), mouseBlock);
     }
 
-    boolean isEnterable(Point coord) {
+    boolean isEnterable(Point coord, boolean mouseBlock) {
         BlockField bl = getMazeStatus(coord);
         if (bl == null || bl.isImpassable()) {
             return false;
         }
-        for (Rat rat : getRats()) {
-            if (rat.getUniversalCoords().equals(coord)) {
-                return false;
+        if (mouseBlock) {
+            for (Rat rat : getRats()) {
+                if (rat.getUniversalCoords().equals(coord)) {
+                    return false;
+                }
             }
         }
         return true;

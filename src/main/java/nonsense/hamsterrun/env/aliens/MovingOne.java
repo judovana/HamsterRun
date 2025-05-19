@@ -20,7 +20,7 @@ public abstract class MovingOne {
     protected static final int relativeSizes = 5;
     protected AnimationCounrer anim = new AnimationCounrer();
     protected RatActions action = RatActions.STAY;
-    protected RatActions.Direction direction = RatActions.Direction.UP;
+    protected RatActions.Direction direction = RatActions.Direction.getRandom();
     protected Point relativeCoordInSquare = new Point(0, 0);
     protected int speed = 1; //can not go over relativeSizes*2
     private Point coordsInBaseBlock = new Point(-1, -1);
@@ -113,27 +113,33 @@ public abstract class MovingOne {
     }
 
     protected void reallyMoveMouseRight(World world) {
-        if (world.isEnterable(getUniversalCoords(), 1, 0)) {
+        if (world.isEnterable(getUniversalCoords(), 1, 0, getMouseBlock())) {
             forceMouseRight();
         }
     }
 
     protected void reallyMoveMouseUp(World world) {
-        if (world.isEnterable(getUniversalCoords(), 0, -1)) {
+        if (world.isEnterable(getUniversalCoords(), 0, -1, getMouseBlock())) {
             forceMouseUp();
         }
     }
 
     protected void reallyMoveMouseLeft(World world) {
-        if (world.isEnterable(getUniversalCoords(), -1, 0)) {
+        if (world.isEnterable(getUniversalCoords(), -1, 0, getMouseBlock())) {
             forceMouseLeft();
         }
     }
 
     protected void reallyMoveMouseDown(World world) {
-        if (world.isEnterable(getUniversalCoords(), 0, 1)) {
+        if (world.isEnterable(getUniversalCoords(), 0, 1, getMouseBlock())) {
             forceMouseDown();
         }
+    }
+
+    // currently there is no one who is avoiding mouses
+    //it will be key I guess who will be avoiding it
+    private boolean getMouseBlock() {
+        return false;
     }
 
     protected void moveMouseRight(World world) {
