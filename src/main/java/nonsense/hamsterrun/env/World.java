@@ -52,12 +52,15 @@ public class World implements Runnable {
     }
 
     private MovingOne getrandomAlien() {
-        //new SmallBats();
-        //new BigBats();
-        //new SmallFlies();
-        //new BigFlies();
-        //return new Boulder();
-        return new Hawk();
+        switch (seed.nextInt(6)) {
+            case 0:  return new SmallBats();
+            case 1:  return new BigBats();
+            case 2:  return new SmallFlies();
+            case 3:  return new BigFlies();
+            case 4:  return new Boulder();
+            case 5:  return new Hawk();
+            default: throw new RuntimeException("To much to select from!");
+        }
     }
 
     public void teleportMouse(MovingOne rat, boolean center, boolean forceAlone) {
