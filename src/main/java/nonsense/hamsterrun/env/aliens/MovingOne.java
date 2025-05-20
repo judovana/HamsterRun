@@ -136,9 +136,11 @@ public abstract class MovingOne {
         }
     }
 
-    // currently there is no one who is avoiding mouses
-    //it will be key I guess who will be avoiding it
-    private boolean getMouseBlock() {
+    /**
+     *
+     * @return true, if movement of this member should be blocekd by rat
+     */
+    protected boolean getMouseBlock() {
         return false;
     }
 

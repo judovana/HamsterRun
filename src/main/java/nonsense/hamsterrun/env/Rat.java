@@ -353,4 +353,11 @@ public class Rat extends MovingOne {
     public void interact(Rat world) {
         throw new RuntimeException("Rat can not interact");
     }
+
+    @Override
+    protected boolean getMouseBlock() {
+        //TODO, make this setup-able?
+        return true;
+    }
+
 }
