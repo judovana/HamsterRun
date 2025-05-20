@@ -5,6 +5,7 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.aliens.BigBats;
 import nonsense.hamsterrun.env.aliens.BigFlies;
 import nonsense.hamsterrun.env.aliens.Boulder;
+import nonsense.hamsterrun.env.aliens.Hawk;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.env.aliens.SmallFlies;
@@ -55,7 +56,8 @@ public class World implements Runnable {
         //new BigBats();
         //new SmallFlies();
         //new BigFlies();
-        return new Boulder();
+        //return new Boulder();
+        return new Hawk();
     }
 
     public void teleportMouse(MovingOne rat, boolean center, boolean forceAlone) {
@@ -127,7 +129,7 @@ public class World implements Runnable {
         return result;
     }
 
-    private List<Rat> getRats() {
+    public List<Rat> getRats() {
         if (ratsProvider == null) {
             return new ArrayList(0);
         } else {
@@ -137,6 +139,11 @@ public class World implements Runnable {
 
     public void allRatsSpread(boolean center) {
         allSpread(getRats(), center);
+        for(MovingOne alien: aliens){
+            if (!alien.mustBeInCorridor()) {
+                teleportMouse(alien, false, true);
+            }
+        }
     }
 
     public void allAliensSpread(boolean center) {
@@ -192,7 +199,9 @@ public class World implements Runnable {
             }
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
         }
+        i = -1;
         for(MovingOne alien: aliens){
+            i++;
             g2d.setColor(new Color(250 - i * (250 / aliens.size()),250 - i * (250 / aliens.size()), 0));
             alien.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, false);
         }

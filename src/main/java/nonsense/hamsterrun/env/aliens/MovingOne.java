@@ -81,31 +81,47 @@ public abstract class MovingOne {
 
 
     protected void forceMouseRight() {
-        coordsInBaseBlock.x++;
+        forceMouseRight(1);
+    }
+
+    protected void forceMouseUp() {
+        forceMouseUp(1);
+    }
+
+    protected void forceMouseLeft() {
+        forceMouseLeft(1);
+    }
+
+    protected void forceMouseDown() {
+        forceMouseDown(1);
+    }
+
+    protected void forceMouseRight(int i) {
+        coordsInBaseBlock.x+=i;
         if (coordsInBaseBlock.x >= BaseConfig.getConfig().getBaseSize()) {
             coordsInMaze.x++;
             coordsInBaseBlock.x = 0;
         }
     }
 
-    protected void forceMouseUp() {
-        coordsInBaseBlock.y--;
+    protected void forceMouseUp(int i) {
+        coordsInBaseBlock.y-=i;
         if (coordsInBaseBlock.y < 0) {
             coordsInMaze.y--;
             coordsInBaseBlock.y = BaseConfig.getConfig().getBaseSize() - 1;
         }
     }
 
-    protected void forceMouseLeft() {
-        coordsInBaseBlock.x--;
+    protected void forceMouseLeft(int i) {
+        coordsInBaseBlock.x-=i;
         if (coordsInBaseBlock.x < 0) {
             coordsInMaze.x--;
             coordsInBaseBlock.x = BaseConfig.getConfig().getBaseSize() - 1;
         }
     }
 
-    protected void forceMouseDown() {
-        coordsInBaseBlock.y++;
+    protected void forceMouseDown(int i) {
+        coordsInBaseBlock.y+=i;
         if (coordsInBaseBlock.y >= BaseConfig.getConfig().getBaseSize()) {
             coordsInMaze.y++;
             coordsInBaseBlock.y = 0;
