@@ -14,11 +14,12 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 //must be faster then rats... maybe different thread then repl? Maybe special % in repl?
 public  class Boulder extends MovingOne {
 
+    private final int maxspeed;
     private Point lastCoord = new Point(-1,-1);
     private int lastCoordCounter = -1;
 
     public Boulder() {
-        this.speed = seed.nextInt(2)+4;
+        this.maxspeed = seed.nextInt(2)+4;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }
@@ -30,6 +31,7 @@ public  class Boulder extends MovingOne {
 
     @Override
     public void selfAct(World world) {
+        this.speed=maxspeed;
         this.action = RatActions.WALK;
         move(world);
         anim.addLimited();

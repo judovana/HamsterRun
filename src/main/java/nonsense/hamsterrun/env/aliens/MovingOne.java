@@ -297,6 +297,10 @@ public abstract class MovingOne {
         return SpritesProvider.getAlien(getSkin(), anim.anim);
     }
 
+    public boolean mustBeInCorridor() {
+        return true;
+    }
+
     public abstract void interact(Rat rat);
     protected abstract boolean returnOnSalat(World world);
     public abstract void selfAct(World world);

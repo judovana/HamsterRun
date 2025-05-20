@@ -36,14 +36,10 @@ public class World implements Runnable {
 
     public World(Maze maze) {
         this.maze = maze;
-        //aliens.add(new SmallBats());
-        //aliens.add(new BigBats());
-        aliens.add(new SmallFlies());
-        aliens.add(new BigFlies());
-        aliens.add(new Boulder());
-        aliens.add(new Boulder());
-        aliens.add(new Boulder());
-        aliens.add(new Boulder());
+        //FIXME make it setup-able
+        for (int x = 0; x< 10; x++) {
+            aliens.add(getrandomAlien());
+        }
         allAliensSpread(false);
         allRatsSpread(true);
         this.repl = new Thread(this);
@@ -52,6 +48,14 @@ public class World implements Runnable {
         repl.start();
 
 
+    }
+
+    private MovingOne getrandomAlien() {
+        //new SmallBats();
+        //new BigBats();
+        //new SmallFlies();
+        //new BigFlies();
+        return new Boulder();
     }
 
     public void teleportMouse(MovingOne rat, boolean center, boolean forceAlone) {
@@ -268,6 +272,22 @@ public class World implements Runnable {
                         for (Rat rat : getRats()) {
                             if (alien.getUniversalCoords().equals(rat.getUniversalCoords())) {
                                 alien.interact(rat);
+                            }
+                        }
+                    }
+                    //this should not be customizable, as the regeneration of workd is hart beat
+                    //without it, the key may never occure, even if this game is set up
+                    for (int x = 0 ; x < aliens.size(); x++) {
+                        if (aliens.get(x).mustBeInCorridor()) {
+                            MovingOne alien = aliens.get(x);
+                            if (!this.isEnterable(alien.getUniversalCoords(), false)){
+                                aliens.remove(x);
+                                x--;
+                                MovingOne newAlien = getrandomAlien();
+                                aliens.add(newAlien);
+                                Point[] futureCoords = maze.getSafeSpotIn(alien.getCoordsInMaze().x, alien.getCoordsInMaze().y);
+                                newAlien.setCoordsInMaze(futureCoords[0]);
+                                newAlien.setCoordsInBaseBlock(futureCoords[1]);
                             }
                         }
                     }
