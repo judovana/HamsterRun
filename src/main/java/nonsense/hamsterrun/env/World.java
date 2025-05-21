@@ -59,22 +59,15 @@ public class World implements Runnable {
     }
 
     private MovingOne getrandomAlien() {
-        switch (seed.nextInt(6)) {
-            case 0:
-                return new SmallBats();
-            case 1:
-                return new BigBats();
-            case 2:
-                return new SmallFlies();
-            case 3:
-                return new BigFlies();
-            case 4:
-                return new Boulder();
-            case 5:
-                return new Hawk();
-            default:
-                throw new RuntimeException("To much to select from!");
+        List<ItemsWithBoundaries> recalcualted = ItemsWithBoundaries.recalculateToBoundaries(BaseConfig.getConfig().getAliensProbabilities());
+        int i = seed.nextInt(recalcualted.get(recalcualted.size() - 1).upper);
+        for (ItemsWithBoundaries item : recalcualted) {
+            if (i >= item.lower && i < item.upper) {
+                MovingOne alien = ItemsWithBoundaries.alienClassToItemCatched(item.clazz);
+                return alien;
+            }
         }
+        return new Boulder();
     }
 
     public void teleportMouse(MovingOne rat, boolean center, boolean forceAlone) {

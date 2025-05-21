@@ -4,7 +4,9 @@ package nonsense.hamsterrun.setup;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.env.BlockField;
+import nonsense.hamsterrun.env.ItemsWithBoundaries;
 import nonsense.hamsterrun.env.SoundsBuffer;
+import nonsense.hamsterrun.env.ThumbnailAble;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.traps.Item;
 
@@ -118,14 +120,14 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
     }
 
     private class PreviewItemLine extends JPanel {
-        private final Item item;
+        private final ThumbnailAble item;
         private final BaseConfig.ItemsWithProbability source;
         private final JLabel is;
         private final JSpinner js;
 
         public PreviewItemLine(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
             this.setLayout(new GridLayout(1, 3));
-            this.item = BlockField.itemClassToItemCatched(iwp.clazz);
+            this.item = ItemsWithBoundaries.itemClassToItemCatched(iwp.clazz);
             this.source = iwp;
             JPanel b1 = new JPanel(new GridLayout(2, 1));
             JLabel ln = new JLabel(source.clazz.getSimpleName());
@@ -154,7 +156,7 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
             js.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    BaseConfig.getConfig().addTrapModifierSafe(iwp.clazz, ((Number) js.getValue()).intValue());
+                    BaseConfig.getConfig().addTrapModifierSafe(iwp.clazz, ((Number) js.getValue()).intValue(), false);
                     regenerateItems(false, false);
                 }
             });

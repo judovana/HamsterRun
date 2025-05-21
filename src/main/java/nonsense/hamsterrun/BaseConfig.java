@@ -1,5 +1,11 @@
 package nonsense.hamsterrun;
 
+import nonsense.hamsterrun.env.aliens.BigBats;
+import nonsense.hamsterrun.env.aliens.BigFlies;
+import nonsense.hamsterrun.env.aliens.Boulder;
+import nonsense.hamsterrun.env.aliens.Hawk;
+import nonsense.hamsterrun.env.aliens.SmallBats;
+import nonsense.hamsterrun.env.aliens.SmallFlies;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
 import nonsense.hamsterrun.env.traps.Carrot;
 import nonsense.hamsterrun.env.traps.ColorfullFlask;
@@ -49,11 +55,21 @@ public class BaseConfig {
             new ItemsWithProbability(Torturer.class, 10),
             new ItemsWithProbability(Mushroom.class, 2),
             new ItemsWithProbability(ColorfullFlask.class, 2),
-
     };
+
+    private static final ItemsWithProbability[] DEFAULT_ALIENS_PROBABILITIES = new ItemsWithProbability[]{
+            new ItemsWithProbability(SmallFlies.class, 50),
+            new ItemsWithProbability(BigFlies.class, 50),
+            new ItemsWithProbability(SmallBats.class, 20),
+            new ItemsWithProbability(BigBats.class, 20),
+            new ItemsWithProbability(Boulder.class, 35),
+            new ItemsWithProbability(Hawk.class, 10),
+    };
+
     private static final Random seed = new Random();
     private static BaseConfig baseConfig = BaseConfig.small();
     private final Map<Class, Integer> itemsWithProbabilityOverride = new HashMap<>();
+    private final Map<Class, Integer> aliensWithProbabilityOverride = new HashMap<>();
     private int baseSize = 10;
     private int baseDensityMin = 4;
     private int baseDensityMax = 7;
@@ -69,6 +85,10 @@ public class BaseConfig {
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
     private int maxAliens = 10;
+    //goal here should be, that the msot score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
+    private int cumulativeMinimalScoreToEnterGoldenGate= 50000;
+    private int cumulativeMinimalNUmberOfKeys= 10; //if conditions are not met, then punish? Set by multiplying by rats count!
+    private int individualMinimalScoreToEnterGoldenGate= 5000;
     //w and h ow space to draw to,
     // if the drawn object is out,
     // no need to draw it
@@ -317,22 +337,16 @@ public class BaseConfig {
         this.mouseSensitivity = mouseSensitivity;
     }
 
-    public Integer getDefaultItemProbability(String name) {
-        try {
-            return getDefaultItemProbabilityThrows(name);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public Integer getDefaultItemProbabilityThrows(String name) throws ClassNotFoundException {
-        Class clazz = getTrapClassByName(name);
-        return getDefaultItemProbability(clazz);
-    }
-
     public Integer getDefaultItemProbability(Class key) {
-        List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
-        for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
+        return getDefaultItemProbabilityImpl(DEFAULT_ITEMS_PROBABILITIES, key);
+    }
+    public Integer getDefaultAlienProbability(Class key) {
+        return getDefaultItemProbabilityImpl(DEFAULT_ALIENS_PROBABILITIES, key);
+    }
+
+    private static Integer getDefaultItemProbabilityImpl(ItemsWithProbability[] param, Class key) {
+        List<ItemsWithProbability> items = new ArrayList<>(param.length);
+        for (ItemsWithProbability origItem : param) {
             if (origItem.clazz.equals(key)) {
                 return origItem.ratio;
             }
@@ -344,10 +358,22 @@ public class BaseConfig {
         itemsWithProbabilityOverride.clear();
     }
 
+    public void resetAliensProbabilities() {
+        aliensWithProbabilityOverride.clear();
+    }
+
     public List<ItemsWithProbability> getItemsProbabilities() {
-        List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
-        for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
-            Integer i = itemsWithProbabilityOverride.get(origItem.clazz);
+        return getItemsProbabilitiesImpl(DEFAULT_ITEMS_PROBABILITIES, itemsWithProbabilityOverride);
+    }
+
+    public List<ItemsWithProbability> getAliensProbabilities() {
+        return getItemsProbabilitiesImpl(DEFAULT_ALIENS_PROBABILITIES, aliensWithProbabilityOverride);
+    }
+
+    private static List<ItemsWithProbability> getItemsProbabilitiesImpl(ItemsWithProbability[] array, Map<Class, Integer> map) {
+        List<ItemsWithProbability> items = new ArrayList<>(array.length);
+        for (ItemsWithProbability origItem : array) {
+            Integer i = map.get(origItem.clazz);
             if (i == null) {
                 items.add(new ItemsWithProbability(origItem.clazz, origItem.ratio));
             } else {
@@ -357,26 +383,30 @@ public class BaseConfig {
         return items;
     }
 
-    public void addTrapModifier(String arg) {
+    public void addTrapModifier(String arg, boolean alien) {
         try {
-            addTrapModifierThrows(arg);
+            addTrapModifierThrows(arg, alien);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public void addTrapModifierThrows(String arg) throws ClassNotFoundException {
+    private void addTrapModifierThrows(String arg, boolean alien) throws ClassNotFoundException {
         String[] nameAndProbability = arg.split(":");
         Class clazz = getTrapClassByName(nameAndProbability[0]);
         if (nameAndProbability.length == 1) {
-            addTrapModifierSafe(clazz, 0);
+            addTrapModifierSafe(clazz, 0, alien);
         } else {
-            addTrapModifierSafe(clazz, Integer.valueOf(nameAndProbability[1]));
+            addTrapModifierSafe(clazz, Integer.valueOf(nameAndProbability[1]), alien);
         }
     }
 
-    public void addTrapModifierSafe(Class clazz, Integer prob) {
-        itemsWithProbabilityOverride.put(clazz, Integer.valueOf(prob));
+    public void addTrapModifierSafe(Class clazz, Integer prob, boolean alien) {
+        if (alien) {
+            aliensWithProbabilityOverride.put(clazz, Integer.valueOf(prob));
+        } else {
+            itemsWithProbabilityOverride.put(clazz, Integer.valueOf(prob));
+        }
 
     }
 
@@ -395,10 +425,18 @@ public class BaseConfig {
     }
 
     public void disbaleAllItems() {
-        itemsWithProbabilityOverride.clear();
-        for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
+        disbaleAllItemsImpl(DEFAULT_ITEMS_PROBABILITIES, itemsWithProbabilityOverride);
+    }
+
+    public void disbaleAllAliens() {
+        disbaleAllItemsImpl(DEFAULT_ALIENS_PROBABILITIES, aliensWithProbabilityOverride);
+    }
+
+    private static void disbaleAllItemsImpl(ItemsWithProbability[] array, Map<Class, Integer> map) {
+        map.clear();
+        for (ItemsWithProbability origItem : array) {
             if (!origItem.clazz.equals(Empty.class) ) {
-                itemsWithProbabilityOverride.put(origItem.clazz, 0);
+                map.put(origItem.clazz, 0);
             }
         }
     }

@@ -57,7 +57,14 @@ public class SmallBats extends MovingOne {
 
     @Override
     public void interact(Rat rat) {
-        rat.getSounds().addToHarmQueue(SoundsBuffer.piskMuch);
+        playMainSoundFor(rat.getSounds());
         rat.adjustScore(-10);
     }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskMuch);
+    }
+
+
 }

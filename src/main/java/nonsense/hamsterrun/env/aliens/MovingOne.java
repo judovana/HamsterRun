@@ -3,6 +3,8 @@ package nonsense.hamsterrun.env.aliens;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.RatActions;
+import nonsense.hamsterrun.env.SoundsBuffer;
+import nonsense.hamsterrun.env.ThumbnailAble;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.sprites.SpritesProvider;
@@ -13,7 +15,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public abstract class MovingOne {
+public abstract class MovingOne implements ThumbnailAble {
 
     protected static final Random seed = new Random();
     protected static final int MAGICAL_FALL_CHANCE = 6;
@@ -329,5 +331,16 @@ public abstract class MovingOne {
     //usual act is only in some occurences of REPL, if you need each turn, use this
     //eg for super quick animations...
     public void unfilteredAct(World world) {
+    }
+
+    @Override
+    public void drawThumbnail(Graphics2D g2d, int size) {
+        this.setUniversalCoords(new Point(0,0));
+        draw(g2d, new Point(0,0), size, true, false);
+    }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        throw new RuntimeException("Not now!");
     }
 }

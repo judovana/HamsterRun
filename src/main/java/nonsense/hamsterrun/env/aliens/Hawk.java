@@ -1,5 +1,6 @@
 package nonsense.hamsterrun.env.aliens;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,15 +15,19 @@ import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 //flying over screen, targeting rats, walls do not stop
+//the only way how to get rid of it is to hide ALL rats in tunnels, it will fly away....
 public class Hawk extends MovingOne {
 
-    public static final int MAX_FLY_AWAY = 3; //min is 2
+    //todo,  Made it configurable?
+    private final int MAX_FLY_AWAY; //min is 2; with 3 was quite hard to get rid of some more chaotic hawks. 4.iompossible
     protected int chaos = seed.nextInt(18) + 1;
     private final int maxspeed = 1;
     private int skipCounter = 0;
     private Point vector = new Point(0, 0);
 
     public Hawk() {
+        //this.MAX_FLY_AWAY = seed.nextInt(2)+2;
+        this.MAX_FLY_AWAY = 3; //2 is really boring
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }
@@ -142,7 +147,12 @@ public class Hawk extends MovingOne {
 
     @Override
     public void interact(Rat rat) {
-        rat.getSounds().addToHarmQueue(SoundsBuffer.piskMuch);
+        playMainSoundFor(rat.getSounds());
         rat.adjustScore(-2000);
+    }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskMuch);
     }
 }

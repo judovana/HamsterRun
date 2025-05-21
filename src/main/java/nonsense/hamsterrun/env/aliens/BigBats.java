@@ -1,5 +1,7 @@
 package nonsense.hamsterrun.env.aliens;
 
+import java.awt.Graphics2D;
+
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.SoundsBuffer;
@@ -57,7 +59,13 @@ public class BigBats extends MovingOne {
 
     @Override
     public void interact(Rat rat) {
-        rat.getSounds().addToHarmQueue(SoundsBuffer.piskMuch);
+        playMainSoundFor(rat.getSounds());
         rat.adjustScore(-50);
     }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskMuch);
+    }
+
 }

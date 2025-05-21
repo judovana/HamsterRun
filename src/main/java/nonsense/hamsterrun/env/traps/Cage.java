@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 
 //can be reached only once collected keys > number of rats * constant is reached.
 //once reached, rats win
-//hhmhm all rats must enter in limited time?
+//hhmhm all rats must enter in limited time? Score?
 public class Cage implements Item {
 
     public Color getMinimapColor() {

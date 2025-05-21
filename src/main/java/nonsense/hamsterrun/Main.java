@@ -90,7 +90,11 @@ public class Main {
                     case "item":
                     case "trap":
                         x++;
-                        config.addTrapModifier(args[x]);
+                        config.addTrapModifier(args[x], false);
+                        break;
+                    case "alien":
+                        x++;
+                        config.addTrapModifier(args[x], true);
                         break;
                     case "tunnel":
                         x++;

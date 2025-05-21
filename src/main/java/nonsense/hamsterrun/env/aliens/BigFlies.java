@@ -58,15 +58,19 @@ public class BigFlies extends MovingOne {
     @Override
     public void interact(Rat rat) {
         if (rat.getAction() == RatActions.STAY || rat.getAction() == RatActions.EAT) {
-            rat.getSounds().addToHarmQueue(SoundsBuffer.brbliTunel);
+            playMainSoundFor(rat.getSounds());
             rat.setActionDirection(RatActions.WALK, RatActions.Direction.getRandom());
             rat.speed = relativeSizes;
         }
         if (rat.getAction() == RatActions.WALK) {
-            rat.getSounds().addToHarmQueue(SoundsBuffer.brbliTunel);
+            playMainSoundFor(rat.getSounds());
             rat.setActionDirection(RatActions.WALK, rat.direction);
             rat.speed = relativeSizes;
-
         }
+    }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.brbliTunel);
     }
 }

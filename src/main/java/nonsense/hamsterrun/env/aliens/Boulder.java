@@ -94,7 +94,12 @@ public class Boulder extends MovingOne {
 
     @Override
     public void interact(Rat rat) {
-        rat.getSounds().addToHarmQueue(SoundsBuffer.piskFire);
+        playMainSoundFor(rat.getSounds());
         rat.adjustScore(-500);
+    }
+
+    @Override
+    public void playMainSoundFor(SoundsBuffer rat) {
+        rat.addToHarmQueue(SoundsBuffer.piskFire);
     }
 }
