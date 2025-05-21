@@ -27,7 +27,7 @@ public class Pepper extends Vegetable {
             return 200;
         } else {
             eater.setAction(RatActions.STAY);
-            List<Point> l = Teleport.getNeighboursForGivenPoint(eater.getUniversalCoords(), world);
+            List<Point> l = Teleport.getPassableNeighboursForGivenPoint(eater.getUniversalCoords(), world);
             if (!l.isEmpty()) {
                 Collections.shuffle(l);
                 eater.setUniversalCoords(l.get(0));

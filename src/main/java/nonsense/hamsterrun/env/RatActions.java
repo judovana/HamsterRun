@@ -58,6 +58,34 @@ public enum RatActions {
             }
         }
 
+        public Direction left() {
+            if (this == UP){
+                return LEFT;
+            } else if (this == DOWN){
+                return RIGHT;
+            } else if (this == LEFT){
+                return UP;
+            } else if (this == RIGHT){
+                return DOWN;
+            } else {
+                throw new RuntimeException("Where am I turning left?");
+            }
+        }
+
+        public Direction right() {
+            if (this == UP){
+                return RIGHT;
+            } else if (this == DOWN){
+                return LEFT;
+            } else if (this == LEFT){
+                return DOWN;
+            } else if (this == RIGHT){
+                return UP;
+            } else {
+                throw new RuntimeException("Where am I turning right?");
+            }
+        }
+
         public int getSprite() {
             return sprite;
         }

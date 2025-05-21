@@ -24,13 +24,39 @@ public abstract class Teleport implements Item, Relocator {
 
     int anim = seed.nextInt(48);
 
-    static List<Point> getNeighboursForGivenPoint(Point w, World world) {
+    public static List<Point> getPassableNeighboursForGivenPoint(Point w, World world) {
+        return getNeighboursForGivenPoint(w, world, false, false);
+    }
+
+    public static List<Point> getNeighboursForGivenPoint(Point w, World world, boolean nulls, boolean impassables) {
+        List<BlockField> possibleFields = getNeighboursFields(w, world).getBase();
+        List<Point> freeSidePoints = new ArrayList<>(4);
+        for (BlockField block : possibleFields) {
+            if (block == null) {
+                if (nulls) {
+                    freeSidePoints.add(null);
+                }
+            } else {
+                if (block.isPassable()) {
+                    //they were recovered in swap coord system, we ahve to turn them back
+                    //so they can be swapped again
+                    freeSidePoints.add(new Point(block.getUniversalCoords().y, block.getUniversalCoords().x));
+                } else {
+                    if (impassables) {
+                        freeSidePoints.add(new Point(block.getUniversalCoords().y, block.getUniversalCoords().x));
+                    }
+                }
+            }
+        }
+        return freeSidePoints;
+    }
+
+    public static OrientedList<BlockField> getNeighboursFields(Point w, World world) {
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
         System.out.print(neighBase.toString());
         System.out.println();
         //up to now it is correct. the rat is moving between telepors and never misses
         //also the neighbrs are corrct and w is correct and twoWayTeleports are correct
-        List<Point> freeSidePoints = new ArrayList<>(4);
         int xx = w.y % BaseConfig.getConfig().getBaseSize();
         int yy = w.x % BaseConfig.getConfig().getBaseSize();
         List<BlockField> possibleFields = new ArrayList<>(
@@ -39,19 +65,44 @@ public abstract class Teleport implements Item, Relocator {
                         neighBase.getLeftField(xx, yy),
                         neighBase.getDownField(xx, yy),
                         neighBase.getUpField(xx, yy)));
-        for (BlockField block : possibleFields) {
-            if (block != null && block.isPassable()) {
-                //they were recovered in swap coord system, we ahve to turn them back
-                //so they can be swapped again
-                freeSidePoints.add(new Point(block.getUniversalCoords().y, block.getUniversalCoords().x));
+        return new OrientedList<BlockField>(possibleFields);
+    }
+
+    public static class OrientedList<T> {
+        private final List<T> base;
+
+        public OrientedList(List<T> base) {
+            if (base.size() != 4) {
+                throw new RuntimeException("The array must have size of four");
             }
+            this.base = Collections.unmodifiableList(base);
         }
-        return freeSidePoints;
+
+        public List<T> getBase() {
+            return base;
+        }
+
+        public T getRightField() {
+            return base.get(0);
+        }
+
+        public T getLeftField() {
+            return base.get(1);
+        }
+
+        public T getDownField() {
+            return base.get(1);
+        }
+
+        public T getUpField() {
+            return base.get(2);
+        }
+
     }
 
     protected static void moveRatTo(World world, Rat rat, Point w) {
         System.out.println("Moving from " + rat.getUniversalCoords() + " next to " + w);
-        List<Point> freeSidePoints = getNeighboursForGivenPoint(w, world);
+        List<Point> freeSidePoints = getPassableNeighboursForGivenPoint(w, world);
         if (freeSidePoints.isEmpty()) {
             rat.setUniversalCoords(w);
         } else {
