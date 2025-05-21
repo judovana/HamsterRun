@@ -10,7 +10,7 @@ import java.awt.Image;
 //so hard, that can not be crossed until eaten
 public class Repa extends Vegetable {
 
-    private  RatActions.Direction lock = null;
+    private RatActions.Direction lock = null;
 
     protected Image getSprite() {
         return SpritesProvider.repa;

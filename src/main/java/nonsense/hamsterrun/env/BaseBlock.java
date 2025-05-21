@@ -250,8 +250,7 @@ public class BaseBlock {
                         if (!mapOnly) {
                             g2d.drawString(map[x][y].getCoords() + "", coordx, coordy + 10);
                             g2d.drawString(map[x][y].getParent().getCoords() + "", coordx, coordy + 20);
-                            g2d.drawString(Rat.toUniversalCoords(map[x][y].getParent().getCoords(), map[x][y].getCoords()) + "",
-                                    coordx, coordy + 30);
+                            g2d.drawString(Rat.toUniversalCoords(map[x][y].getParent().getCoords(), map[x][y].getCoords()) + "", coordx, coordy + 30);
                         }
                     }
                 }

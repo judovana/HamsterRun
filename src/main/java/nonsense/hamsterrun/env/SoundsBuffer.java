@@ -37,13 +37,13 @@ public class SoundsBuffer {
     }
 
     public void kill() {
-        if (harmQueue!=null) {
+        if (harmQueue != null) {
             harmQueue.kill();
         }
-        if (eatQueue!=null) {
+        if (eatQueue != null) {
             eatQueue.kill();
         }
-        if (moveQueue!=null) {
+        if (moveQueue != null) {
             moveQueue.kill();
         }
 
@@ -117,7 +117,7 @@ public class SoundsBuffer {
         }
 
         public void kill() {
-            live=false;
+            live = false;
         }
     }
 

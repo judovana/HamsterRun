@@ -20,6 +20,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -45,11 +46,15 @@ public class MiscPanel extends JPanel implements Localized {
         this.setLayout(new GridLayout(0, 2));
         this.add(new JLabel("mouse sensitivity"));
         this.mouseSpinner = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getMouseDelay(), 0, 1000, 1)));
-        mouseSpinner.addChangeListener(a -> {BaseConfig.getConfig().setMouseSensitivity(((Number)mouseSpinner.getValue()).intValue());});
+        mouseSpinner.addChangeListener(a -> {
+            BaseConfig.getConfig().setMouseSensitivity(((Number) mouseSpinner.getValue()).intValue());
+        });
         this.add(mouseSpinner);
         this.add(new JLabel("tunnel confusion"));
         this.tunnelConfusion = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getTunnelConfusionFactor(), 0, 1000, 1)));
-        tunnelConfusion.addChangeListener(a -> {BaseConfig.getConfig().setTunnelConfusion(((Number)tunnelConfusion.getValue()).intValue());});
+        tunnelConfusion.addChangeListener(a -> {
+            BaseConfig.getConfig().setTunnelConfusion(((Number) tunnelConfusion.getValue()).intValue());
+        });
         this.add(tunnelConfusion);
         this.add(new JLabel("----"));
         this.add(new JLabel("----"));

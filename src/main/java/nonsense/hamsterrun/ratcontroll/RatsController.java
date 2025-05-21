@@ -56,7 +56,7 @@ public class RatsController implements RatsProvider {
 
     @Override
     public void kill() {
-        for (Rat rat: this.getRats()) {
+        for (Rat rat : this.getRats()) {
             rat.getSounds().kill();
         }
         rats.clear();

@@ -16,7 +16,7 @@ public class BigFlies extends MovingOne {
     protected boolean moving = false;
 
     public BigFlies() {
-        this.speed = seed.nextInt(2)+2;
+        this.speed = seed.nextInt(2) + 2;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }
@@ -38,7 +38,7 @@ public class BigFlies extends MovingOne {
     }
 
     private boolean isMoving() {
-        if (seed.nextInt(chaos)==0) {
+        if (seed.nextInt(chaos) == 0) {
             moving = !moving;
         }
         return moving;
@@ -57,14 +57,15 @@ public class BigFlies extends MovingOne {
 
     @Override
     public void interact(Rat rat) {
-        if (rat.getAction() == RatActions.STAY || rat.getAction() == RatActions.EAT){
+        if (rat.getAction() == RatActions.STAY || rat.getAction() == RatActions.EAT) {
             rat.getSounds().addToHarmQueue(SoundsBuffer.brbliTunel);
             rat.setActionDirection(RatActions.WALK, RatActions.Direction.getRandom());
-            rat.speed=relativeSizes;
-        } if (rat.getAction() == RatActions.WALK){
+            rat.speed = relativeSizes;
+        }
+        if (rat.getAction() == RatActions.WALK) {
             rat.getSounds().addToHarmQueue(SoundsBuffer.brbliTunel);
             rat.setActionDirection(RatActions.WALK, rat.direction);
-            rat.speed=relativeSizes;
+            rat.speed = relativeSizes;
 
         }
     }

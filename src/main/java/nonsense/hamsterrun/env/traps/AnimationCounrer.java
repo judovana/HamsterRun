@@ -2,11 +2,11 @@ package nonsense.hamsterrun.env.traps;
 
 public class AnimationCounrer {
 
-    public int anim=0;
+    public int anim = 0;
     public int max;
 
     public AnimationCounrer() {
-        max=100;
+        max = 100;
     }
 
     public AnimationCounrer(int max) {
@@ -49,7 +49,7 @@ public class AnimationCounrer {
     }
 
     public void reset(int i) {
-        anim = i-1;
+        anim = i - 1;
         addLimited();
     }
 }

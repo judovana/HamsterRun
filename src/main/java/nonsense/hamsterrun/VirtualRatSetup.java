@@ -47,8 +47,7 @@ public class VirtualRatSetup {
                     if (SpritesProvider.KNOWN_RATS.contains(param)) {
                         skin = param;
                     } else {
-                        throw new RuntimeException("Unknown sprite " + param + ". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(
-                                Collectors.joining(",")));
+                        throw new RuntimeException("Unknown sprite " + param + ". Available are " + SpritesProvider.KNOWN_RATS.stream().collect(Collectors.joining(",")));
                     }
                     break;
                 case 0:

@@ -36,9 +36,7 @@ public class RatSpriteSet {
             runDown[x] = SpritesProvider.rotate(runUp[x], 180);
             runLeft[x] = SpritesProvider.rotate(runUp[x], 270);
         }
-        runs = new BufferedImage[][]{
-                runUp, runRight, runDown, runLeft
-        };
+        runs = new BufferedImage[][]{runUp, runRight, runDown, runLeft};
         return runs;
     }
 

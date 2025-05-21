@@ -12,6 +12,7 @@ import nonsense.hamsterrun.env.aliens.SmallFlies;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JComponent;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -59,13 +60,20 @@ public class World implements Runnable {
 
     private MovingOne getrandomAlien() {
         switch (seed.nextInt(6)) {
-            case 0:  return new SmallBats();
-            case 1:  return new BigBats();
-            case 2:  return new SmallFlies();
-            case 3:  return new BigFlies();
-            case 4:  return new Boulder();
-            case 5:  return new Hawk();
-            default: throw new RuntimeException("To much to select from!");
+            case 0:
+                return new SmallBats();
+            case 1:
+                return new BigBats();
+            case 2:
+                return new SmallFlies();
+            case 3:
+                return new BigFlies();
+            case 4:
+                return new Boulder();
+            case 5:
+                return new Hawk();
+            default:
+                throw new RuntimeException("To much to select from!");
         }
     }
 
@@ -148,7 +156,7 @@ public class World implements Runnable {
 
     public void allRatsSpread(boolean center) {
         allSpread(getRats(), center);
-        for(MovingOne alien: aliens){
+        for (MovingOne alien : aliens) {
             if (!alien.mustBeInCorridor()) {
                 teleportMouse(alien, false, true);
             }
@@ -159,12 +167,11 @@ public class World implements Runnable {
         allSpread(aliens, center);
     }
 
-    public void allSpread(List<? extends  MovingOne> rats, boolean center) {
+    public void allSpread(List<? extends MovingOne> rats, boolean center) {
         for (MovingOne rat : rats) {
             teleportMouse(rat, center, false);
         }
     }
-
 
 
     private boolean isMouseOcupied(MovingOne currentMouse, Point[] start) {
@@ -217,10 +224,10 @@ public class World implements Runnable {
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
         }
         i = -1;
-        for(int x=0; x<aliens.size(); x++){
+        for (int x = 0; x < aliens.size(); x++) {
             MovingOne alien = aliens.get(x);
             i++;
-            g2d.setColor(new Color(250 - i * (250 / aliens.size()),250 - i * (250 / aliens.size()), 0));
+            g2d.setColor(new Color(250 - i * (250 / aliens.size()), 250 - i * (250 / aliens.size()), 0));
             alien.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, false);
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
@@ -294,7 +301,7 @@ public class World implements Runnable {
                     for (Rat rat : getRats()) {
                         ratsProvider.getRatControl(rat).selfAct(rat, this);
                     }
-                    for (int x=0; x< aliens.size(); x++) {
+                    for (int x = 0; x < aliens.size(); x++) {
                         MovingOne alien = aliens.get(x);
                         boolean survived = alien.selfAct(this);
                         if (survived) {
@@ -310,10 +317,10 @@ public class World implements Runnable {
                     }
                     //this should not be customizable, as the regeneration of workd is hart beat
                     //without it, the key may never occure, even if this game is set up
-                    for (int x = 0 ; x < aliens.size(); x++) {
+                    for (int x = 0; x < aliens.size(); x++) {
                         if (aliens.get(x).mustBeInCorridor()) {
                             MovingOne alien = aliens.get(x);
-                            if (!this.isEnterable(alien.getUniversalCoords(), false)){
+                            if (!this.isEnterable(alien.getUniversalCoords(), false)) {
                                 aliens.remove(x);
                                 x--;
                                 MovingOne newAlien = getrandomAlien();

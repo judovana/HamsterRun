@@ -23,6 +23,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -66,15 +67,15 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         public void paint(Graphics g) {
             super.paint(g);
             Graphics2D g2d = (Graphics2D) g;
-            if (previewType.getSelectedIndex() == 2 ) {
+            if (previewType.getSelectedIndex() == 2) {
                 if (world != null) {
                     int zoom = getZoom(this);
                     world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, zoom, null, true);
                 }
-            } else if (previewType.getSelectedIndex() == 1 ) {
+            } else if (previewType.getSelectedIndex() == 1) {
                 if (staticWorld != null) {
                     int wh = Math.min(this.getWidth(), this.getHeight());
-                    g2d.drawImage(staticWorld, (this.getWidth()-wh)/2,(this.getHeight()-wh)/2, wh, wh, null);
+                    g2d.drawImage(staticWorld, (this.getWidth() - wh) / 2, (this.getHeight() - wh) / 2, wh, wh, null);
                 }
             } else {
                 //will be cleaned?
@@ -186,8 +187,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         delayMsLabel.setText(Localization.get().delayMs());
         keepRegenerating.setText(Localization.get().getKeepRegenerating());
         int index = previewType.getSelectedIndex();
-        if (index<0) {
-            index=0;
+        if (index < 0) {
+            index = 0;
         }
         previewType.setModel(getLocalisedPreviewTypes());
         previewType.setSelectedIndex(index);
@@ -272,7 +273,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
 
             @Override
             public void kill() {
-                for (Rat rat: this.getRats()) {
+                for (Rat rat : this.getRats()) {
                     rat.getSounds().kill();
                 }
             }

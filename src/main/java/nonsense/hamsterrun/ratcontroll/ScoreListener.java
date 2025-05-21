@@ -4,6 +4,7 @@ import nonsense.hamsterrun.env.Rat;
 
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+
 import java.awt.Color;
 
 public class ScoreListener {

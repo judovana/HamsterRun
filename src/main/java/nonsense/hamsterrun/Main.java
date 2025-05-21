@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -157,11 +158,9 @@ public class Main {
                             super.paint(g);
                             Graphics2D g2d = (Graphics2D) g;
                             if (exControl.getMap() == 0) {
-                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, exControl.getZoom(),
-                                        null, false);
+                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), false, exControl.getZoom(), null, false);
                             } else {
-                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, exControl.getZoom(),
-                                        null, true);
+                                world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true, exControl.getZoom(), null, true);
                             }
                         }
                     };

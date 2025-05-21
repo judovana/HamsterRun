@@ -19,7 +19,7 @@ public class ComputerControl implements RatsController.RatControl {
     }
 
     public void selfAct(Rat rat, World world) {
-            dummyMove(rat, world, chaos);
+        dummyMove(rat, world, chaos);
     }
 
     public static void dummyMove(MovingOne rat, World world, int chaosFactor) {
@@ -39,6 +39,7 @@ public class ComputerControl implements RatsController.RatControl {
             default: //ok
         }
     }
+
     @Override
     public int getZoom() {
         return 64;

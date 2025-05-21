@@ -16,7 +16,7 @@ public class SmallBats extends MovingOne {
     protected boolean moving = false;
 
     public SmallBats() {
-        this.speed = seed.nextInt(4)+3;
+        this.speed = seed.nextInt(4) + 3;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }
@@ -38,7 +38,7 @@ public class SmallBats extends MovingOne {
     }
 
     private boolean isMoving() {
-        if (seed.nextInt(chaos)==0) {
+        if (seed.nextInt(chaos) == 0) {
             moving = !moving;
         }
         return moving;

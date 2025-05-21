@@ -18,8 +18,7 @@ public class TrapDoor extends InvisibleTrapDoor implements Item {
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 2) {
             if (closed) {
-                g2d.drawImage(SpritesProvider.trapdoor[type], coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2,
-                        null);
+                g2d.drawImage(SpritesProvider.trapdoor[type], coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2, null);
             } else {
                 g2d.setColor(new Color(20, 20, 20));
                 g2d.fillRect(coordx + zoom / 4, coordy + zoom / 4, zoom - zoom / 2, zoom - zoom / 2);

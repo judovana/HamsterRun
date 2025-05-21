@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.sprites;
 
 import javax.imageio.ImageIO;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

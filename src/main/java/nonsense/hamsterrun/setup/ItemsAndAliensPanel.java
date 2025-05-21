@@ -43,11 +43,11 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         itemsPanel = new JPanel(new GridLayout(0, 1));
         JScrollPane controlsScroll = new JScrollPane(itemsPanel);
         itemsWrapper.add(controlsScroll);
-        JPanel itemsControls = new JPanel(new GridLayout(1,2));
+        JPanel itemsControls = new JPanel(new GridLayout(1, 2));
         resetFields = new JButton("reset");
-        resetFields.addActionListener( a -> resetAllitems());
+        resetFields.addActionListener(a -> resetAllitems());
         disableFields = new JButton("disable all");
-        disableFields.addActionListener( a -> disbaleAllitems());
+        disableFields.addActionListener(a -> disbaleAllitems());
         itemsControls.add(resetFields);
         itemsControls.add(disableFields);
         itemsWrapper.add(itemsControls, BorderLayout.SOUTH);
@@ -88,10 +88,10 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
     }
 
     private void resetAllitems() {
-       BaseConfig.getConfig().resetItemsProbabilities();
-       regenerateItems(true, false);
-       itemsPanel.revalidate();
-       this.revalidate();
+        BaseConfig.getConfig().resetItemsProbabilities();
+        regenerateItems(true, false);
+        itemsPanel.revalidate();
+        this.revalidate();
     }
 
     private void disbaleAllitems() {

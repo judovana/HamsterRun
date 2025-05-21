@@ -97,7 +97,7 @@ public abstract class MovingOne {
     }
 
     protected void forceMouseRight(int i) {
-        coordsInBaseBlock.x+=i;
+        coordsInBaseBlock.x += i;
         if (coordsInBaseBlock.x >= BaseConfig.getConfig().getBaseSize()) {
             coordsInMaze.x++;
             coordsInBaseBlock.x = 0;
@@ -105,7 +105,7 @@ public abstract class MovingOne {
     }
 
     protected void forceMouseUp(int i) {
-        coordsInBaseBlock.y-=i;
+        coordsInBaseBlock.y -= i;
         if (coordsInBaseBlock.y < 0) {
             coordsInMaze.y--;
             coordsInBaseBlock.y = BaseConfig.getConfig().getBaseSize() - 1;
@@ -113,7 +113,7 @@ public abstract class MovingOne {
     }
 
     protected void forceMouseLeft(int i) {
-        coordsInBaseBlock.x-=i;
+        coordsInBaseBlock.x -= i;
         if (coordsInBaseBlock.x < 0) {
             coordsInMaze.x--;
             coordsInBaseBlock.x = BaseConfig.getConfig().getBaseSize() - 1;
@@ -121,7 +121,7 @@ public abstract class MovingOne {
     }
 
     protected void forceMouseDown(int i) {
-        coordsInBaseBlock.y+=i;
+        coordsInBaseBlock.y += i;
         if (coordsInBaseBlock.y >= BaseConfig.getConfig().getBaseSize()) {
             coordsInMaze.y++;
             coordsInBaseBlock.y = 0;
@@ -153,7 +153,6 @@ public abstract class MovingOne {
     }
 
     /**
-     *
      * @return true, if movement of this member should be blocekd by rat
      */
     protected boolean getMouseBlock() {
@@ -291,7 +290,7 @@ public abstract class MovingOne {
         }
     }
 
-    public void move(World world){
+    public void move(World world) {
         switch (direction) {
             case DOWN:
                 moveMouseDown(world);
@@ -318,9 +317,13 @@ public abstract class MovingOne {
     }
 
     public abstract void interact(Rat rat);
+
     protected abstract boolean returnOnSalat(World world);
+
     public abstract boolean selfAct(World world);
+
     protected abstract void adjustSpeedBeforeActionDirection();
+
     protected abstract String getSkin();
 
     //usual act is only in some occurences of REPL, if you need each turn, use this

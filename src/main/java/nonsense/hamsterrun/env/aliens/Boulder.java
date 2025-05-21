@@ -12,14 +12,14 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 
 //going up+down xor left and down, removing energy from all it meets
 //must be faster then rats... maybe different thread then repl? Maybe special % in repl?
-public  class Boulder extends MovingOne {
+public class Boulder extends MovingOne {
 
     private final int maxspeed;
-    private Point lastCoord = new Point(-1,-1);
+    private Point lastCoord = new Point(-1, -1);
     private int lastCoordCounter = -1;
 
     public Boulder() {
-        this.maxspeed = seed.nextInt(2)+4;
+        this.maxspeed = seed.nextInt(2) + 4;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }
@@ -31,7 +31,7 @@ public  class Boulder extends MovingOne {
 
     @Override
     public boolean selfAct(World world) {
-        this.speed=maxspeed;
+        this.speed = maxspeed;
         this.action = RatActions.WALK;
         move(world);
         anim.addLimited();
@@ -39,14 +39,13 @@ public  class Boulder extends MovingOne {
             lastCoordCounter++;
         } else {
             lastCoord = getUniversalCoords();
-            lastCoordCounter=0;
+            lastCoordCounter = 0;
         }
-        if (lastCoordCounter>relativeSizes*2+1){
-            this.direction=this.direction.opposite();
+        if (lastCoordCounter > relativeSizes * 2 + 1) {
+            this.direction = this.direction.opposite();
         }
         return true;
     }
-
 
 
     @Override

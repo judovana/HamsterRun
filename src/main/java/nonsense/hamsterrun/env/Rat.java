@@ -155,12 +155,11 @@ public class Rat extends MovingOne {
                 direction = RatActions.Direction.getRandom();
                 ((Tunnel) (world.getBlockField(getUniversalCoords()).getItem())).playMainSoundFor(this.getSounds());
             }
-        }else if ( world.getBlockField(getUniversalCoords()).getItem() instanceof Repa
-                && !((Repa) (world.getBlockField(getUniversalCoords()).getItem())).eaten()) {
+        } else if (world.getBlockField(getUniversalCoords()).getItem() instanceof Repa && !((Repa) (world.getBlockField(getUniversalCoords()).getItem())).eaten()) {
             if (action != RatActions.EAT) {
                 direction = RatActions.Direction.getRandom();
             }
-         } else if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Water) {
+        } else if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Water) {
             speed = 1;
             if (seed.nextInt(20) < 18) {
                 if (relativeCoordInSquare.x > 0) {
@@ -318,7 +317,7 @@ public class Rat extends MovingOne {
     }
 
     public SoundsBuffer getSounds() {
-        if ("sneci".equals(skin)){
+        if ("sneci".equals(skin)) {
             return snail;
         } else {
             return sounds;
@@ -326,7 +325,7 @@ public class Rat extends MovingOne {
     }
 
     public void setSounds(SoundsBuffer sounds) {
-        if (sounds!=null){
+        if (sounds != null) {
             sounds.kill();
         }
         this.sounds = sounds;

@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -19,22 +20,17 @@ import java.util.Map;
 public class GifToImages {
 
     public static List<BufferedImage> decodeCatched(URL u) {
-        try{
+        try {
             return decode(u);
         } catch (IOException e) {
-               e.printStackTrace();
-               return new ArrayList<>();
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
     public static List<BufferedImage> decode(URL u) throws IOException {
         List<BufferedImage> result = new ArrayList<>();
-        String[] imageatt = new String[]{
-                "imageLeftPosition",
-                "imageTopPosition",
-                "imageWidth",
-                "imageHeight"
-        };
+        String[] imageatt = new String[]{"imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight"};
 
         ImageReader reader = (ImageReader) ImageIO.getImageReadersByFormatName("gif").next();
         ImageInputStream ciis = ImageIO.createImageInputStream(u.openStream());
@@ -63,7 +59,7 @@ public class GifToImages {
                     }
 
                     //if (i == 0) { //this seems wrong - it draws all iages to single master
-                        master = new BufferedImage(imageAttr.get("imageWidth"), imageAttr.get("imageHeight"), BufferedImage.TYPE_INT_ARGB);
+                    master = new BufferedImage(imageAttr.get("imageWidth"), imageAttr.get("imageHeight"), BufferedImage.TYPE_INT_ARGB);
                     //}
                     master.getGraphics().drawImage(image, imageAttr.get("imageLeftPosition"), imageAttr.get("imageTopPosition"), null);
                 }

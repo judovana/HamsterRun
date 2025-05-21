@@ -16,7 +16,7 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 //flying over screen, targeting rats, walls do not stop
 public class Hawk extends MovingOne {
 
-    public static final int MAX_FLY_AWAY=3; //min is 2
+    public static final int MAX_FLY_AWAY = 3; //min is 2
     protected int chaos = seed.nextInt(18) + 1;
     private final int maxspeed = 1;
     private int skipCounter = 0;
