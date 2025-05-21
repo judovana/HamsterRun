@@ -253,7 +253,7 @@ public abstract class MovingOne {
     }
 
     public void setActionDirection(RatActions action, RatActions.Direction direction) {
-        adjustSpeedBeforeActionDirection();
+        adjustSpeedBeforeActionDirection(direction);
         this.action = action;
         this.direction = direction;
     }
@@ -322,7 +322,7 @@ public abstract class MovingOne {
 
     public abstract boolean selfAct(World world);
 
-    protected abstract void adjustSpeedBeforeActionDirection();
+    protected abstract void adjustSpeedBeforeActionDirection(RatActions.Direction futureDirection);
 
     protected abstract String getSkin();
 

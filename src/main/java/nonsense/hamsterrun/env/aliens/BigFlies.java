@@ -45,7 +45,7 @@ public class BigFlies extends MovingOne {
     }
 
     @Override
-    protected void adjustSpeedBeforeActionDirection() {
+    protected void adjustSpeedBeforeActionDirection(RatActions.Direction futureDirection) {
 
     }
 

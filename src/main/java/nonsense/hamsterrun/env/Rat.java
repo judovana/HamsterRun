@@ -95,8 +95,8 @@ public class Rat extends MovingOne {
     }
 
     @Override
-    public void adjustSpeedBeforeActionDirection() {
-        if (this.action == RatActions.WALK && this.direction == direction) {
+    public void adjustSpeedBeforeActionDirection(RatActions.Direction futureDirection) {
+        if (this.action == RatActions.WALK && this.direction == futureDirection) {
             speed++;
             if (speed == MAGICAL_FALL_CHANCE - 1) {
                 getSounds().addToMoveQueue(SoundsBuffer.turbo);
