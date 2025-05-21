@@ -17,6 +17,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -29,15 +31,27 @@ import java.awt.event.MouseEvent;
 public class ItemsAndAliensPanel extends JPanel implements Localized {
 
     private static final SoundsBuffer examples = new SoundsBuffer();
-    private JPanel controlls;
+    private JPanel itemsPanel;
+    private JButton resetFields;
+    private JButton disableFields;
 
 
     //TODO extract shared min/max here and in config validate
     public ItemsAndAliensPanel() {
         this.setLayout(new GridLayout(2, 1));
-        controlls = new JPanel(new GridLayout(0, 1));
-        JScrollPane controlsScroll = new JScrollPane(controlls);
-        add(controlsScroll);
+        JPanel itemsWrapper = new JPanel(new BorderLayout());
+        itemsPanel = new JPanel(new GridLayout(0, 1));
+        JScrollPane controlsScroll = new JScrollPane(itemsPanel);
+        itemsWrapper.add(controlsScroll);
+        JPanel itemsControls = new JPanel(new GridLayout(1,2));
+        resetFields = new JButton("reset");
+        resetFields.addActionListener( a -> resetAllitems());
+        disableFields = new JButton("disable all");
+        disableFields.addActionListener( a -> disbaleAllitems());
+        itemsControls.add(resetFields);
+        itemsControls.add(disableFields);
+        itemsWrapper.add(itemsControls, BorderLayout.SOUTH);
+        add(itemsWrapper);
 //        add(aliens);
         setTitles();
     }
@@ -47,9 +61,9 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         return ratio + "/" + summ + "->" + probab + "%";
     }
 
-    private void regenerateItems(boolean recreate) {
+    private void regenerateItems(boolean recreate, boolean setSpinners) {
         if (recreate) {
-            controlls.removeAll();
+            itemsPanel.removeAll();
         }
         int sum = 0;
         int origSum = 0;
@@ -62,18 +76,37 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         for (BaseConfig.ItemsWithProbability iwp : BaseConfig.getConfig().getItemsProbabilities()) {
             if (recreate) {
                 PreviewItemLine item = new PreviewItemLine(iwp, origSum, sum);
-                controlls.add(item);
+                itemsPanel.add(item);
             } else {
-                ((PreviewItemLine) (controlls.getComponent(counter))).refreshCountes(iwp, origSum, sum);
+                ((PreviewItemLine) (itemsPanel.getComponent(counter))).refreshCountes(iwp, origSum, sum);
+                if (setSpinners) {
+                    ((PreviewItemLine) (itemsPanel.getComponent(counter))).setSpinner();
+                }
             }
             counter++;
         }
     }
 
+    private void resetAllitems() {
+       BaseConfig.getConfig().resetItemsProbabilities();
+       regenerateItems(true, false);
+       itemsPanel.revalidate();
+       this.revalidate();
+    }
+
+    private void disbaleAllitems() {
+        BaseConfig.getConfig().disbaleAllItems();
+        regenerateItems(true, false);
+        itemsPanel.revalidate();
+        this.revalidate();
+    }
+
     @Override
     public void setTitles() {
         setName(Localization.get().getItemsTitle());
-        regenerateItems(true);
+        disableFields.setText(Localization.get().getDisableAll());
+        resetFields.setText(Localization.get().getResetFields());
+        regenerateItems(true, false);
     }
 
     private static class PreviewAlienLine extends JPanel {
@@ -88,15 +121,15 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         private final Item item;
         private final BaseConfig.ItemsWithProbability source;
         private final JLabel is;
+        private final JSpinner js;
 
         public PreviewItemLine(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
-            //TODO localize
             this.setLayout(new GridLayout(1, 3));
             this.item = BlockField.itemClassToItemCatched(iwp.clazz);
             this.source = iwp;
             JPanel b1 = new JPanel(new GridLayout(2, 1));
             JLabel ln = new JLabel(source.clazz.getSimpleName());
-            ln.setToolTipText("Description");
+            ln.setToolTipText("<html>" + Localization.get().getOr(source.clazz.getName()));
             ln.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -117,15 +150,15 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
             this.add(b1);
             this.add(new ThumbanilPanel());
             JPanel b2 = new JPanel(new GridLayout(2, 1));
-            JSpinner js = new JSpinner(new SpinnerNumberModel(iwp.ratio, 0, 10000, 1));
+            js = new JSpinner(new SpinnerNumberModel(iwp.ratio, 0, 10000, 1));
             js.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
                     BaseConfig.getConfig().addTrapModifierSafe(iwp.clazz, ((Number) js.getValue()).intValue());
-                    regenerateItems(false);
+                    regenerateItems(false, false);
                 }
             });
-            js.setToolTipText("If set to 0, then it is disabled");
+            js.setToolTipText(Localization.get().getDisabledOnZero());
             b2.add(js);
             is = new JLabel();
             refreshCountes(iwp, origSum, sum);
@@ -137,6 +170,10 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         public void refreshCountes(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
             is.setText("is: " + getPercentText(iwp.ratio, sum));
             is.setToolTipText("was: " + getPercentText(BaseConfig.getConfig().getDefaultItemProbability(iwp.clazz), origSum));
+        }
+
+        public void setSpinner() {
+            js.setValue(source.ratio);
         }
 
         private class ThumbanilPanel extends JPanel {

@@ -8,8 +8,6 @@ import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import java.awt.image.BufferedImage;
-
 //moving chaotically aka ai mouse
 //must be faster then rats... maybe different thread then repl? Maybe special % in repl?
 public class SmallBats extends MovingOne {
@@ -29,14 +27,14 @@ public class SmallBats extends MovingOne {
     }
 
     @Override
-    public void selfAct(World world) {
+    public boolean selfAct(World world) {
         this.action = RatActions.WALK;
         ComputerControl.dummyMove(this, world, chaos);
         if (isMoving()) {
             move(world);
         }
         anim.addLimited();
-
+        return true;
     }
 
     private boolean isMoving() {

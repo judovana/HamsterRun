@@ -30,7 +30,7 @@ public  class Boulder extends MovingOne {
     }
 
     @Override
-    public void selfAct(World world) {
+    public boolean selfAct(World world) {
         this.speed=maxspeed;
         this.action = RatActions.WALK;
         move(world);
@@ -44,6 +44,7 @@ public  class Boulder extends MovingOne {
         if (lastCoordCounter>relativeSizes*2+1){
             this.direction=this.direction.opposite();
         }
+        return true;
     }
 
 

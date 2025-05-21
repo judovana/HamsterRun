@@ -2,7 +2,6 @@ package nonsense.hamsterrun.env.aliens;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,16 +10,13 @@ import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
+import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 //flying over screen, targeting rats, walls do not stop
 public class Hawk extends MovingOne {
 
-    @Override
-    public boolean mustBeInCorridor() {
-        return false;
-    }
-
+    public static final int MAX_FLY_AWAY=3; //min is 2
     protected int chaos = seed.nextInt(18) + 1;
     private final int maxspeed = 1;
     private int skipCounter = 0;
@@ -32,31 +28,52 @@ public class Hawk extends MovingOne {
     }
 
     @Override
+    public boolean mustBeInCorridor() {
+        return false;
+    }
+
+    @Override
     protected boolean returnOnSalat(World world) {
         return false;
     }
 
     @Override
-    public void selfAct(World world) {
+    public boolean selfAct(World world) {
         skipCounter++;
         //eagle is to strong, we are skipping Nth rounds - every 2nd here
         if (skipCounter % 2 == 0) {
             skipCounter = 0;
-            return;
+            return true;
         }
         this.speed = maxspeed;
         this.action = RatActions.WALK;
         anim.addLimited();
         fly();
-        //am on any rat? Stop
+        if (getUniversalCoords().x < -(MAX_FLY_AWAY-1)*world.getWidth()
+                || getUniversalCoords().x > MAX_FLY_AWAY * world.getWidth()
+                || getUniversalCoords().y < -(MAX_FLY_AWAY-1)*world.getHeight()
+                || getUniversalCoords().y > MAX_FLY_AWAY * world.getHeight()) {
+            return false;
+        }
+        //am on any rat not in tunnel? Stop
         for (Rat rat : world.getRats()) {
             if (getUniversalCoords().equals(rat.getUniversalCoords())) {
+                if (world.getBlockField(getUniversalCoords()).getItem() instanceof Tunnel) {
+                    return true;
+                }
                 vector = new Point(0, 0);
             }
         }
         //time to change target?
         if (seed.nextInt(chaos) == 0) {
+            //any rats out of tunnels?
             List<Rat> a = new ArrayList<>(world.getRats());
+            for (int x = 0; x < a.size(); x++) {
+                if (world.getBlockField(a.get(x).getUniversalCoords()).getItem() instanceof Tunnel) {
+                    a.remove(x);
+                    x--;
+                }
+            }
             if (a.size() > 0) {
                 Collections.shuffle(a);
                 Rat target = a.get(0);
@@ -71,6 +88,7 @@ public class Hawk extends MovingOne {
                 vector = new Point(x / cgd, y / cgd);
             }
         }
+        return true;
     }
 
     private void fly() {

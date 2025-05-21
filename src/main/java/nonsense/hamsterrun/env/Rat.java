@@ -19,8 +19,6 @@ import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -345,7 +343,7 @@ public class Rat extends MovingOne {
     }
 
     @Override
-    public void selfAct(World world) {
+    public boolean selfAct(World world) {
         throw new RuntimeException("Rat is moved by its controller");
     }
 

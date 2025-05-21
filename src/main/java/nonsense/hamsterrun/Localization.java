@@ -2,6 +2,7 @@ package nonsense.hamsterrun;
 
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Localization {
@@ -11,6 +12,20 @@ public class Localization {
 
     public static Localization get() {
         return instance;
+    }
+
+    public String getOr(String name) {
+        try {
+            String translation = get(name);
+            if (translation == null || translation.isEmpty()) {
+                return "No text for: " + name;
+            } else {
+                return translation;
+            }
+        } catch (MissingResourceException ex) {
+            System.err.println(name);
+            return "No text for: " + name;
+        }
     }
 
     public String get(String key) {
@@ -117,5 +132,17 @@ public class Localization {
 
     public String getFullPreview() {
         return get("fullPreview");
+    }
+
+    public String getDisableAll() {
+        return get("disableAll");
+    }
+
+    public String getResetFields() {
+        return get("resetFields");
+    }
+
+    public String getDisabledOnZero() {
+        return get("disabledOnZero");
     }
 }

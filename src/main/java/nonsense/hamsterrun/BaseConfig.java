@@ -68,6 +68,7 @@ public class BaseConfig {
     //FIXME cmdline/gui setup
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
+    private int maxAliens = 10;
     //w and h ow space to draw to,
     // if the drawn object is out,
     // no need to draw it
@@ -339,6 +340,10 @@ public class BaseConfig {
         return null;
     }
 
+    public void resetItemsProbabilities() {
+        itemsWithProbabilityOverride.clear();
+    }
+
     public List<ItemsWithProbability> getItemsProbabilities() {
         List<ItemsWithProbability> items = new ArrayList<>(DEFAULT_ITEMS_PROBABILITIES.length);
         for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
@@ -389,6 +394,15 @@ public class BaseConfig {
         return viewPort != null;
     }
 
+    public void disbaleAllItems() {
+        itemsWithProbabilityOverride.clear();
+        for (ItemsWithProbability origItem : DEFAULT_ITEMS_PROBABILITIES) {
+            if (!origItem.clazz.equals(Empty.class) ) {
+                itemsWithProbabilityOverride.put(origItem.clazz, 0);
+            }
+        }
+    }
+
     public static class ItemsWithProbability {
         //0 == disabled
         public final Class clazz;
@@ -398,8 +412,13 @@ public class BaseConfig {
             this.clazz = clazz;
             this.ratio = ratio;
         }
-
     }
 
+    public int getMaxAliens() {
+        return maxAliens;
+    }
 
+    public void setMaxAliens(int maxAliens) {
+        this.maxAliens = maxAliens;
+    }
 }

@@ -319,7 +319,7 @@ public abstract class MovingOne {
 
     public abstract void interact(Rat rat);
     protected abstract boolean returnOnSalat(World world);
-    public abstract void selfAct(World world);
+    public abstract boolean selfAct(World world);
     protected abstract void adjustSpeedBeforeActionDirection();
     protected abstract String getSkin();
 

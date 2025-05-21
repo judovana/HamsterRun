@@ -33,15 +33,11 @@ public class World implements Runnable {
     private boolean live = true;
     private int worldAnim = 0;
     private RatsProvider ratsProvider;
-    private ArrayList<MovingOne> aliens = new ArrayList<>();
+    private List<MovingOne> aliens = Collections.synchronizedList(new ArrayList<MovingOne>());
 
     public World(Maze maze) {
         this.maze = maze;
-        //FIXME make it setup-able
-        for (int x = 0; x< 10; x++) {
-            aliens.add(getrandomAlien());
-        }
-        allAliensSpread(false);
+        fillAliens();
         allRatsSpread(true);
         this.repl = new Thread(this);
         repl.setDaemon(true);
@@ -49,6 +45,16 @@ public class World implements Runnable {
         repl.start();
 
 
+    }
+
+    private void fillAliens() {
+        //FIXME make it setup-able
+        while (aliens.size() <= 10) {
+            MovingOne nw = getrandomAlien();
+            teleportMouse(nw, false, true);
+            aliens.add(nw);
+
+        }
     }
 
     private MovingOne getrandomAlien() {
@@ -182,6 +188,14 @@ public class World implements Runnable {
         return maze.getBaseBlockNeigbours(x / BaseConfig.getConfig().getBaseSize(), y / BaseConfig.getConfig().getBaseSize());
     }
 
+    public int getWidth() {
+        return maze.getWidthInUnits(BaseConfig.getConfig());
+    }
+
+    public int getHeight() {
+        return maze.getHeightInUnits(BaseConfig.getConfig());
+    }
+
     public void drawMap(Graphics2D g2d, Point center, boolean map, int zoomOverride, Rat selectedMouse, boolean forceCenter) {
         Point leftUpCornerOfMaze = new Point(center.x - maze.getWidthInUnits(BaseConfig.getConfig()) / 2 * zoomOverride,
                 center.y - maze.getHeightInUnits(BaseConfig.getConfig()) / 2 * zoomOverride);
@@ -203,7 +217,8 @@ public class World implements Runnable {
             rat.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, selected);
         }
         i = -1;
-        for(MovingOne alien: aliens){
+        for(int x=0; x<aliens.size(); x++){
+            MovingOne alien = aliens.get(x);
             i++;
             g2d.setColor(new Color(250 - i * (250 / aliens.size()),250 - i * (250 / aliens.size()), 0));
             alien.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, false);
@@ -279,12 +294,18 @@ public class World implements Runnable {
                     for (Rat rat : getRats()) {
                         ratsProvider.getRatControl(rat).selfAct(rat, this);
                     }
-                    for (MovingOne alien : aliens) {
-                        alien.selfAct(this);
-                        for (Rat rat : getRats()) {
-                            if (alien.getUniversalCoords().equals(rat.getUniversalCoords())) {
-                                alien.interact(rat);
+                    for (int x=0; x< aliens.size(); x++) {
+                        MovingOne alien = aliens.get(x);
+                        boolean survived = alien.selfAct(this);
+                        if (survived) {
+                            for (Rat rat : getRats()) {
+                                if (alien.getUniversalCoords().equals(rat.getUniversalCoords())) {
+                                    alien.interact(rat);
+                                }
                             }
+                        } else {
+                            removeAlien(alien);
+                            x--;
                         }
                     }
                     //this should not be customizable, as the regeneration of workd is hart beat
@@ -335,5 +356,10 @@ public class World implements Runnable {
 
     public void swap(Rat rat) {
         ratsProvider.swap(rat);
+    }
+
+    public void removeAlien(MovingOne hawk) {
+        aliens.remove(hawk);
+        fillAliens();
     }
 }

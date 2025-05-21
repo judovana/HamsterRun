@@ -27,14 +27,14 @@ public class BigBats extends MovingOne {
     }
 
     @Override
-    public void selfAct(World world) {
+    public boolean selfAct(World world) {
         this.action = RatActions.WALK;
         ComputerControl.dummyMove(this, world, chaos);
         if (isMoving()) {
             move(world);
         }
         anim.addLimited();
-
+        return true;
     }
 
     private boolean isMoving() {
