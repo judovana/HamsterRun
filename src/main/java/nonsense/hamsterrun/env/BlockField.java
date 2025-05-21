@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class BlockField {
 
+    private static final boolean logItemsSpreading = false;
     private final Point coords;
     private final BaseBlock parent;
     private boolean passable;
@@ -36,13 +37,13 @@ public class BlockField {
             if (item.ratio > 0) {
                 recalcualted.add(new ItemsWithBoundaries(item.clazz, usedSum, usedSum + item.ratio));
                 usedSum = usedSum + item.ratio;
-                System.out.println("Adding " + item.clazz.getSimpleName() + " as " + recalcualted.size() + " of (max) " + itemsWithProbabilities.size());
+                logItemSpreading("Adding " + item.clazz.getSimpleName() + " as " + recalcualted.size() + " of (max) " + itemsWithProbabilities.size());
                 float probab = ((float) item.ratio / (float) maxSum * (float) 100);
                 probabCheck += probab;
-                System.out.println(" Probability is " + probab + " %");
+                logItemSpreading(" Probability is " + probab + " %");
             }
         }
-        System.out.println("Total: " + probabCheck + " %");
+        logItemSpreading("Total: " + probabCheck + " %");
         if (usedSum != maxSum) {
             throw new RuntimeException("Author can not count");
         }
@@ -50,6 +51,12 @@ public class BlockField {
             throw new RuntimeException("At least empty wall must be present");
         }
         return recalcualted;
+    }
+
+    private static void logItemSpreading(String s) {
+        if (logItemsSpreading) {
+            System.out.println(s);
+        }
     }
 
     public static Item itemClassToItemCatched(Class clazz) {

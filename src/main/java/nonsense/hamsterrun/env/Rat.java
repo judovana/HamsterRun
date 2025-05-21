@@ -150,6 +150,7 @@ public class Rat extends MovingOne {
     }
 
     private void moveInDirection(World world) {
+        //logNeighbours(world);
         if (world.getBlockField(this.getUniversalCoords()).getItem() instanceof Tunnel) {
             if (seed.nextInt(BaseConfig.getConfig().getTunnelConfusionFactor()) == 0) {
                 direction = RatActions.Direction.getRandom();
@@ -178,6 +179,35 @@ public class Rat extends MovingOne {
         }
         harm(world);
         move(world);
+    }
+
+    private void logNeighbours(World world) {
+        Point uc = getUniversalCoords();
+        Teleport.OrientedList<BlockField> sides = Teleport.getNeighboursFields(new Point(uc.x, uc.y), world);
+        if (sides.getUpField() != null && sides.getUpField().isPassable()) {
+            //this.direction = RatActions.Direction.UP;
+            System.out.println("up is free");
+        } else {
+            System.out.println("up is full");
+        }
+        if (sides.getDownField() != null && sides.getDownField().isPassable()) {
+            //this.direction = RatActions.Direction.DOWN;
+            System.out.println("down is free");
+        } else {
+            System.out.println("down is full");
+        }
+        if (sides.getRightField() != null && sides.getRightField().isPassable()) {
+            //this.direction = RatActions.Direction.RIGHT;
+            System.out.println("right is free");
+        } else {
+            System.out.println("right is full");
+        }
+        if (sides.getLeftField() != null && sides.getLeftField().isPassable()) {
+            //this.direction = RatActions.Direction.LEFT;
+            System.out.println("left is free");
+        } else {
+            System.out.println("left is full");
+        }
     }
 
     private void eat(World world) {

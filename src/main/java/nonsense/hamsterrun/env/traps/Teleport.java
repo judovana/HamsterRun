@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Teleport implements Item, Relocator {
+
+    private static final boolean logNeighbrhoodFields = false;
     //will drop the mouse to unassigned  gate. the gate will beocme assigned
     //it MUST drop it NEXT to it, otherwise it will cause endless loop
     //if all gates are assigned, then to random one
@@ -51,10 +53,16 @@ public abstract class Teleport implements Item, Relocator {
         return freeSidePoints;
     }
 
+    public static OrientedList<Point> getNeighboursForGivenPointAsOrientedList(Point w, World world) {
+        return new OrientedList<Point>(getNeighboursForGivenPoint(w,world, true, true));
+    }
+
     public static OrientedList<BlockField> getNeighboursFields(Point w, World world) {
         BaseBlockNeigbours neighBase = world.getBaseBlockNeigboursByUniversal(w.x, w.y);
-        System.out.print(neighBase.toString());
-        System.out.println();
+        if (logNeighbrhoodFields) {
+            System.out.print(neighBase.toString());
+            System.out.println();
+        }
         //up to now it is correct. the rat is moving between telepors and never misses
         //also the neighbrs are corrct and w is correct and twoWayTeleports are correct
         int xx = w.y % BaseConfig.getConfig().getBaseSize();
@@ -91,11 +99,11 @@ public abstract class Teleport implements Item, Relocator {
         }
 
         public T getDownField() {
-            return base.get(1);
+            return base.get(2);
         }
 
         public T getUpField() {
-            return base.get(2);
+            return base.get(3);
         }
 
     }
