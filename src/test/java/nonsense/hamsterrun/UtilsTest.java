@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.Random;
 
 public class UtilsTest {
 
@@ -75,5 +76,14 @@ public class UtilsTest {
         Assertions.assertEquals(true, map[0][1].isPassable());
         Assertions.assertEquals(true, map[1][1].isPassable());
         Assertions.assertEquals(true, map[1][0].isPassable());
+    }
+
+    @Test
+    public void random2az3() {
+        Random seed = new Random();
+        for (int x = 0; x < 10000000; x++) {
+            int a = seed.nextInt(2) + 2;
+            Assertions.assertTrue(a == 2 || a == 3);
+        }
     }
 }

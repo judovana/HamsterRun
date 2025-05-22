@@ -292,11 +292,19 @@ public class World implements Runnable {
                     }
                 }
                 if (worldAnim % 5 == 0) {
+                    long totalScore = 0;
+                    for (Rat rat : getRats()) {
+                        totalScore+=rat.getScore();
+                    }
                     for (int x = 0; x< ratsProvider.getRats().size(); x++) {
                         Rat rat = ratsProvider.getRats().get(x);
-                        if (this.getBlockField(rat.getUniversalCoords()).getItem() instanceof Cage){
-                            ratsProvider.remove(rat);
-                            x--;
+                        if (rat.getKeys() >= BaseConfig.getConfig().getCumulativeMinimalNUmberOfKeys()
+                                && rat.getScore() >= BaseConfig.getConfig().getIndividualMinimalScoreToEnterGoldenGate()
+                                && totalScore >= BaseConfig.getConfig().getCumulativeMinimalScoreToEnterGoldenGate()) {
+                            if (this.getBlockField(rat.getUniversalCoords()).getItem() instanceof Cage) {
+                                ratsProvider.remove(rat);
+                                x--;
+                            }
                         }
                     }
                     for (Rat rat : getRats()) {

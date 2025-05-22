@@ -26,8 +26,8 @@ public class Hawk extends MovingOne {
     private Point vector = new Point(0, 0);
 
     public Hawk() {
-        //this.MAX_FLY_AWAY = seed.nextInt(2)+2;
-        this.MAX_FLY_AWAY = 3; //2 is really boring
+        this.MAX_FLY_AWAY = seed.nextInt(2)+2;
+        //this.MAX_FLY_AWAY = 2; //3 is really hard, 2... bring :(
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
     }

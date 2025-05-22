@@ -70,8 +70,8 @@ public class BaseConfig {
             new ItemsWithProbability(Boulder.class, 35),
             new ItemsWithProbability(Hawk.class, 10),
             new ItemsWithProbability(Ghost.class, 5),
-            new ItemsWithProbability(Cat.class, 15),
-            new ItemsWithProbability(Key.class, 5),
+            new ItemsWithProbability(Cat.class, 25),
+            new ItemsWithProbability(Key.class, 100),
     };
 
     private static final Random seed = new Random();
@@ -466,5 +466,29 @@ public class BaseConfig {
 
     public void setMaxAliens(int maxAliens) {
         this.maxAliens = maxAliens;
+    }
+
+    public int getCumulativeMinimalNUmberOfKeys() {
+        return cumulativeMinimalNUmberOfKeys;
+    }
+
+    public int getCumulativeMinimalScoreToEnterGoldenGate() {
+        return cumulativeMinimalScoreToEnterGoldenGate;
+    }
+
+    public int getIndividualMinimalScoreToEnterGoldenGate() {
+        return individualMinimalScoreToEnterGoldenGate;
+    }
+
+    public void setCumulativeMinimalNUmberOfKeys(int cumulativeMinimalNUmberOfKeys) {
+        this.cumulativeMinimalNUmberOfKeys = cumulativeMinimalNUmberOfKeys;
+    }
+
+    public void setCumulativeMinimalScoreToEnterGoldenGate(int cumulativeMinimalScoreToEnterGoldenGate) {
+        this.cumulativeMinimalScoreToEnterGoldenGate = cumulativeMinimalScoreToEnterGoldenGate;
+    }
+
+    public void setIndividualMinimalScoreToEnterGoldenGate(int individualMinimalScoreToEnterGoldenGate) {
+        this.individualMinimalScoreToEnterGoldenGate = individualMinimalScoreToEnterGoldenGate;
     }
 }
