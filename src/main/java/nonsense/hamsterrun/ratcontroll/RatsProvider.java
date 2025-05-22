@@ -13,4 +13,6 @@ public interface RatsProvider {
     void swap(Rat rat);
 
     void kill();
+
+    void remove(Rat rat);
 }

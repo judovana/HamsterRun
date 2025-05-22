@@ -6,9 +6,11 @@ import nonsense.hamsterrun.env.aliens.Boulder;
 import nonsense.hamsterrun.env.aliens.Cat;
 import nonsense.hamsterrun.env.aliens.Ghost;
 import nonsense.hamsterrun.env.aliens.Hawk;
+import nonsense.hamsterrun.env.aliens.Key;
 import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.env.aliens.SmallFlies;
 import nonsense.hamsterrun.env.traps.AllWayTeleport;
+import nonsense.hamsterrun.env.traps.Cage;
 import nonsense.hamsterrun.env.traps.Carrot;
 import nonsense.hamsterrun.env.traps.ColorfullFlask;
 import nonsense.hamsterrun.env.traps.Cucumber;
@@ -57,6 +59,7 @@ public class BaseConfig {
             new ItemsWithProbability(Torturer.class, 10),
             new ItemsWithProbability(Mushroom.class, 2),
             new ItemsWithProbability(ColorfullFlask.class, 2),
+            new ItemsWithProbability(Cage.class, 1),
     };
 
     private static final ItemsWithProbability[] DEFAULT_ALIENS_PROBABILITIES = new ItemsWithProbability[]{
@@ -68,6 +71,7 @@ public class BaseConfig {
             new ItemsWithProbability(Hawk.class, 10),
             new ItemsWithProbability(Ghost.class, 5),
             new ItemsWithProbability(Cat.class, 15),
+            new ItemsWithProbability(Key.class, 5),
     };
 
     private static final Random seed = new Random();
@@ -89,7 +93,7 @@ public class BaseConfig {
     //FIXME cmdline/gui setup
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
-    //goal here should be, that the msot score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
+    //goal here should be, that the most score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
     private int cumulativeMinimalScoreToEnterGoldenGate= 50000;
     private int cumulativeMinimalNUmberOfKeys= 10; //if conditions are not met, then punish? Set by multiplying by rats count!
     private int individualMinimalScoreToEnterGoldenGate= 5000;

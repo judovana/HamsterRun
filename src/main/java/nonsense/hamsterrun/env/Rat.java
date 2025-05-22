@@ -30,6 +30,7 @@ public class Rat extends MovingOne {
     private SoundsBuffer sounds = new SoundsBuffer();
     private SoundsBuffer snail = new SoundsBuffer.NoSound();
     private int score = 1000;
+    private int keys = 0;
     private String skin = "rat";
     private ScoreListener scoreListener;
 
@@ -270,11 +271,7 @@ public class Rat extends MovingOne {
         if (this.score < 0) {
             score = 0;
         }
-        if (scoreListener == null) {
-            System.out.println(this.getScore() + " - " + this.toString() + ": " + this.score);
-        } else {
-            scoreListener.report(this, this.score);
-        }
+        reportScore();
     }
 
     public void harm(World w) {
@@ -387,4 +384,22 @@ public class Rat extends MovingOne {
         return true;
     }
 
+    public int getKeys() {
+        return keys;
+    }
+
+    public void addKey() {
+        this.keys++;
+        this.score++;//green light:)
+        reportScore();
+    }
+
+    private void reportScore() {
+        if (scoreListener == null) {
+            System.out.println("Score  - " + this.toString() + ": " + this.score);
+            System.out.println("Keys  - " + this.toString() + ": " + this.keys);
+        } else {
+            scoreListener.report(this, this.score, this.keys);
+        }
+    }
 }

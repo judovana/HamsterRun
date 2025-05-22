@@ -277,6 +277,11 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
                     rat.getSounds().kill();
                 }
             }
+
+            @Override
+            public void remove(Rat rat) {
+                //should be no ope here
+            }
         });
         lworld.allRatsSpread(false);
         lworld.addRepaintListener(preview);

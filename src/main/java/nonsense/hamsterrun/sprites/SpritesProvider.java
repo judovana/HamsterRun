@@ -26,6 +26,7 @@ public class SpritesProvider {
     public static BufferedImage salat;
     public static BufferedImage repa;
     public static BufferedImage grass;
+    public static BufferedImage gate;
     public static BufferedImage[] trapdoor;
     public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
     public static BufferedImage[] oneWayTeleport = new BufferedImage[6];
@@ -77,6 +78,8 @@ public class SpritesProvider {
         tunnelClosed[1] = rotate(tunnelClosed[0], 90);
         tunnelClosed[2] = rotate(tunnelClosed[0], 180);
         tunnelClosed[3] = rotate(tunnelClosed[0], 270);
+        URL gateU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/gate.png");
+        gate = ImageIO.read(gateU);
         URL tunnelU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/tunnelComposed.png");
         tunnelOpened = ImageIO.read(tunnelU);
         URL wall1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/wall.png");

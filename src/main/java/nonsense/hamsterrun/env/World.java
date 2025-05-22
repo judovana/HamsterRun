@@ -9,6 +9,7 @@ import nonsense.hamsterrun.env.aliens.Hawk;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.env.aliens.SmallFlies;
+import nonsense.hamsterrun.env.traps.Cage;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JComponent;
@@ -291,6 +292,13 @@ public class World implements Runnable {
                     }
                 }
                 if (worldAnim % 5 == 0) {
+                    for (int x = 0; x< ratsProvider.getRats().size(); x++) {
+                        Rat rat = ratsProvider.getRats().get(x);
+                        if (this.getBlockField(rat.getUniversalCoords()).getItem() instanceof Cage){
+                            ratsProvider.remove(rat);
+                            x--;
+                        }
+                    }
                     for (Rat rat : getRats()) {
                         ratsProvider.getRatControl(rat).selfAct(rat, this);
                     }

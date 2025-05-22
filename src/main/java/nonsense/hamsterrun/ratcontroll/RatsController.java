@@ -33,7 +33,12 @@ public class RatsController implements RatsProvider {
 
     @Override
     public RatControl getRatControl(Rat rat) {
-        return rats.stream().filter(a -> a.rat == rat).map(a -> a.ratControl).findFirst().get();
+        for (RatWithControls rats: rats){
+            if (rats.rat == rat) {
+                return rats.ratControl;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -61,6 +66,16 @@ public class RatsController implements RatsProvider {
             rat.getSounds().kill();
         }
         rats.clear();
+    }
+
+    @Override
+    public void remove(Rat rat) {
+        for (int x = 0; x < rats.size(); x++) {
+            if (rats.get(x).rat == rat) {
+                rats.remove(x);
+                x--;// or break? can there be duplicates?
+            }
+        }
     }
 
     public KeyboardControl getNulLControl() {

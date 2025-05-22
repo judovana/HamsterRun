@@ -23,7 +23,7 @@ public class ScoreListener {
         return Color.lightGray;
     }
 
-    public void report(Rat rat, int score) {
+    public void report(Rat rat, int score, int keys) {
         if (lastScore < score) {
             blinker.setColor(Color.green);
         } else if (lastScore > score) {
@@ -32,7 +32,7 @@ public class ScoreListener {
             blinker.setColor(getDefaultColor());
         }
         lastScore = score;
-        label.setText(rat.getSkin() + ": " + score);
+        label.setText(rat.getSkin() + ": " + score + " (keys: " + keys + ")");
     }
 
     private class Blinker extends Thread {
