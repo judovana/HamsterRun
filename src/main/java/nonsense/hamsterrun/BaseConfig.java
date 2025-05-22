@@ -3,6 +3,7 @@ package nonsense.hamsterrun;
 import nonsense.hamsterrun.env.aliens.BigBats;
 import nonsense.hamsterrun.env.aliens.BigFlies;
 import nonsense.hamsterrun.env.aliens.Boulder;
+import nonsense.hamsterrun.env.aliens.Ghost;
 import nonsense.hamsterrun.env.aliens.Hawk;
 import nonsense.hamsterrun.env.aliens.SmallBats;
 import nonsense.hamsterrun.env.aliens.SmallFlies;
@@ -64,6 +65,7 @@ public class BaseConfig {
             new ItemsWithProbability(BigBats.class, 20),
             new ItemsWithProbability(Boulder.class, 35),
             new ItemsWithProbability(Hawk.class, 10),
+            new ItemsWithProbability(Ghost.class, 5),
     };
 
     private static final Random seed = new Random();
