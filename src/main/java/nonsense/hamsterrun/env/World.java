@@ -2,13 +2,8 @@ package nonsense.hamsterrun.env;
 
 
 import nonsense.hamsterrun.BaseConfig;
-import nonsense.hamsterrun.env.aliens.BigBats;
-import nonsense.hamsterrun.env.aliens.BigFlies;
 import nonsense.hamsterrun.env.aliens.Boulder;
-import nonsense.hamsterrun.env.aliens.Hawk;
 import nonsense.hamsterrun.env.aliens.MovingOne;
-import nonsense.hamsterrun.env.aliens.SmallBats;
-import nonsense.hamsterrun.env.aliens.SmallFlies;
 import nonsense.hamsterrun.env.traps.Cage;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
@@ -316,7 +311,7 @@ public class World implements Runnable {
                         if (survived) {
                             for (Rat rat : getRats()) {
                                 if (alien.getUniversalCoords().equals(rat.getUniversalCoords())) {
-                                    alien.interact(rat);
+                                    alien.interact(rat, this);
                                 }
                             }
                         } else {

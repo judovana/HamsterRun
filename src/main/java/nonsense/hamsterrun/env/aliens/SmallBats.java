@@ -56,7 +56,7 @@ public class SmallBats extends MovingOne {
     }
 
     @Override
-    public void interact(Rat rat) {
+    public void interact(Rat rat, World world) {
         playMainSoundFor(rat.getSounds());
         rat.adjustScore(-10);
     }

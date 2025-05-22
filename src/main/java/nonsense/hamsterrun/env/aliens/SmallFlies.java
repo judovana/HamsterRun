@@ -56,7 +56,7 @@ public class SmallFlies extends MovingOne {
     }
 
     @Override
-    public void interact(Rat rat) {
+    public void interact(Rat rat, World world) {
         if (rat.getAction() == RatActions.STAY || rat.getAction() == RatActions.EAT) {
             playMainSoundFor(rat.getSounds());
             rat.setActionDirection(RatActions.WALK, RatActions.Direction.getRandom());

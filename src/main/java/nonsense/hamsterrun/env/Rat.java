@@ -374,7 +374,7 @@ public class Rat extends MovingOne {
     }
 
     @Override
-    public void interact(Rat world) {
+    public void interact(Rat rat, World world) {
         throw new RuntimeException("Rat can not interact");
     }
 
@@ -391,6 +391,15 @@ public class Rat extends MovingOne {
     public void addKey() {
         this.keys++;
         this.score++;//green light:)
+        reportScore();
+    }
+
+    public void removeKey() {
+        this.keys--;
+        if (keys < 0) {
+            keys = 0;
+        }
+        this.score--;//red light:)
         reportScore();
     }
 

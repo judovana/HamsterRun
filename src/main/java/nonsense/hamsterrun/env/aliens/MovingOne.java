@@ -318,7 +318,7 @@ public abstract class MovingOne implements ThumbnailAble {
         return true;
     }
 
-    public abstract void interact(Rat rat);
+    public abstract void interact(Rat rat, World world);
 
     protected abstract boolean returnOnSalat(World world);
 

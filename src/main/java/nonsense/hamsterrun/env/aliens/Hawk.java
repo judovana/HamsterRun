@@ -1,6 +1,5 @@
 package nonsense.hamsterrun.env.aliens;
 
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,15 +17,17 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 //the only way how to get rid of it is to hide ALL rats in tunnels, it will fly away....
 public class Hawk extends MovingOne {
 
-    //todo,  Made it configurable?
-    private final int MAX_FLY_AWAY; //min is 2; with 3 was quite hard to get rid of some more chaotic hawks. 4.iompossible
+    private int MAX_FLY_AWAY; //min is 2; with 3 was quite hard to get rid of some more chaotic hawks. 4.iompossible
     protected int chaos = seed.nextInt(18) + 1;
     private final int maxspeed = 1;
     private int skipCounter = 0;
     private Point vector = new Point(0, 0);
 
     public Hawk() {
-        this.MAX_FLY_AWAY = seed.nextInt(2)+2;
+        this.MAX_FLY_AWAY = seed.nextInt(5);
+        if (this.MAX_FLY_AWAY != 3) {
+            this.MAX_FLY_AWAY = 2;
+        }
         //this.MAX_FLY_AWAY = 2; //3 is really hard, 2... bring :(
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
@@ -146,7 +147,7 @@ public class Hawk extends MovingOne {
     }
 
     @Override
-    public void interact(Rat rat) {
+    public void interact(Rat rat, World world) {
         playMainSoundFor(rat.getSounds());
         rat.adjustScore(-500);
     }

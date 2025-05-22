@@ -133,9 +133,12 @@ public class Ghost extends MovingOne {
     }
 
     @Override
-    public void interact(Rat rat) {
+    public void interact(Rat rat, World world) {
         playMainSoundFor(rat.getSounds());
         rat.adjustScore(-50);
+        for (Rat rat2: world.getRats()) {
+            rat2.removeKey();
+        }
     }
 
     @Override

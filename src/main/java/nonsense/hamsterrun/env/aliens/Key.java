@@ -1,7 +1,5 @@
 package nonsense.hamsterrun.env.aliens;
 
-import java.awt.Point;
-
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.SoundsBuffer;
@@ -60,7 +58,7 @@ public class Key extends MovingOne {
     }
 
     @Override
-    public void interact(Rat rat) {
+    public void interact(Rat rat, World world) {
 
     }
 
