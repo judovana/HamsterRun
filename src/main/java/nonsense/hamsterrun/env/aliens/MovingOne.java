@@ -337,6 +337,7 @@ public abstract class MovingOne implements ThumbnailAble {
     public void drawThumbnail(Graphics2D g2d, int size) {
         this.setUniversalCoords(new Point(0,0));
         draw(g2d, new Point(0,0), size, true, false);
+        anim.addLimited();
     }
 
     @Override

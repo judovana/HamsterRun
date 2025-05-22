@@ -145,4 +145,12 @@ public class Localization {
     public String getDisabledOnZero() {
         return get("disabledOnZero");
     }
+
+    public String getAllAliensDisabled() {
+        return get("allAliensDisabled");
+    }
+
+    public String maxAliensLabel() {
+        return get("maxAliensLabel");
+    }
 }

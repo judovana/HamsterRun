@@ -3,12 +3,10 @@ package nonsense.hamsterrun.setup;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
-import nonsense.hamsterrun.env.BlockField;
 import nonsense.hamsterrun.env.ItemsWithBoundaries;
 import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.ThumbnailAble;
 import nonsense.hamsterrun.env.aliens.MovingOne;
-import nonsense.hamsterrun.env.traps.Item;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,28 +32,66 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
 
     private static final SoundsBuffer examples = new SoundsBuffer();
     private JPanel itemsPanel;
-    private JButton resetFields;
-    private JButton disableFields;
+    private JButton resetItems;
+    private JButton disableItems;
+
+    private JPanel aliensPanel;
+    private JButton resetAliens;
+    private JButton disableAliens;
+    private JLabel maxAliensLabel;
+    private JSpinner maxAliens;
 
 
     //TODO extract shared min/max here and in config validate
     public ItemsAndAliensPanel() {
         this.setLayout(new GridLayout(2, 1));
+        JPanel itemsWrapper = createItems();
+        add(itemsWrapper);
+        JPanel aliensWrapper = createAliens();
+        add(aliensWrapper);
+        setTitles();
+    }
+
+    private JPanel createItems() {
         JPanel itemsWrapper = new JPanel(new BorderLayout());
         itemsPanel = new JPanel(new GridLayout(0, 1));
         JScrollPane controlsScroll = new JScrollPane(itemsPanel);
         itemsWrapper.add(controlsScroll);
         JPanel itemsControls = new JPanel(new GridLayout(1, 2));
-        resetFields = new JButton("reset");
-        resetFields.addActionListener(a -> resetAllitems());
-        disableFields = new JButton("disable all");
-        disableFields.addActionListener(a -> disbaleAllitems());
-        itemsControls.add(resetFields);
-        itemsControls.add(disableFields);
+        resetItems = new JButton("reset");
+        resetItems.addActionListener(a -> resetAllItems());
+        disableItems = new JButton("disable all");
+        disableItems.addActionListener(a -> disbaleAllItems());
+        itemsControls.add(resetItems);
+        itemsControls.add(disableItems);
         itemsWrapper.add(itemsControls, BorderLayout.SOUTH);
-        add(itemsWrapper);
-//        add(aliens);
-        setTitles();
+        return itemsWrapper;
+    }
+
+    private JPanel createAliens() {
+        JPanel aliensWrapper = new JPanel(new BorderLayout());
+        aliensPanel = new JPanel(new GridLayout(0, 1));
+        JScrollPane controlsScroll = new JScrollPane(aliensPanel);
+        aliensWrapper.add(controlsScroll);
+        JPanel aliensControls = new JPanel(new GridLayout(1, 4));
+        resetAliens = new JButton("reset");
+        resetAliens.addActionListener(a -> resetAllAliens());
+        disableAliens = new JButton("disable all");
+        disableAliens.addActionListener(a -> disbaleAllAliens());
+        aliensControls.add(resetAliens);
+        aliensControls.add(disableAliens);
+        maxAliensLabel = new JLabel("max aliens - 0 is none!");
+        maxAliens  = new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getMaxAliens(), 0, 10000, 1));
+        maxAliens.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                BaseConfig.getConfig().setMaxAliens(((Number) maxAliens.getValue()).intValue());
+            }
+        });
+        aliensControls.add(maxAliensLabel, BorderLayout.WEST);
+        aliensControls.add(maxAliens);
+        aliensWrapper.add(aliensControls, BorderLayout.SOUTH);
+        return aliensWrapper;
     }
 
     private static String getPercentText(int ratio, int summ) {
@@ -64,51 +100,82 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
     }
 
     private void regenerateItems(boolean recreate, boolean setSpinners) {
+        regenerate(new ItemValuesProvider(), itemsPanel, recreate, setSpinners);
+    }
+
+    private void regenerateAliens(boolean recreate, boolean setSpinners) {
+        regenerate(new AliensValuesProvider(), aliensPanel, recreate, setSpinners);
+    }
+
+    private static void regenerate(ValuesProvider provider, JPanel panel, boolean recreate, boolean setSpinners) {
         if (recreate) {
-            itemsPanel.removeAll();
+            panel.removeAll();
         }
         int sum = 0;
         int origSum = 0;
-        for (BaseConfig.ItemsWithProbability item : BaseConfig.getConfig().getItemsProbabilities()) {
-            int origRatio = BaseConfig.getConfig().getDefaultItemProbability(item.clazz);
+        for (BaseConfig.ItemsWithProbability item : provider.getValues()) {
+            int origRatio = provider.getDefaultprobability(item.clazz);
             origSum += origRatio;
             sum += item.ratio;
         }
         int counter = 0;
-        for (BaseConfig.ItemsWithProbability iwp : BaseConfig.getConfig().getItemsProbabilities()) {
+        for (BaseConfig.ItemsWithProbability iwp : provider.getValues()) {
             if (recreate) {
-                PreviewItemLine item = new PreviewItemLine(iwp, origSum, sum);
-                itemsPanel.add(item);
+                PreviewItemLine item = new PreviewItemLine(iwp, origSum, sum, panel, provider);
+                panel.add(item);
             } else {
-                ((PreviewItemLine) (itemsPanel.getComponent(counter))).refreshCountes(iwp, origSum, sum);
+                ((PreviewItemLine) (panel.getComponent(counter))).refreshCountes(iwp, origSum, sum, provider);
                 if (setSpinners) {
-                    ((PreviewItemLine) (itemsPanel.getComponent(counter))).setSpinner();
+                    ((PreviewItemLine) (panel.getComponent(counter))).setSpinner();
                 }
             }
             counter++;
         }
     }
 
-    private void resetAllitems() {
+    private void resetAllItems() {
         BaseConfig.getConfig().resetItemsProbabilities();
         regenerateItems(true, false);
         itemsPanel.revalidate();
         this.revalidate();
     }
 
-    private void disbaleAllitems() {
+    private void disbaleAllItems() {
         BaseConfig.getConfig().disbaleAllItems();
         regenerateItems(true, false);
         itemsPanel.revalidate();
         this.revalidate();
     }
 
+    private void resetAllAliens() {
+        BaseConfig.getConfig().resetAliensProbabilities();
+        regenerateAliens(true, false);
+        aliensPanel.revalidate();
+        this.revalidate();
+        if (((Number)maxAliens.getValue()).intValue() == 0) {
+            maxAliens.setValue(10);
+        }
+    }
+
+    private void disbaleAllAliens() {
+        BaseConfig.getConfig().disbaleAllAliens();
+        regenerateAliens(true, false);
+        aliensPanel.revalidate();
+        this.revalidate();
+        maxAliens.setValue(0);
+        JOptionPane.showMessageDialog(this, Localization.get().getAllAliensDisabled());
+    }
+
     @Override
     public void setTitles() {
         setName(Localization.get().getItemsTitle());
-        disableFields.setText(Localization.get().getDisableAll());
-        resetFields.setText(Localization.get().getResetFields());
+        disableItems.setText(Localization.get().getDisableAll());
+        resetItems.setText(Localization.get().getResetFields());
+        disableAliens.setText(Localization.get().getDisableAll());
+        resetAliens.setText(Localization.get().getResetFields());
+        maxAliensLabel.setText(Localization.get().maxAliensLabel());
         regenerateItems(true, false);
+        regenerateAliens(true, false);
     }
 
     private static class PreviewAlienLine extends JPanel {
@@ -119,15 +186,15 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
         }
     }
 
-    private class PreviewItemLine extends JPanel {
+    private static class PreviewItemLine extends JPanel {
         private final ThumbnailAble item;
         private final BaseConfig.ItemsWithProbability source;
         private final JLabel is;
         private final JSpinner js;
 
-        public PreviewItemLine(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
+        public PreviewItemLine(BaseConfig.ItemsWithProbability iwp, int origSum, int sum, JPanel parent, ValuesProvider provider) {
             this.setLayout(new GridLayout(1, 3));
-            this.item = ItemsWithBoundaries.itemClassToItemCatched(iwp.clazz);
+            this.item = provider.convert(iwp.clazz);
             this.source = iwp;
             JPanel b1 = new JPanel(new GridLayout(2, 1));
             JLabel ln = new JLabel(source.clazz.getSimpleName());
@@ -156,22 +223,22 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
             js.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    BaseConfig.getConfig().addTrapModifierSafe(iwp.clazz, ((Number) js.getValue()).intValue(), false);
-                    regenerateItems(false, false);
+                    provider.set(iwp.clazz, ((Number) js.getValue()).intValue());
+                    regenerate(provider, parent, false, false);
                 }
             });
             js.setToolTipText(Localization.get().getDisabledOnZero());
             b2.add(js);
             is = new JLabel();
-            refreshCountes(iwp, origSum, sum);
+            refreshCountes(iwp, origSum, sum,provider);
             b2.add(is);
             this.add(b2);
 
         }
 
-        public void refreshCountes(BaseConfig.ItemsWithProbability iwp, int origSum, int sum) {
+        public void refreshCountes(BaseConfig.ItemsWithProbability iwp, int origSum, int sum, ValuesProvider provider) {
             is.setText("is: " + getPercentText(iwp.ratio, sum));
-            is.setToolTipText("was: " + getPercentText(BaseConfig.getConfig().getDefaultItemProbability(iwp.clazz), origSum));
+            is.setToolTipText("was: " + getPercentText(provider.getDefaultprobability(iwp.clazz), origSum));
         }
 
         public void setSpinner() {
@@ -195,6 +262,62 @@ public class ItemsAndAliensPanel extends JPanel implements Localized {
                 Graphics2D g2d = (Graphics2D) g;
                 item.drawThumbnail(g2d, this.getHeight());
             }
+        }
+    }
+
+    private interface ValuesProvider {
+        public int getDefaultprobability(Class clazz);
+
+        public Iterable<? extends BaseConfig.ItemsWithProbability> getValues();
+
+        ThumbnailAble convert(Class clazz);
+
+        void set(Class clazz, int i);
+    }
+
+    private static class ItemValuesProvider implements ValuesProvider {
+
+        @Override
+        public int getDefaultprobability(Class clazz) {
+            return BaseConfig.getConfig().getDefaultItemProbability(clazz);
+        }
+
+        @Override
+        public Iterable<? extends BaseConfig.ItemsWithProbability> getValues() {
+            return BaseConfig.getConfig().getItemsProbabilities();
+        }
+
+        @Override
+        public ThumbnailAble convert(Class clazz) {
+            return ItemsWithBoundaries.itemClassToItemCatched(clazz);
+        }
+
+        @Override
+        public void set(Class clazz, int prob) {
+            BaseConfig.getConfig().addTrapModifierSafe(clazz, prob, false);
+        }
+    }
+
+    private static class AliensValuesProvider implements ValuesProvider {
+
+        @Override
+        public int getDefaultprobability(Class clazz) {
+            return BaseConfig.getConfig().getDefaultAlienProbability(clazz);
+        }
+
+        @Override
+        public Iterable<? extends BaseConfig.ItemsWithProbability> getValues() {
+            return BaseConfig.getConfig().getAliensProbabilities();
+        }
+
+        @Override
+        public ThumbnailAble convert(Class clazz) {
+            return ItemsWithBoundaries.alienClassToItemCatched(clazz);
+        }
+
+        @Override
+        public void set(Class clazz, int prob) {
+            BaseConfig.getConfig().addTrapModifierSafe(clazz, prob, true);
         }
     }
 }

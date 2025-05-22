@@ -96,6 +96,10 @@ public class Main {
                         x++;
                         config.addTrapModifier(args[x], true);
                         break;
+                    case "max-aliens":
+                        x++;
+                        config.setMaxAliens(Integer.valueOf(args[x]));
+                        break;
                     case "tunnel":
                         x++;
                         config.setTunnelConfusion(Integer.valueOf(args[x]));

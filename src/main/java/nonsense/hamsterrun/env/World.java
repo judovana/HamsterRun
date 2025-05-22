@@ -50,7 +50,7 @@ public class World implements Runnable {
 
     private void fillAliens() {
         //FIXME make it setup-able
-        while (aliens.size() <= 10) {
+        while (aliens.size() <= BaseConfig.getConfig().getMaxAliens()) {
             MovingOne nw = getrandomAlien();
             teleportMouse(nw, false, true);
             aliens.add(nw);

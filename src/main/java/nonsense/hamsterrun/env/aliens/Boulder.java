@@ -37,14 +37,28 @@ public class Boulder extends MovingOne {
         if (firstCall) {
             firstCall = false;
             Teleport.OrientedList<BlockField> sides = Teleport.getNeighboursFields(getUniversalCoords(), world);
-            if (sides.getUpField() != null && sides.getUpField().isPassable()) {
-                this.direction = RatActions.Direction.UP;
-            } else if (sides.getDownField() != null && sides.getDownField().isPassable()) {
-                this.direction = RatActions.Direction.DOWN;
-            } else if (sides.getRightField() != null && sides.getRightField().isPassable()) {
-                this.direction = RatActions.Direction.RIGHT;
-            } else if (sides.getLeftField() != null && sides.getLeftField().isPassable()) {
-                this.direction = RatActions.Direction.LEFT;
+            if (seed.nextBoolean()) {
+                //up/down first
+                if (sides.getUpField() != null && sides.getUpField().isPassable()) {
+                    this.direction = RatActions.Direction.UP;
+                } else if (sides.getDownField() != null && sides.getDownField().isPassable()) {
+                    this.direction = RatActions.Direction.DOWN;
+                } else if (sides.getRightField() != null && sides.getRightField().isPassable()) {
+                    this.direction = RatActions.Direction.RIGHT;
+                } else if (sides.getLeftField() != null && sides.getLeftField().isPassable()) {
+                    this.direction = RatActions.Direction.LEFT;
+                }
+            } else {
+                //left/rigth first
+                if (sides.getRightField() != null && sides.getRightField().isPassable()) {
+                    this.direction = RatActions.Direction.RIGHT;
+                } else if (sides.getLeftField() != null && sides.getLeftField().isPassable()) {
+                    this.direction = RatActions.Direction.LEFT;
+                } else if (sides.getUpField() != null && sides.getUpField().isPassable()) {
+                    this.direction = RatActions.Direction.UP;
+                } else if (sides.getDownField() != null && sides.getDownField().isPassable()) {
+                    this.direction = RatActions.Direction.DOWN;
+                }
             }
         }
         this.speed = maxspeed;
