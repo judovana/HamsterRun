@@ -70,6 +70,10 @@ public class RatsController implements RatsProvider {
 
     @Override
     public void remove(Rat rat) {
+        //FIXME introduce some time and score results.
+        //if such resutls will not be empty, show...
+        //eg on the empty screen after palyer left
+        //eg on the exit
         for (int x = 0; x < rats.size(); x++) {
             if (rats.get(x).rat == rat) {
                 rats.remove(x);
