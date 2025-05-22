@@ -344,4 +344,23 @@ public abstract class MovingOne implements ThumbnailAble {
     public void playMainSoundFor(SoundsBuffer rat) {
         throw new RuntimeException("Not now!");
     }
+
+    public RatActions.Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(RatActions.Direction direction) {
+        this.direction = direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+        if (speed >= relativeSizes * 2) {
+            speed = relativeSizes * 2 - 1;
+        }
+    }
 }

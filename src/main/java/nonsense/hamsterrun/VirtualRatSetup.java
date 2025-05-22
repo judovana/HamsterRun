@@ -1,6 +1,7 @@
 package nonsense.hamsterrun;
 
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
+import nonsense.hamsterrun.ratcontroll.ComputerControl2;
 import nonsense.hamsterrun.ratcontroll.KeyboardControl1;
 import nonsense.hamsterrun.ratcontroll.KeyboardControl2;
 import nonsense.hamsterrun.ratcontroll.KeyboardControl3;
@@ -60,8 +61,10 @@ public class VirtualRatSetup {
 
     public static RatsController.RatControl stringToRatControl(String origDef, String param) {
         RatsController.RatControl control;
-        if (param.equalsIgnoreCase("pc")) {
+        if (param.equalsIgnoreCase("pc1")) {
             control = new ComputerControl();
+        }else if (param.equalsIgnoreCase("pc2")) {
+            control = new ComputerControl2();
         } else if (param.equalsIgnoreCase("k1")) {
             control = new KeyboardControl1();
         } else if (param.equalsIgnoreCase("k2")) {

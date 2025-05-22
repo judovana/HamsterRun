@@ -57,7 +57,11 @@ public class Ghost extends MovingOne {
                 || getUniversalCoords().x > world.getWidth() * 1.3 || getUniversalCoords().y > world.getHeight() * 1.3) {
             world.teleportMouse(this, false, false);
         }
-        this.action = RatActions.WALK;
+        if (isMoving()) {
+            this.action = RatActions.WALK;
+        } else {
+            this.action = RatActions.STAY;
+        }
         ComputerControl.dummyMove(this, world, chaos);
         if (direction == RatActions.Direction.LEFT) {
             currentSkin = "ghost1";

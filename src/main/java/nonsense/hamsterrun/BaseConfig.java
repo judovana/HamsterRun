@@ -3,6 +3,7 @@ package nonsense.hamsterrun;
 import nonsense.hamsterrun.env.aliens.BigBats;
 import nonsense.hamsterrun.env.aliens.BigFlies;
 import nonsense.hamsterrun.env.aliens.Boulder;
+import nonsense.hamsterrun.env.aliens.Cat;
 import nonsense.hamsterrun.env.aliens.Ghost;
 import nonsense.hamsterrun.env.aliens.Hawk;
 import nonsense.hamsterrun.env.aliens.SmallBats;
@@ -66,6 +67,7 @@ public class BaseConfig {
             new ItemsWithProbability(Boulder.class, 35),
             new ItemsWithProbability(Hawk.class, 10),
             new ItemsWithProbability(Ghost.class, 5),
+            new ItemsWithProbability(Cat.class, 15),
     };
 
     private static final Random seed = new Random();
@@ -83,10 +85,10 @@ public class BaseConfig {
     private int regSpeed = 200;
     private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
+    private int maxAliens = 10;
     //FIXME cmdline/gui setup
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
-    private int maxAliens = 10;
     //goal here should be, that the msot score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
     private int cumulativeMinimalScoreToEnterGoldenGate= 50000;
     private int cumulativeMinimalNUmberOfKeys= 10; //if conditions are not met, then punish? Set by multiplying by rats count!

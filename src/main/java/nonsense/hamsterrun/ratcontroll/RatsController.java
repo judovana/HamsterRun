@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class RatsController implements RatsProvider {
 
+    //TODO make this configurable?
     public static final int DEFAULT_CHAOS = 20;
 
 
