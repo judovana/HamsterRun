@@ -74,7 +74,7 @@ public class Cat extends MovingOne {
     @Override
     public void interact(Rat rat) {
         playMainSoundFor(rat.getSounds());
-        rat.adjustScore(-500);
+        rat.adjustScore(-1000);
     }
 
     @Override

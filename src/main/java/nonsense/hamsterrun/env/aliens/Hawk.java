@@ -148,7 +148,7 @@ public class Hawk extends MovingOne {
     @Override
     public void interact(Rat rat) {
         playMainSoundFor(rat.getSounds());
-        rat.adjustScore(-2000);
+        rat.adjustScore(-500);
     }
 
     @Override
