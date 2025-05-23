@@ -41,8 +41,8 @@ import java.util.stream.Collectors;
 public class BaseConfig {
 
     private static final ItemsWithProbability[] DEFAULT_ITEMS_PROBABILITIES = new ItemsWithProbability[]{
-            new ItemsWithProbability(Empty.class, 50),
-            new ItemsWithProbability(Cucumber.class, 30),
+            new ItemsWithProbability(Empty.class, 150),
+            new ItemsWithProbability(Cucumber.class, 50),
             new ItemsWithProbability(Carrot.class, 15),
             new ItemsWithProbability(Pepper.class, 15),
             new ItemsWithProbability(Grass.class, 20),
@@ -69,9 +69,9 @@ public class BaseConfig {
             new ItemsWithProbability(BigBats.class, 20),
             new ItemsWithProbability(Boulder.class, 35),
             new ItemsWithProbability(Hawk.class, 10),
-            new ItemsWithProbability(Ghost.class, 5),
+            new ItemsWithProbability(Ghost.class, + 1),
             new ItemsWithProbability(Cat.class, 25),
-            new ItemsWithProbability(Key.class, 100),
+            new ItemsWithProbability(Key.class, 75),
     };
 
     private static final Random seed = new Random();
@@ -90,9 +90,9 @@ public class BaseConfig {
     private List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
     private int maxAliens = 10;
-    //FIXME cmdline/gui setup
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
+    //FIXME cmdline/gui setup
     //goal here should be, that the most score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
     private int cumulativeMinimalScoreToEnterGoldenGate= 50000;
     private int cumulativeMinimalNUmberOfKeys= 10; //if conditions are not met, then punish? Set by multiplying by rats count!

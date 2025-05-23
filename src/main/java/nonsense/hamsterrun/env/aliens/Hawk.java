@@ -1,17 +1,18 @@
 package nonsense.hamsterrun.env.aliens;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.RatActions;
 import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.env.traps.AnimationCounrer;
+import nonsense.hamsterrun.env.traps.Grass;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.sprites.SpritesProvider;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 //flying over screen, targeting rats, walls do not stop
 //the only way how to get rid of it is to hide ALL rats in tunnels, it will fly away....
@@ -55,16 +56,17 @@ public class Hawk extends MovingOne {
         this.action = RatActions.WALK;
         anim.addLimited();
         fly();
-        if (getUniversalCoords().x < -(MAX_FLY_AWAY-1)*world.getWidth()
+        if (getUniversalCoords().x < -(MAX_FLY_AWAY - 1) * world.getWidth()
                 || getUniversalCoords().x > MAX_FLY_AWAY * world.getWidth()
-                || getUniversalCoords().y < -(MAX_FLY_AWAY-1)*world.getHeight()
+                || getUniversalCoords().y < -(MAX_FLY_AWAY - 1) * world.getHeight()
                 || getUniversalCoords().y > MAX_FLY_AWAY * world.getHeight()) {
             return false;
         }
         //am on any rat not in tunnel? Stop
         for (Rat rat : world.getRats()) {
             if (getUniversalCoords().equals(rat.getUniversalCoords())) {
-                if (world.getBlockField(getUniversalCoords()).getItem() instanceof Tunnel) {
+                if (world.getBlockField(getUniversalCoords()).getItem() instanceof Tunnel
+                        || world.getBlockField(getUniversalCoords()).getItem() instanceof Grass) {
                     return true;
                 }
                 vector = new Point(0, 0);
@@ -75,7 +77,8 @@ public class Hawk extends MovingOne {
             //any rats out of tunnels?
             List<Rat> a = new ArrayList<>(world.getRats());
             for (int x = 0; x < a.size(); x++) {
-                if (world.getBlockField(a.get(x).getUniversalCoords()).getItem() instanceof Tunnel) {
+                if (world.getBlockField(a.get(x).getUniversalCoords()).getItem() instanceof Tunnel
+                        || world.getBlockField(a.get(x).getUniversalCoords()).getItem() instanceof Grass) {
                     a.remove(x);
                     x--;
                 }

@@ -1,5 +1,6 @@
 package nonsense.hamsterrun.ratcontroll;
 
+import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.env.Rat;
 
 import javax.swing.JLabel;
@@ -32,7 +33,10 @@ public class ScoreListener {
             blinker.setColor(getDefaultColor());
         }
         lastScore = score;
-        label.setText(rat.getSkin() + ": " + score + " (keys: " + keys + ")");
+        label.setText(rat.getSkin() + ": " + score +
+                "/" + BaseConfig.getConfig().getIndividualMinimalScoreToEnterGoldenGate() +
+                "/ "+ BaseConfig.getConfig().getCumulativeMinimalScoreToEnterGoldenGate() +
+                " (keys: " + keys + "/" + BaseConfig.getConfig().getCumulativeMinimalNUmberOfKeys() + ")");
     }
 
     private class Blinker extends Thread {
