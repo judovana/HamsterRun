@@ -1,6 +1,7 @@
 package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.env.traps.Cage;
 import nonsense.hamsterrun.env.traps.Empty;
 import nonsense.hamsterrun.env.traps.Item;
 
@@ -10,6 +11,7 @@ import java.util.Random;
 
 public class BlockField {
 
+    private static long calls;
     private final Point coords;
     private final BaseBlock parent;
     private boolean passable;
@@ -60,11 +62,23 @@ public class BlockField {
     }
 
     public void setRandomObstacle(Random seed) {
+        calls++;
+        if (calls > Long.MAX_VALUE / 2) {
+            calls = 0;
+        }
         List<ItemsWithBoundaries> recalcualted = ItemsWithBoundaries.recalculateToBoundaries(BaseConfig.getConfig().getItemsProbabilities());
         int i = seed.nextInt(recalcualted.get(recalcualted.size() - 1).upper);
         for (ItemsWithBoundaries item : recalcualted) {
             if (i >= item.lower && i < item.upper) {
                 this.item = ItemsWithBoundaries.itemClassToItemCatched(item.clazz);
+                //this should prevent more then one gate on time
+                if (this.item instanceof Cage) {
+                    if (calls < Math.pow(BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(), 2)) {
+                        this.item = new Empty();
+                    } else {
+                        calls = 0;
+                    }
+                }
                 break;
             }
         }
