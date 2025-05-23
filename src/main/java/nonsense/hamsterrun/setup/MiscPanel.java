@@ -111,6 +111,11 @@ public class MiscPanel extends JPanel implements Localized {
 
     @Override
     public void setTitles() {
+        mouseLabel.setText(Localization.get().get("mouseLabel"));
+        tunnelLabel.setText(Localization.get().get("tunnelLabel"));
+        keysLabel.setText(Localization.get().get("keysLabel"));
+        cumulLabel.setText(Localization.get().get("cumuLabel"));
+        singleLabel.setText(Localization.get().get("singleLabel"));
         setName(Localization.get().getMiscTitle());
 
     }
