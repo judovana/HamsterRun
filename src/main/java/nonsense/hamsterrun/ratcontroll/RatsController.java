@@ -76,7 +76,12 @@ public class RatsController implements RatsProvider {
         //eg on the exit
         for (int x = 0; x < rats.size(); x++) {
             if (rats.get(x).rat == rat) {
+                //this is intentionaly before removal, to ensure, some score will be still missing
+                int scoreBonus = rat.getScore()/rats.size();
                 rats.remove(x);
+                for (int y = 0; y < rats.size(); y++) {
+                    rats.get(y).rat.adjustScore(scoreBonus);
+                }
                 x--;// or break? can there be duplicates?
             }
         }
