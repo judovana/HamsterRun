@@ -19,7 +19,8 @@ import java.awt.event.ActionListener;
 
 
 /**
- * Hello world!
+ * TODO - in theory, there is no obstacle to show this window in game
+ * and allow changes of everything except rats
  */
 public class SetupWindow extends JFrame implements Localized {
 

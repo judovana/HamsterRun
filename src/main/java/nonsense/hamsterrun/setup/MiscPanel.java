@@ -25,16 +25,20 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.Arrays;
-import java.util.List;
+
 
 
 public class MiscPanel extends JPanel implements Localized {
     private final JSpinner mouseSpinner;
+    private final JLabel mouseLabel;
     private final JSpinner tunnelConfusion;
+    private final JLabel tunnelLabel;
+    private final JSpinner keys;
+    private final JLabel keysLabel;
+    private final JSpinner cumulScore;
+    private final JLabel cumulLabel;
+    private final JSpinner singleScore;
+    private final JLabel singleLabel;
 
 
     //TODO
@@ -44,18 +48,47 @@ public class MiscPanel extends JPanel implements Localized {
 
     public MiscPanel() {
         this.setLayout(new GridLayout(0, 2));
-        this.add(new JLabel("mouse sensitivity"));
-        this.mouseSpinner = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getMouseDelay(), 0, 1000, 1)));
-        mouseSpinner.addChangeListener(a -> {
-            BaseConfig.getConfig().setMouseSensitivity(((Number) mouseSpinner.getValue()).intValue());
+
+        keysLabel = new JLabel("keys to enter cage");
+        this.add(keysLabel);
+        this.keys = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getCumulativeMinimalNUmberOfKeys(), 0, 100, 1)));
+        keys.addChangeListener(a -> {
+            BaseConfig.getConfig().setCumulativeMinimalNUmberOfKeys(((Number) keys.getValue()).intValue());
         });
-        this.add(mouseSpinner);
-        this.add(new JLabel("tunnel confusion"));
+        this.add(keys);
+
+        cumulLabel = new JLabel("cumulative score to enter cage");
+        this.add(cumulLabel);
+        this.cumulScore = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getCumulativeMinimalScoreToEnterGoldenGate(), 0, 100000, 1)));
+        cumulScore.addChangeListener(a -> {
+            BaseConfig.getConfig().setCumulativeMinimalScoreToEnterGoldenGate(((Number) cumulScore.getValue()).intValue());
+        });
+        this.add(cumulScore);
+
+        singleLabel = new JLabel("minimal score per rat to enter the gate");
+        this.add(singleLabel);
+        this.singleScore= (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getIndividualMinimalScoreToEnterGoldenGate(), 0, 10000, 1)));
+        singleScore.addChangeListener(a -> {
+            BaseConfig.getConfig().setIndividualMinimalScoreToEnterGoldenGate(((Number) singleScore.getValue()).intValue());
+        });
+        this.add(singleScore);
+
+        tunnelLabel = new JLabel("tunnel confusion");
+        this.add(tunnelLabel);
         this.tunnelConfusion = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getTunnelConfusionFactor(), 0, 1000, 1)));
         tunnelConfusion.addChangeListener(a -> {
             BaseConfig.getConfig().setTunnelConfusion(((Number) tunnelConfusion.getValue()).intValue());
         });
         this.add(tunnelConfusion);
+
+        mouseLabel = new JLabel("mouse sensitivity");
+        this.add(mouseLabel);
+        this.mouseSpinner = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getMouseDelay(), 0, 1000, 1)));
+        mouseSpinner.addChangeListener(a -> {
+            BaseConfig.getConfig().setMouseSensitivity(((Number) mouseSpinner.getValue()).intValue());
+        });
+        this.add(mouseSpinner);
+
         this.add(new JLabel("----"));
         this.add(new JLabel("----"));
         //minKeysToEnterTheCage
