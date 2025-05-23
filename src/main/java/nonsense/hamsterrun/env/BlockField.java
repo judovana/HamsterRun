@@ -73,7 +73,7 @@ public class BlockField {
                 this.item = ItemsWithBoundaries.itemClassToItemCatched(item.clazz);
                 //this should prevent more then one gate on time
                 if (this.item instanceof Cage) {
-                    if (calls < Math.pow(BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(), 2)) {
+                    if (calls < Math.pow(BaseConfig.getConfig().getGridSize() * BaseConfig.getConfig().getBaseSize(), 2) / 2) {
                         this.item = new Empty();
                     } else {
                         calls = 0;

@@ -59,7 +59,7 @@ public class BaseConfig {
             new ItemsWithProbability(Torturer.class, 10),
             new ItemsWithProbability(Mushroom.class, 2),
             new ItemsWithProbability(ColorfullFlask.class, 2),
-            new ItemsWithProbability(Cage.class, 1),
+            new ItemsWithProbability(Cage.class, 2),
     };
 
     private static final ItemsWithProbability[] DEFAULT_ALIENS_PROBABILITIES = new ItemsWithProbability[]{
@@ -68,8 +68,8 @@ public class BaseConfig {
             new ItemsWithProbability(SmallBats.class, 20),
             new ItemsWithProbability(BigBats.class, 20),
             new ItemsWithProbability(Boulder.class, 35),
-            new ItemsWithProbability(Hawk.class, 10),
-            new ItemsWithProbability(Ghost.class, + 1),
+            new ItemsWithProbability(Hawk.class, 5),
+            new ItemsWithProbability(Ghost.class, 4),
             new ItemsWithProbability(Cat.class, 25),
             new ItemsWithProbability(Key.class, 75),
     };
