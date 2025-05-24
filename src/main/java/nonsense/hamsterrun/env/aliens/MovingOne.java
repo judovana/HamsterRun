@@ -287,7 +287,6 @@ public abstract class MovingOne implements ThumbnailAble {
             if (higlight) {
                 g2d.setColor(Color.red);
                 g2d.drawOval(leftUpCornerOfMaze.x + coord.x * zoom + relativeShift.x - anim.modMap(), leftUpCornerOfMaze.y + coord.y * zoom + relativeShift.y - anim.modMap(), zoom + 2 * anim.modMap(), zoom + 2 * +anim.modMap());
-
             }
         }
     }

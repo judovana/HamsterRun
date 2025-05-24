@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Utils;
+import nonsense.hamsterrun.env.traps.Cage;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Color;
@@ -213,6 +214,9 @@ public class BaseBlock {
                         //on maps, all items are drawn before rats
                         if (level == 2) {
                             g2d.fillRect(coordx, coordy, zoom, zoom);
+                        }
+                        if (level == 3 && map[x][y].getItem() instanceof Cage) {
+                            ((Cage)map[x][y].getItem()).drawHighlight(g2d, coordx, coordy, zoom, level, neigbours, x, y);
                         }
                     } else {
                         if (level == 1) {

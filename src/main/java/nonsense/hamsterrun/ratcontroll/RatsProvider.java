@@ -14,5 +14,5 @@ public interface RatsProvider {
 
     void kill();
 
-    void remove(Rat rat);
+    void remove(Rat rat, long time);
 }

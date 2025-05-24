@@ -222,6 +222,8 @@ public class Main {
                                     world.drawMap(g2d, new Point(this.getWidth() / 2, this.getHeight() / 2), true,
                                             ratsController.getRatControl(rat).getZoom(), rat, true);
                                 }
+                            } else {
+                                RatsController.highScore.draw(g2d, this.getWidth(), this.getHeight());
                             }
                         }
                     };

@@ -3,6 +3,7 @@ package nonsense.hamsterrun.ratcontroll;
 import nonsense.hamsterrun.env.Rat;
 import nonsense.hamsterrun.env.World;
 
+import java.awt.Choice;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,6 +18,7 @@ public class RatsController implements RatsProvider {
     static final Random seed = new Random();
 
     private List<RatWithControls> rats = new ArrayList<>(4);
+    public static final HighScore highScore = new HighScore();
 
     public void addRat(RatWithControls ratWithControls) {
         this.rats.add(ratWithControls);
@@ -69,12 +71,17 @@ public class RatsController implements RatsProvider {
     }
 
     @Override
-    public void remove(Rat rat) {
+    public void remove(Rat rat, long time) {
         //FIXME introduce some time and score results.
         //if such resutls will not be empty, show...
         //eg on the empty screen after palyer left
         //eg on the exit
+        long tscore = 0;
         for (int x = 0; x < rats.size(); x++) {
+            tscore += rats.get(x).rat.getScore();
+        }
+        for (int x = 0; x < rats.size(); x++) {
+            this.highScore.add(new Score(rat.getSkin(), this.getRatControl(rat).id(), time, rat.getScore(), tscore));
             if (rats.get(x).rat == rat) {
                 //this is intentionaly before removal, to ensure, some score will be still missing
                 int scoreBonus = rat.getScore()/rats.size();

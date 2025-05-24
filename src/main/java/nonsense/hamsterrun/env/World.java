@@ -302,7 +302,7 @@ public class World implements Runnable {
                                 && rat.getScore() >= BaseConfig.getConfig().getIndividualMinimalScoreToEnterGoldenGate()
                                 && totalScore >= BaseConfig.getConfig().getCumulativeMinimalScoreToEnterGoldenGate()) {
                             if (this.getBlockField(rat.getUniversalCoords()).getItem() instanceof Cage) {
-                                ratsProvider.remove(rat);
+                                ratsProvider.remove(rat, time);
                                 x--;
                             }
                         }

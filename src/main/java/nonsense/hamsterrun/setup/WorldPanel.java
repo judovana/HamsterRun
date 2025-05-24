@@ -305,7 +305,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
             }
 
             @Override
-            public void remove(Rat rat) {
+            public void remove(Rat rat, long time) {
                 //should be no ope here
             }
         });

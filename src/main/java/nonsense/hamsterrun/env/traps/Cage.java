@@ -13,6 +13,8 @@ import java.awt.Image;
 //hhmhm all rats must enter in limited time? Score?
 public class Cage implements Item {
 
+    int anim = seed.nextInt(10);
+
     public Color getMinimapColor() {
         return Color.orange;
     }
@@ -21,6 +23,17 @@ public class Cage implements Item {
     public void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 2) {
             g2d.drawImage(SpritesProvider.gate, coordx, coordy, zoom, zoom, null);
+        }
+    }
+
+    public void drawHighlight(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
+        if (level == 3) {
+            anim++;
+            if (anim > 10) {
+                anim = 0;
+            }
+            g2d.setColor(Color.yellow);
+            g2d.drawOval(coordx - anim, coordy - anim, zoom + 2 * anim, zoom + 2 * +anim);
         }
     }
 
