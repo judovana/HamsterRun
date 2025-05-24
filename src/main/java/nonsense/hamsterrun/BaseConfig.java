@@ -103,9 +103,9 @@ public class BaseConfig {
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
     //goal here should be, that the most score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
-    private int cumulativeMinimalScoreToEnterGoldenGate = 50000;
+    private int cumulativeMinimalScoreToEnterGoldenGate = 20000;
     private int cumulativeMinimalNUmberOfKeys = 10; //if conditions are not met, then punish? Set by multiplying by rats count!
-    private int individualMinimalScoreToEnterGoldenGate = 5000;
+    private int individualMinimalScoreToEnterGoldenGate = 2000;
     private String floor = SpritesProvider.KNOWN_FLOORS.get(0);
     //w and h ow space to draw to,
     // if the drawn object is out,
