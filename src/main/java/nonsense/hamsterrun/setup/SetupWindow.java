@@ -3,6 +3,7 @@ package nonsense.hamsterrun.setup;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.Main;
+import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JButton;
@@ -16,36 +17,60 @@ import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 /**
  * TODO - in theory, there is no obstacle to show this window in game
- * and allow changes of everything except rats
+ * and allow changes of everything except rats and world sizes
  */
 public class SetupWindow extends JFrame implements Localized {
 
     private final JButton startButton;
+    private final World pausedWorld;
 
-    public SetupWindow() throws HeadlessException {
+    public SetupWindow(World world) {
         JTabbedPane tabs = new JTabbedPane();
-        JPanel rats = new RatsPanel();
-        tabs.add(rats);
+        if (world == null) {
+            JPanel rats = new RatsPanel();
+            tabs.add(rats);
+        }
         JPanel items = new ItemsAndAliensPanel();
         tabs.add(items);
-        tabs.add(new WorldPanel());
+        tabs.add(new WorldPanel(world));
         JPanel allowedControls = new MiscPanel();
         tabs.add(allowedControls);
         add(tabs);
-        startButton = new JButton("start");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                start();
-            }
-        });
-        add(startButton, BorderLayout.SOUTH);
+        if (world == null) {
+            startButton = new JButton("start");
+            startButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    start();
+                }
+            });
+            add(startButton, BorderLayout.SOUTH);
+        } else {
+            SetupWindow.this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    world.resume();
+                }
+            });
+            startButton = new JButton("resume");
+            startButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    world.resume();
+                    SetupWindow.this.dispose();
+                }
+            });
+            add(startButton, BorderLayout.SOUTH);
+        }
         setSize(800, 800);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.pausedWorld = world;
         setTitles();
         setVisible(true);
     }
@@ -59,7 +84,7 @@ public class SetupWindow extends JFrame implements Localized {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new SetupWindow();
+                    new SetupWindow(null);
                 }
             });
         } else {
@@ -74,7 +99,11 @@ public class SetupWindow extends JFrame implements Localized {
 
     public void setTitles() {
         setTitle(Localization.get().getMainTitle());
-        startButton.setText(Localization.get().getStartGame());
+        if (pausedWorld == null) {
+            startButton.setText(Localization.get().getStartGame());
+        } else {
+            startButton.setText(Localization.get().getResumeGame());
+        }
     }
 
 }

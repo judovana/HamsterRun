@@ -31,6 +31,7 @@ public class World implements Runnable {
     private int worldAnim = 0;
     private RatsProvider ratsProvider;
     private List<MovingOne> aliens = Collections.synchronizedList(new ArrayList<MovingOne>());
+    private boolean paused = false;
 
     public World(Maze maze) {
         this.maze = maze;
@@ -275,8 +276,11 @@ public class World implements Runnable {
 
     public void run() {
         while (live) {
-            //FIXME try catch all
             try {
+                if (paused){
+                    Thread.sleep(BaseConfig.getConfig().getDelayMs());
+                    continue;
+                }
                 worldAnim++;
                 if (worldAnim >= 1000) {
                     worldAnim = 0;
@@ -347,7 +351,7 @@ public class World implements Runnable {
                 for (JComponent repaintListener : repaintListeners) {
                     repaintListener.repaint();
                 }
-            } catch (InterruptedException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -372,5 +376,12 @@ public class World implements Runnable {
     public void removeAlien(MovingOne hawk) {
         aliens.remove(hawk);
         fillAliens();
+    }
+
+    public void pause() {
+        paused = true;
+    }
+    public void resume() {
+        paused = false;
     }
 }

@@ -87,7 +87,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
 
 
     //TODO extract shared min/max here and in config validate
-    public WorldPanel() {
+    public WorldPanel(World world) {
         this.setLayout(new GridLayout(2, 1));
         //JScrollPane controlsScroll = new JScrollPane();
         //add(controlsScroll);
@@ -98,6 +98,9 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         baseSizeSpinner.addChangeListener(this);
         baseSizeSpinner.addFocusListener(this);
         controls.add(baseSizeSpinner);
+        if (world != null) {
+            baseSizeSpinner.setEnabled(false);
+        }
 
 
         gridSizeLabel = new JLabel("grid size");
@@ -106,6 +109,9 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         gridSizeSpinner.addChangeListener(this);
         gridSizeSpinner.addFocusListener(this);
         controls.add(gridSizeSpinner);
+        if (world != null) {
+            gridSizeSpinner.setEnabled(false);
+        }
 
         baseDensityMinLabel = new JLabel("base Density Min");
         controls.add(baseDensityMinLabel);

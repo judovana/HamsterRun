@@ -8,6 +8,7 @@ import nonsense.hamsterrun.ratcontroll.KeyboardControl0;
 import nonsense.hamsterrun.ratcontroll.MouseControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.ScoreListener;
+import nonsense.hamsterrun.setup.SetupWindow;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JFrame;
@@ -151,6 +152,15 @@ public class Main {
             @Override
             public void run() {
                 JFrame gameView = new JFrame(Localization.get().getMainTitle());
+                gameView.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                            world.pause();
+                            new SetupWindow(world).setVisible(true);
+                        }
+                    }
+                });
                 gameView.addComponentListener(new ComponentAdapter() {
                     @Override
                     public void componentResized(ComponentEvent e) {

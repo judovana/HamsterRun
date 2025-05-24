@@ -153,4 +153,8 @@ public class Localization {
     public String maxAliensLabel() {
         return get("maxAliensLabel");
     }
+
+    public String getResumeGame() {
+        return get("resume");
+    }
 }

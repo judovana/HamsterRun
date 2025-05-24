@@ -135,16 +135,22 @@ public class SpritesProvider {
             URL flaskUrl = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/flask" + x + ".png");
             flask[x - 1] = ImageIO.read(flaskUrl);
         }
-        URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/floor.png");
-        BufferedImage floorI = ImageIO.read(floor1u);
-        for (int z = 1; z < 10; z++) {
-            floor.add(multiply(floorI, z));
-        }
+
+        recreateFloor("floor");
 
         for (String alien : KNOWN_ALIENS) {
             URL au = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/aliens/" + alien + ".gif");
             List<BufferedImage> imgs = GifToImages.decodeCatched(au);
             alienSprites.put(alien, imgs);
+        }
+    }
+
+    private static void recreateFloor(String name) throws IOException {
+        floor.clear();
+        URL floor1u = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/" + name + ".png");
+        BufferedImage floorI = ImageIO.read(floor1u);
+        for (int z = 1; z < 10; z++) {
+            floor.add(multiply(floorI, z));
         }
     }
 
