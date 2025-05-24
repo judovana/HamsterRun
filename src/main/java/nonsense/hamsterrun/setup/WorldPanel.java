@@ -11,6 +11,7 @@ import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.ratcontroll.RatsProvider;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -35,8 +36,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 
 public class WorldPanel extends JPanel implements Localized, ChangeListener, FocusListener {
@@ -59,7 +62,8 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
     private final JSpinner delayMsSpinner;
     private final JCheckBox keepRegenerating;
     //    private int columns =  - moved to rats
-    private final JComboBox previewType;
+    private final JComboBox<String> previewType;
+    private final JComboBox<String> floor;
 
     private World world;
     private BufferedImage staticWorld;
@@ -167,6 +171,7 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
         preview.setBackground(Color.BLACK);
         JPanel previewHolder = new JPanel(new BorderLayout());
         previewHolder.add(preview, BorderLayout.CENTER);
+        JPanel southPanel = new JPanel(new GridLayout(2,1));
         previewType = new JComboBox();
         previewType.addActionListener(new ActionListener() {
             @Override
@@ -174,7 +179,22 @@ public class WorldPanel extends JPanel implements Localized, ChangeListener, Foc
                 WorldPanel.this.stateChanged(null);
             }
         });
-        previewHolder.add(previewType, BorderLayout.SOUTH);
+        southPanel.add(previewType);
+        floor = new JComboBox(new Vector(SpritesProvider.KNOWN_FLOORS));
+        floor.setSelectedItem(BaseConfig.getConfig().getFloor());
+        floor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BaseConfig.getConfig().setFloor((String)(floor.getSelectedItem()));
+                try {
+                    SpritesProvider.recreateFloor();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        southPanel.add(floor);
+        previewHolder.add(southPanel, BorderLayout.SOUTH);
         add(previewHolder);
         setTitles();
         stateChanged(null);

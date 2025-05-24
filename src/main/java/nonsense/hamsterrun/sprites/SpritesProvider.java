@@ -1,5 +1,7 @@
 package nonsense.hamsterrun.sprites;
 
+import nonsense.hamsterrun.BaseConfig;
+
 import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
@@ -15,6 +17,7 @@ public class SpritesProvider {
 
     public static final List<String> KNOWN_RATS = List.of("virecek", "hnedulka", "brownie", "uhlicek", "sneci", "rat");
     public static final List<String> KNOWN_ALIENS = List.of("bigBats", "bigFlies", "boulder", "key", "smallBats", "smallFlies", "falcon", "cat1", "cat2", "ghost1", "ghost2");
+    public static final List<String> KNOWN_FLOORS = List.of("floor", "fire");
     public static final Map<String, RatSpriteSet> ratSprites = new HashMap<>();
     public static final Map<String, List<BufferedImage>> alienSprites = new HashMap<>();
     public static BufferedImage wall;
@@ -136,13 +139,17 @@ public class SpritesProvider {
             flask[x - 1] = ImageIO.read(flaskUrl);
         }
 
-        recreateFloor("floor");
+        recreateFloor();
 
         for (String alien : KNOWN_ALIENS) {
             URL au = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/aliens/" + alien + ".gif");
             List<BufferedImage> imgs = GifToImages.decodeCatched(au);
             alienSprites.put(alien, imgs);
         }
+    }
+
+    public static void recreateFloor() throws IOException {
+        recreateFloor(BaseConfig.getConfig().getFloor());
     }
 
     private static void recreateFloor(String name) throws IOException {

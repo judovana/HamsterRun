@@ -92,11 +92,11 @@ public class BaseConfig {
     private int maxAliens = 10;
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
-    //FIXME cmdline/gui setup
     //goal here should be, that the most score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
     private int cumulativeMinimalScoreToEnterGoldenGate= 50000;
     private int cumulativeMinimalNUmberOfKeys= 10; //if conditions are not met, then punish? Set by multiplying by rats count!
     private int individualMinimalScoreToEnterGoldenGate= 5000;
+    private String floor = SpritesProvider.KNOWN_FLOORS.get(0);
     //w and h ow space to draw to,
     // if the drawn object is out,
     // no need to draw it
@@ -490,5 +490,13 @@ public class BaseConfig {
 
     public void setIndividualMinimalScoreToEnterGoldenGate(int individualMinimalScoreToEnterGoldenGate) {
         this.individualMinimalScoreToEnterGoldenGate = individualMinimalScoreToEnterGoldenGate;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getFloor() {
+        return floor;
     }
 }

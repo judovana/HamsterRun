@@ -101,6 +101,18 @@ public class Main {
                         x++;
                         config.setMaxAliens(Integer.valueOf(args[x]));
                         break;
+                    case "min-keys":
+                        x++;
+                        config.setCumulativeMinimalNUmberOfKeys(Integer.valueOf(args[x]));
+                        break;
+                    case "min-score":
+                        x++;
+                        config.setCumulativeMinimalScoreToEnterGoldenGate(Integer.valueOf(args[x]));
+                        break;
+                    case "min-score-individual":
+                        x++;
+                        config.setIndividualMinimalScoreToEnterGoldenGate(Integer.valueOf(args[x]));
+                        break;
                     case "tunnel":
                         x++;
                         config.setTunnelConfusion(Integer.valueOf(args[x]));

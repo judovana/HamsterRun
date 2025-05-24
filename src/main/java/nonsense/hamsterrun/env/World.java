@@ -32,6 +32,7 @@ public class World implements Runnable {
     private RatsProvider ratsProvider;
     private List<MovingOne> aliens = Collections.synchronizedList(new ArrayList<MovingOne>());
     private boolean paused = false;
+    private long time = 0;
 
     public World(Maze maze) {
         this.maze = maze;
@@ -345,6 +346,7 @@ public class World implements Runnable {
                     alien.unfilteredAct(this);
                 }
                 Thread.sleep(BaseConfig.getConfig().getDelayMs());
+                time += BaseConfig.getConfig().getDelayMs();
                 for (Rat rat : getRats()) {
                     rat.act(this);
                 }
