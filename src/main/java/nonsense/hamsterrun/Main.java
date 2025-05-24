@@ -31,95 +31,103 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
 
 /**
  * Hello world!
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        BaseConfig config = BaseConfig.getConfig();
         for (int x = 0; x < args.length; x++) {
             if (args[x].startsWith("-")) {
                 String sanitized = args[x].replaceAll("^-+", "").toLowerCase();
                 switch (sanitized) {
                     case "delay":
                         x++;
-                        config.setDelayMs(Integer.valueOf(args[x]));
-                        System.out.println("Main loop delay will be " + config.getDelayMs() + " ms");
+                        BaseConfig.getConfig().setDelayMs(Integer.valueOf(args[x]));
+                        System.out.println("Main loop delay will be " + BaseConfig.getConfig().getDelayMs() + " ms");
                         break;
                     case "base-size":
                         x++;
-                        config.setBaseSize(Integer.valueOf(args[x]));
-                        System.out.println("Each basic block will have size " + config.getBaseSize() + " x " + config.getBaseSize());
+                        BaseConfig.getConfig().setBaseSize(Integer.valueOf(args[x]));
+                        System.out.println("Each basic block will have size " + BaseConfig.getConfig().getBaseSize() + " x " + BaseConfig.getConfig().getBaseSize());
                         break;
                     case "base-density-min":
                         x++;
-                        config.setBaseDensityMin(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setBaseDensityMin(Integer.valueOf(args[x]));
                         break;
                     case "base-density-max":
                         x++;
-                        config.setBaseDensityMax(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setBaseDensityMax(Integer.valueOf(args[x]));
                         break;
                     case "grid-size":
                         x++;
-                        config.setGridSize(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setGridSize(Integer.valueOf(args[x]));
                         break;
                     case "grid-connectivity-min":
                         x++;
-                        config.setGridConnectivityMin(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setGridConnectivityMin(Integer.valueOf(args[x]));
                         break;
                     case "grid-connectivity-max":
                         x++;
-                        config.setGridConnectivityMax(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setGridConnectivityMax(Integer.valueOf(args[x]));
                         break;
                     case "keep-regenerating":
                         x++;
-                        config.setKeepRegenerating(Boolean.valueOf(args[x]));
+                        BaseConfig.getConfig().setKeepRegenerating(Boolean.valueOf(args[x]));
                         break;
                     case "regenerating-speed":
                         x++;
-                        config.setRegSpeed(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setRegSpeed(Integer.valueOf(args[x]));
                         break;
                     case "rat":
                         x++;
-                        config.addRat(args[x]);
+                        BaseConfig.getConfig().addRat(args[x]);
                         break;
                     case "columns":
                         x++;
-                        config.setColumns(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setColumns(Integer.valueOf(args[x]));
                         break;
                     case "item":
                     case "trap":
                         x++;
-                        config.addTrapModifier(args[x], false);
+                        BaseConfig.getConfig().addTrapModifier(args[x], false);
                         break;
                     case "alien":
                         x++;
-                        config.addTrapModifier(args[x], true);
+                        BaseConfig.getConfig().addTrapModifier(args[x], true);
                         break;
                     case "max-aliens":
                         x++;
-                        config.setMaxAliens(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setMaxAliens(Integer.valueOf(args[x]));
                         break;
                     case "min-keys":
                         x++;
-                        config.setCumulativeMinimalNUmberOfKeys(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setCumulativeMinimalNUmberOfKeys(Integer.valueOf(args[x]));
                         break;
                     case "min-score":
                         x++;
-                        config.setCumulativeMinimalScoreToEnterGoldenGate(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setCumulativeMinimalScoreToEnterGoldenGate(Integer.valueOf(args[x]));
                         break;
                     case "min-score-individual":
                         x++;
-                        config.setIndividualMinimalScoreToEnterGoldenGate(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setIndividualMinimalScoreToEnterGoldenGate(Integer.valueOf(args[x]));
                         break;
                     case "tunnel":
                         x++;
-                        config.setTunnelConfusion(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setTunnelConfusion(Integer.valueOf(args[x]));
                         break;
                     case "mouse-sensitivity":
                         x++;
-                        config.setMouseSensitivity(Integer.valueOf(args[x]));
+                        BaseConfig.getConfig().setMouseSensitivity(Integer.valueOf(args[x]));
+                        break;
+                    case "save":
+                        x++;
+                        BaseConfig.save(new File(args[x]));
+                        break;
+                    case "load":
+                        x++;
+                        BaseConfig.load(new File(args[x]));
                         break;
                     default:
                         throw new RuntimeException("Unknown parameter " + args[x]);

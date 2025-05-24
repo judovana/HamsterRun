@@ -1,5 +1,10 @@
 package nonsense.hamsterrun;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import nonsense.hamsterrun.env.aliens.BigBats;
 import nonsense.hamsterrun.env.aliens.BigFlies;
 import nonsense.hamsterrun.env.aliens.Boulder;
@@ -31,6 +36,11 @@ import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,15 +97,15 @@ public class BaseConfig {
     private int delayMs = 50;
     private boolean keepRegenerating = true;
     private int regSpeed = 200;
-    private List<RatSetup> rats = new ArrayList<>(10);
+    private transient List<RatSetup> rats = new ArrayList<>(10);
     private int columns = 2;
     private int maxAliens = 10;
     private int tunnelConfusion = 20;
     private int mouseSensitivity = 200;
     //goal here should be, that the most score owning player, should wait in game, until weaker players enters, as the game ends when all rats are in cage
-    private int cumulativeMinimalScoreToEnterGoldenGate= 50000;
-    private int cumulativeMinimalNUmberOfKeys= 10; //if conditions are not met, then punish? Set by multiplying by rats count!
-    private int individualMinimalScoreToEnterGoldenGate= 5000;
+    private int cumulativeMinimalScoreToEnterGoldenGate = 50000;
+    private int cumulativeMinimalNUmberOfKeys = 10; //if conditions are not met, then punish? Set by multiplying by rats count!
+    private int individualMinimalScoreToEnterGoldenGate = 5000;
     private String floor = SpritesProvider.KNOWN_FLOORS.get(0);
     //w and h ow space to draw to,
     // if the drawn object is out,
@@ -119,6 +129,10 @@ public class BaseConfig {
 
     public static BaseConfig getConfig() {
         return baseConfig;
+    }
+
+    public static void setConfig(BaseConfig cfg) {
+        baseConfig = cfg;
     }
 
     private static BaseConfig dense() {
@@ -348,6 +362,7 @@ public class BaseConfig {
     public Integer getDefaultItemProbability(Class key) {
         return getDefaultItemProbabilityImpl(DEFAULT_ITEMS_PROBABILITIES, key);
     }
+
     public Integer getDefaultAlienProbability(Class key) {
         return getDefaultItemProbabilityImpl(DEFAULT_ALIENS_PROBABILITIES, key);
     }
@@ -443,7 +458,7 @@ public class BaseConfig {
     private static void disbaleAllItemsImpl(ItemsWithProbability[] array, Map<Class, Integer> map) {
         map.clear();
         for (ItemsWithProbability origItem : array) {
-            if (!origItem.clazz.equals(Empty.class) ) {
+            if (!origItem.clazz.equals(Empty.class)) {
                 map.put(origItem.clazz, 0);
             }
         }
@@ -498,5 +513,60 @@ public class BaseConfig {
 
     public String getFloor() {
         return floor;
+    }
+
+
+    public static class ClassTypeAdapter extends TypeAdapter<Class<?>> {
+
+        @Override
+        public void write(JsonWriter out, Class<?> value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(value.getName());
+            }
+        }
+
+        @Override
+        public Class<?> read(JsonReader in) throws IOException {
+            String className = in.nextString();
+            try {
+                String name = className.replaceFirst("class ", "");
+                int founds = 0;
+                for (ItemsWithProbability item : DEFAULT_ITEMS_PROBABILITIES) {
+                    if (item.clazz.getName().equals(name)) {
+                        founds++;
+                    }
+                }
+                for (ItemsWithProbability item : DEFAULT_ALIENS_PROBABILITIES) {
+                    if (item.clazz.getName().equals(name)) {
+                        founds++;
+                    }
+                }
+                if (founds == 0) {
+                    throw new RuntimeException("alien/item: " + name + " Not found. Feel free to remove it manually");
+                }
+                return Class.forName(name);
+            } catch (ClassNotFoundException e) {
+                throw new IOException("Class not found: " + className, e);
+            }
+        }
+    }
+
+    public static void save(File fileName) throws IOException {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Class.class, new ClassTypeAdapter());
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
+        String json = gson.toJson(getConfig(), BaseConfig.class);
+        Files.writeString(fileName.toPath(), json);
+    }
+
+    public static void load(File fileName) throws FileNotFoundException {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Class.class, new ClassTypeAdapter());
+        Gson gson = builder.create();
+        BaseConfig futureConfig = gson.fromJson(new FileReader(fileName), BaseConfig.class);
+        BaseConfig.setConfig(futureConfig);
     }
 }

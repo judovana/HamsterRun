@@ -39,7 +39,7 @@ public class SetupWindow extends JFrame implements Localized {
         JPanel items = new ItemsAndAliensPanel();
         tabs.add(items);
         tabs.add(new WorldPanel(world));
-        JPanel allowedControls = new MiscPanel();
+        JPanel allowedControls = new MiscPanel(world, this);
         tabs.add(allowedControls);
         add(tabs);
         if (world == null) {

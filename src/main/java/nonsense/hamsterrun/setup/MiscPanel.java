@@ -3,29 +3,20 @@ package nonsense.hamsterrun.setup;
 
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
-import nonsense.hamsterrun.env.Maze;
-import nonsense.hamsterrun.env.Rat;
-import nonsense.hamsterrun.env.SoundsBuffer;
 import nonsense.hamsterrun.env.World;
-import nonsense.hamsterrun.ratcontroll.ComputerControl;
-import nonsense.hamsterrun.ratcontroll.RatsController;
-import nonsense.hamsterrun.ratcontroll.RatsProvider;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 
 public class MiscPanel extends JPanel implements Localized {
@@ -39,14 +30,13 @@ public class MiscPanel extends JPanel implements Localized {
     private final JLabel cumulLabel;
     private final JSpinner singleScore;
     private final JLabel singleLabel;
+    private final JButton save;
+    private final JButton load;
+    JFileChooser chooser = new JFileChooser();
+    private static File lastPath;
 
 
-    //TODO
-    //minKeysToEnterTheCage - multiplied by rats 0 disables it
-    //minCumualtiveScoreToEnterCage - 0 disables it
-    //allRatsEnterTime - 0 disables and one is enough
-
-    public MiscPanel() {
+    public MiscPanel(World world, SetupWindow parent) {
         this.setLayout(new GridLayout(0, 2));
 
         keysLabel = new JLabel("keys to enter cage");
@@ -67,7 +57,7 @@ public class MiscPanel extends JPanel implements Localized {
 
         singleLabel = new JLabel("minimal score per rat to enter the gate");
         this.add(singleLabel);
-        this.singleScore= (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getIndividualMinimalScoreToEnterGoldenGate(), 0, 10000, 1)));
+        this.singleScore = (new JSpinner(new SpinnerNumberModel(BaseConfig.getConfig().getIndividualMinimalScoreToEnterGoldenGate(), 0, 10000, 1)));
         singleScore.addChangeListener(a -> {
             BaseConfig.getConfig().setIndividualMinimalScoreToEnterGoldenGate(((Number) singleScore.getValue()).intValue());
         });
@@ -104,8 +94,52 @@ public class MiscPanel extends JPanel implements Localized {
         this.add(new JCheckBox("map", true));
         this.add(new JCheckBox("call", true));
         this.add(new JCheckBox("spread", true));
-        this.add(new JButton("save config"));
-        this.add(new JButton("load config"));
+        save = new JButton("save config");
+        load = new JButton("load config");
+        this.add(save);
+        this.add(load);
+        if (world != null) {
+            save.setEnabled(false);
+            load.setEnabled(false);
+        }
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (lastPath != null) {
+                        chooser.setCurrentDirectory(lastPath.getParentFile());
+                    }
+                    int returnVal = chooser.showSaveDialog(parent);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        lastPath = chooser.getSelectedFile();
+                        BaseConfig.save(chooser.getSelectedFile());
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(save, ex);
+                    ex.printStackTrace();
+                }
+            }
+        });
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (lastPath != null) {
+                        chooser.setCurrentDirectory(lastPath.getParentFile());
+                    }
+                    int returnVal = chooser.showOpenDialog(parent);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        lastPath = chooser.getSelectedFile();
+                        BaseConfig.load(chooser.getSelectedFile());
+                        new SetupWindow(world).setVisible(true);
+                        parent.dispose();
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(load, ex);
+                    ex.printStackTrace();
+                }
+            }
+        });
         setTitles();
     }
 
@@ -116,6 +150,8 @@ public class MiscPanel extends JPanel implements Localized {
         keysLabel.setText(Localization.get().get("keysLabel"));
         cumulLabel.setText(Localization.get().get("cumuLabel"));
         singleLabel.setText(Localization.get().get("singleLabel"));
+        save.setText(Localization.get().get("save"));
+        load.setText(Localization.get().get("load"));
         setName(Localization.get().getMiscTitle());
 
     }
