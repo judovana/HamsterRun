@@ -26,7 +26,8 @@ public class Cage implements Item {
         }
     }
 
-    public void drawHighlight(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
+    @Override
+    public void drawMapHighlight(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {
         if (level == 3) {
             anim++;
             if (anim > 10) {

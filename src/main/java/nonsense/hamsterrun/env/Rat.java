@@ -19,6 +19,7 @@ import nonsense.hamsterrun.env.traps.Water;
 import nonsense.hamsterrun.ratcontroll.ScoreListener;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -410,5 +411,10 @@ public class Rat extends MovingOne {
         } else {
             scoreListener.report(this, this.score, this.keys);
         }
+    }
+
+    //bad design, probably used only in aliens
+    public void drawMapExtension(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, World world) {
+
     }
 }

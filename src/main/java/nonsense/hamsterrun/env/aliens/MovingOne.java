@@ -260,6 +260,35 @@ public abstract class MovingOne implements ThumbnailAble {
         this.direction = direction;
     }
 
+    public void drawMapExtension(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, World world) {
+        for (Rat rat : world.getRats()) {
+            if (rat.getUniversalCoords().equals(this.getUniversalCoords())) {
+                g2d.setColor(Color.red);
+                Point coord = getUniversalCoords();
+                if (anim.everyOdd() == 0) {
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom - zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom - zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2 + 2 * zoom,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom - zoom / 2 + zoom * 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2 + 2 * zoom,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom - zoom / 2 + zoom * 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                } else {
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom - zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2 + zoom,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom - zoom / 2 + 2 * zoom, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2 + zoom,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    g2d.drawLine(leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom - zoom / 2 + 2 * zoom,
+                            leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                }
+                break;
+            }
+        }
+    }
+
     //useInplaceSubMovement - in map false, in game true
     public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
         Point coord = getUniversalCoords();
@@ -334,8 +363,8 @@ public abstract class MovingOne implements ThumbnailAble {
 
     @Override
     public void drawThumbnail(Graphics2D g2d, int size) {
-        this.setUniversalCoords(new Point(0,0));
-        draw(g2d, new Point(0,0), size, true, false);
+        this.setUniversalCoords(new Point(0, 0));
+        draw(g2d, new Point(0, 0), size, true, false);
         anim.addLimited();
     }
 

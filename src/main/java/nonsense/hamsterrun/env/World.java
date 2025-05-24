@@ -220,6 +220,9 @@ public class World implements Runnable {
             i++;
             g2d.setColor(new Color(250 - i * (250 / aliens.size()), 250 - i * (250 / aliens.size()), 0));
             alien.draw(g2d, leftUpCornerOfMaze, zoomOverride, !map, false);
+            if (map) {
+                alien.drawMapExtension(g2d, leftUpCornerOfMaze, zoomOverride, this);
+            }
         }
         maze.drawMap(leftUpCornerOfMaze.x, leftUpCornerOfMaze.y, zoomOverride, BaseConfig.getConfig(), g2d, 3, map);
         //debug texts

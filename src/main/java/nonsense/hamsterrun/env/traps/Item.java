@@ -20,4 +20,8 @@ public interface Item extends ThumbnailAble {
     //missing somethign between floor and walls.. but nvm...
     void drawInto(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y);
 
+    default void drawMapHighlight(Graphics2D g2d, int coordx, int coordy, int zoom, int level, BaseBlockNeigbours neigbours, int x, int y) {};
+
+
+
 }

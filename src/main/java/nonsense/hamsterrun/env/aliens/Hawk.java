@@ -9,7 +9,9 @@ import nonsense.hamsterrun.env.traps.Grass;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,15 +21,21 @@ import java.util.List;
 public class Hawk extends MovingOne {
 
     private int MAX_FLY_AWAY; //min is 2; with 3 was quite hard to get rid of some more chaotic hawks. 4.iompossible
-    protected int chaos = seed.nextInt(18) + 1;
+    private int CHAOS_DET = 18;
+    protected int chaos = seed.nextInt(CHAOS_DET) + 1;
     private final int maxspeed = 1;
     private int skipCounter = 0;
     private Point vector = new Point(0, 0);
+    private Point targetCords;
+    private Point lastPosition;
 
     public Hawk() {
-        this.MAX_FLY_AWAY = seed.nextInt(5);
-        if (this.MAX_FLY_AWAY != 3) {
-            this.MAX_FLY_AWAY = 2;
+        //the combination of small chaos (thus changing direction often)
+        //and big fly away is very dangerous, nearly non playable
+        if (chaos < CHAOS_DET / 2 + CHAOS_DET / 5) {
+            MAX_FLY_AWAY = 2;
+        } else {
+            MAX_FLY_AWAY = 3;
         }
         //this.MAX_FLY_AWAY = 2; //3 is really hard, 2... bring :(
         this.anim = new AnimationCounrer(1000);
@@ -45,6 +53,52 @@ public class Hawk extends MovingOne {
     }
 
     @Override
+    public void drawMapExtension(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, World world) {
+        super.drawMapExtension(g2d, leftUpCornerOfMaze, zoom, world);
+        if (targetCords != null) {
+            Point coord = getUniversalCoords();
+            g2d.drawLine(leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2, leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2,
+                    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+        } else {
+            Point coord = getUniversalCoords();
+            Point vectorCoords = new Point(coord.x + vector.x, coord.y + vector.y);
+            g2d.drawLine(leftUpCornerOfMaze.x + vectorCoords.x * zoom + zoom / 2, leftUpCornerOfMaze.y + vectorCoords.y * zoom + zoom / 2,
+                    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+        }
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
+        super.draw(g2d, leftUpCornerOfMaze, zoom, useInplaceSubMovement, higlight);
+        Point coord = getUniversalCoords();
+        if (lastPosition!=null && !lastPosition.equals(coord)) {
+            //if current position is on rat (or some random?)
+            //draw several hawks
+            //from (leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2, leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2,
+            //to    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+            int xCoord1=leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2;
+            int yCoord1= leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2;
+            int xCoord2=leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2;
+            int yCoord2=leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2;
+            int fromX = Math.min(xCoord1, xCoord2);
+            int fromY = Math.min(yCoord1, yCoord2);
+            int toX = Math.max(xCoord1, xCoord2);
+            int toY = Math.max(yCoord1, yCoord2);
+            double steps=10;
+            double xDelta = (double)(toX-fromX)/10d;
+            double yDelta = (double)(toY-fromY)/10d;
+            BufferedImage img = getImageForAction(getSkin());
+            for (int x = 0; x< steps; x++){
+                //BUGY
+                    //g2d.drawImage(img, leftUpCornerOfMaze.x + fromX + (int)((double)x*xDelta), leftUpCornerOfMaze.y + fromY + (int)((double)x*yDelta), zoom, zoom, null);
+            }
+        }
+    }
+
+    @Override
+    //FIXME
+    //draw SHADOW over targeted rat - TARGET field (if any)
+    //from last place, to current place - draw line of eagles
     public boolean selfAct(World world) {
         skipCounter++;
         //eagle is to strong, we are skipping Nth rounds - every 2nd here
@@ -90,17 +144,20 @@ public class Hawk extends MovingOne {
                 int y = target.getUniversalCoords().y - getUniversalCoords().y;
                 int cgd = gcdSanitising(x, y);
                 vector = new Point(x / cgd, y / cgd);
+                targetCords = target.getUniversalCoords();
             } else {
                 int x = 10 - seed.nextInt(20);
                 int y = 10 - seed.nextInt(20);
                 int cgd = gcdSanitising(x, y);
                 vector = new Point(x / cgd, y / cgd);
+                targetCords = null;
             }
         }
         return true;
     }
 
     private void fly() {
+        lastPosition = getUniversalCoords();
         if (vector.x < 0) {
             forceMouseLeft(Math.abs(vector.x));
         } else {

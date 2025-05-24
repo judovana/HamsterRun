@@ -215,9 +215,7 @@ public class BaseBlock {
                         if (level == 2) {
                             g2d.fillRect(coordx, coordy, zoom, zoom);
                         }
-                        if (level == 3 && map[x][y].getItem() instanceof Cage) {
-                            ((Cage)map[x][y].getItem()).drawHighlight(g2d, coordx, coordy, zoom, level, neigbours, x, y);
-                        }
+                        map[x][y].getItem().drawMapHighlight(g2d, coordx, coordy, zoom, level, neigbours, x, y);
                     } else {
                         if (level == 1) {
                             g2d.drawImage(SpritesProvider.getFloor(zoom), coordx, coordy, zoom, zoom, null);
