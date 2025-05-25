@@ -5,6 +5,7 @@ import nonsense.hamsterrun.BaseConfig;
 import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +31,7 @@ public class SpritesProvider {
     public static BufferedImage repa;
     public static BufferedImage grass;
     public static BufferedImage gate;
+    public static BufferedImage fs;
     public static BufferedImage[] trapdoor;
     public static BufferedImage[] twoWayTeleport = new BufferedImage[6];
     public static BufferedImage[] oneWayTeleport = new BufferedImage[6];
@@ -81,6 +83,8 @@ public class SpritesProvider {
         tunnelClosed[1] = rotate(tunnelClosed[0], 90);
         tunnelClosed[2] = rotate(tunnelClosed[0], 180);
         tunnelClosed[3] = rotate(tunnelClosed[0], 270);
+        URL fsU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/aliens/falcon_shadow.png");
+        fs = ImageIO.read(fsU);
         URL gateU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/gate.png");
         gate = ImageIO.read(gateU);
         URL tunnelU = SpritesProvider.class.getClassLoader().getResource("nonsense/hamsterrun/sprites/tunnelComposed.png");
@@ -227,5 +231,9 @@ public class SpritesProvider {
 
     public static int getAlienSize(String name) {
         return alienSprites.get(name).size();
+    }
+
+    public static BufferedImage getFalonShaadow() {
+        return fs;
     }
 }

@@ -71,26 +71,29 @@ public class Hawk extends MovingOne {
     public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
         super.draw(g2d, leftUpCornerOfMaze, zoom, useInplaceSubMovement, higlight);
         Point coord = getUniversalCoords();
-        if (lastPosition!=null && !lastPosition.equals(coord)) {
+        if (targetCords != null && !targetCords.equals(coord)) {
+            g2d.drawImage(SpritesProvider.getFalonShaadow(), leftUpCornerOfMaze.x + targetCords.x * zoom - zoom / 2, leftUpCornerOfMaze.y + targetCords.y * zoom - zoom / 2, 2 * zoom, 2 * zoom, null);
+        }
+        if (lastPosition != null && !lastPosition.equals(coord)) {
             //if current position is on rat (or some random?)
             //draw several hawks
             //from (leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2, leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2,
             //to    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
-            int xCoord1=leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2;
-            int yCoord1= leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2;
-            int xCoord2=leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2;
-            int yCoord2=leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2;
+            int xCoord1 = leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2;
+            int yCoord1 = leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2;
+            int xCoord2 = leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2;
+            int yCoord2 = leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2;
             int fromX = Math.min(xCoord1, xCoord2);
             int fromY = Math.min(yCoord1, yCoord2);
             int toX = Math.max(xCoord1, xCoord2);
             int toY = Math.max(yCoord1, yCoord2);
-            double steps=10;
-            double xDelta = (double)(toX-fromX)/10d;
-            double yDelta = (double)(toY-fromY)/10d;
+            double steps = 10;
+            double xDelta = (double) (toX - fromX) / 10d;
+            double yDelta = (double) (toY - fromY) / 10d;
             BufferedImage img = getImageForAction(getSkin());
-            for (int x = 0; x< steps; x++){
+            for (int x = 0; x < steps; x++) {
                 //BUGY
-                    //g2d.drawImage(img, leftUpCornerOfMaze.x + fromX + (int)((double)x*xDelta), leftUpCornerOfMaze.y + fromY + (int)((double)x*yDelta), zoom, zoom, null);
+                //g2d.drawImage(img, leftUpCornerOfMaze.x + fromX + (int)((double)x*xDelta), leftUpCornerOfMaze.y + fromY + (int)((double)x*yDelta), zoom, zoom, null);
             }
         }
     }
