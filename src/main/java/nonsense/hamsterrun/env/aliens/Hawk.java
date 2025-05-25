@@ -9,6 +9,7 @@ import nonsense.hamsterrun.env.traps.Grass;
 import nonsense.hamsterrun.env.traps.Tunnel;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -57,7 +58,7 @@ public class Hawk extends MovingOne {
         super.drawMapExtension(g2d, leftUpCornerOfMaze, zoom, world);
         if (targetCords != null) {
             Point coord = getUniversalCoords();
-            g2d.drawLine(leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2, leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2,
+            g2d.drawLine(leftUpCornerOfMaze.x + targetCords.x * zoom + zoom / 2, leftUpCornerOfMaze.y + targetCords.y * zoom + zoom / 2,
                     leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
         } else {
             Point coord = getUniversalCoords();
@@ -70,30 +71,33 @@ public class Hawk extends MovingOne {
     @Override
     public void draw(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, boolean useInplaceSubMovement, boolean higlight) {
         super.draw(g2d, leftUpCornerOfMaze, zoom, useInplaceSubMovement, higlight);
-        Point coord = getUniversalCoords();
-        if (targetCords != null && !targetCords.equals(coord)) {
-            g2d.drawImage(SpritesProvider.getFalonShaadow(), leftUpCornerOfMaze.x + targetCords.x * zoom - zoom / 2, leftUpCornerOfMaze.y + targetCords.y * zoom - zoom / 2, 2 * zoom, 2 * zoom, null);
-        }
-        if (lastPosition != null && !lastPosition.equals(coord)) {
-            //if current position is on rat (or some random?)
-            //draw several hawks
-            //from (leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2, leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2,
-            //to    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
-            int xCoord1 = leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2;
-            int yCoord1 = leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2;
-            int xCoord2 = leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2;
-            int yCoord2 = leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2;
-            int fromX = Math.min(xCoord1, xCoord2);
-            int fromY = Math.min(yCoord1, yCoord2);
-            int toX = Math.max(xCoord1, xCoord2);
-            int toY = Math.max(yCoord1, yCoord2);
-            double steps = 10;
-            double xDelta = (double) (toX - fromX) / 10d;
-            double yDelta = (double) (toY - fromY) / 10d;
-            BufferedImage img = getImageForAction(getSkin());
-            for (int x = 0; x < steps; x++) {
-                //BUGY
-                //g2d.drawImage(img, leftUpCornerOfMaze.x + fromX + (int)((double)x*xDelta), leftUpCornerOfMaze.y + fromY + (int)((double)x*yDelta), zoom, zoom, null);
+        if (useInplaceSubMovement) {
+            Point coord = getUniversalCoords();
+            if (targetCords != null && !targetCords.equals(coord)) {
+                g2d.drawImage(SpritesProvider.getFalonShaadow(), leftUpCornerOfMaze.x + targetCords.x * zoom - zoom / 2, leftUpCornerOfMaze.y + targetCords.y * zoom - zoom / 2, 2 * zoom, 2 * zoom, null);
+            }
+            if (anim.everyThird() || coord.equals(targetCords)) {
+                if (lastPosition != null && !lastPosition.equals(coord)) {
+                    //if current position is on rat (or some random?)
+                    //draw several hawks
+                    //from (leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2, leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2,
+                    //to    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+                    int fromX = leftUpCornerOfMaze.x + lastPosition.x * zoom + zoom / 2;
+                    int fromY = leftUpCornerOfMaze.y + lastPosition.y * zoom + zoom / 2;
+                    int toX = leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2;
+                    int toY = leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2;
+                    double steps = 10;
+                    double xDelta = (double) (toX - fromX) / steps;
+                    double yDelta = (double) (toY - fromY) / steps;
+                    BufferedImage img = getImageForAction(getSkin());
+                    for (int x = 0; x < steps; x++) {
+                        int xMove = (int) ((double) x * xDelta);
+                        int yMove = (int) ((double) x * yDelta);
+                        int finalX = fromX + xMove;
+                        int finalY = fromY + yMove;
+                        g2d.drawImage(img, finalX, finalY, zoom, zoom, null);
+                    }
+                }
             }
         }
     }
@@ -131,7 +135,7 @@ public class Hawk extends MovingOne {
         }
         //time to change target?
         if (seed.nextInt(chaos) == 0) {
-            //any rats out of tunnels?
+            //any rats out of tunnels/grass?
             List<Rat> a = new ArrayList<>(world.getRats());
             for (int x = 0; x < a.size(); x++) {
                 if (world.getBlockField(a.get(x).getUniversalCoords()).getItem() instanceof Tunnel
@@ -149,6 +153,7 @@ public class Hawk extends MovingOne {
                 vector = new Point(x / cgd, y / cgd);
                 targetCords = target.getUniversalCoords();
             } else {
+                //no free rat? just fly away....
                 int x = 10 - seed.nextInt(20);
                 int y = 10 - seed.nextInt(20);
                 int cgd = gcdSanitising(x, y);
