@@ -4,6 +4,7 @@ package nonsense.hamsterrun.setup;
 import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.env.World;
+import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -98,9 +99,14 @@ public class MiscPanel extends JPanel implements Localized {
         load = new JButton("load config");
         this.add(save);
         this.add(load);
-        if (world != null) {
+        try {
+            Class.forName("com.google.gson.GsonBuilder");
+        }catch (ClassNotFoundException ex){
             save.setEnabled(false);
             load.setEnabled(false);
+            String s = "To enable  save/load put gson library to class-path";
+            save.setToolTipText(s);
+            load.setToolTipText(s);
         }
         save.addActionListener(new ActionListener() {
             @Override
@@ -130,7 +136,11 @@ public class MiscPanel extends JPanel implements Localized {
                     int returnVal = chooser.showOpenDialog(parent);
                     if (returnVal == JFileChooser.APPROVE_OPTION) {
                         lastPath = chooser.getSelectedFile();
+                        BaseConfig lastConfig = BaseConfig.getConfig();
                         BaseConfig.load(chooser.getSelectedFile());
+                        BaseConfig.getConfig().setBaseSize(lastConfig.getBaseSize());
+                        BaseConfig.getConfig().setGridSize(lastConfig.getGridSize());
+                        SpritesProvider.recreateFloor();
                         new SetupWindow(world).setVisible(true);
                         parent.dispose();
                     }

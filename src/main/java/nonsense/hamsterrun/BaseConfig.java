@@ -131,7 +131,7 @@ public class BaseConfig {
         return baseConfig;
     }
 
-    public static void setConfig(BaseConfig cfg) {
+    private static void setConfig(BaseConfig cfg) {
         baseConfig = cfg;
     }
 
