@@ -2,6 +2,7 @@ package nonsense.hamsterrun.env;
 
 
 import nonsense.hamsterrun.BaseConfig;
+import nonsense.hamsterrun.WorldControl;
 import nonsense.hamsterrun.env.aliens.Boulder;
 import nonsense.hamsterrun.env.aliens.MovingOne;
 import nonsense.hamsterrun.env.traps.Cage;
@@ -24,9 +25,10 @@ public class World implements Runnable {
 
     private static final Random seed = new Random();
 
-    private final Thread repl;
+    private final transient WorldControl worldControl = new WorldControl();
+    private final transient Thread repl;
+    private transient final List<JComponent> repaintListeners = new ArrayList<>(2);
     private final Maze maze;
-    private final List<JComponent> repaintListeners = new ArrayList<>(2);
     private boolean live = true;
     private int worldAnim = 0;
     private RatsProvider ratsProvider;
@@ -281,6 +283,8 @@ public class World implements Runnable {
     public void run() {
         while (live) {
             try {
+                //
+                //worldControl.sendCatched(this);
                 if (paused){
                     Thread.sleep(BaseConfig.getConfig().getDelayMs());
                     continue;
