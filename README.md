@@ -13,3 +13,11 @@ Without any argumetn setup window will pop up.
 The cmdline launcher takes a lot of args, see: https://github.com/judovana/HamsterRun/blob/main/src/main/java/nonsense/hamsterrun/Main.java#L45-L135ji
 
 There exists czech mutation, feel free to force it via `LANG=cs_CZ.UTF-8`
+
+
+The goal of the game is to get as much escaped Guine Pigs back to the golden cage (https://github.com/judovana/HamsterRun/blob/main/src/main/resources/nonsense/hamsterrun/sprites/gate.png) after you get fat by eating a lot of vegetables, and collecting several golden keys (https://github.com/judovana/HamsterRun/blob/main/src/main/resources/nonsense/hamsterrun/sprites/aliens/key.gif), and survivced all the traps.
+
+Note that it is collaborative game (AI is not exactly understanding this), and you all win, only after ALL guinea pigs are back in cage. The keys are comons shared proeprty, but score from vegetable is individual.
+The game is pretty hard on defaults - wi recomend to disable most of the obstacles, and enemies for first tries. Also reduce the necessesary amount of keys and score.
+
+The only way how to lost, is that all enemies will be repalced by immortal ghosts. In such case no new key will appear, and if you do not have necessary amount, you can not win.
