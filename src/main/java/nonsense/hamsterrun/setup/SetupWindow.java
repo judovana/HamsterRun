@@ -21,10 +21,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 
-/**
- * TODO - in theory, there is no obstacle to show this window in game
- * and allow changes of everything except rats and world sizes
- */
 public class SetupWindow extends JFrame implements Localized {
 
     private final JButton startButton;
