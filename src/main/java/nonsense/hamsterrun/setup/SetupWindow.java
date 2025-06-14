@@ -37,6 +37,8 @@ public class SetupWindow extends JFrame implements Localized {
         tabs.add(new WorldPanel(world));
         JPanel allowedControls = new MiscPanel(world, this);
         tabs.add(allowedControls);
+        JPanel presetConfigs = new PresetConfigs(world, this);
+        tabs.add(presetConfigs);
         add(tabs);
         if (world == null) {
             startButton = new JButton("start");

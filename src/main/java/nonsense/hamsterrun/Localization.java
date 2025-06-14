@@ -157,4 +157,8 @@ public class Localization {
     public String getResumeGame() {
         return get("resume");
     }
+
+    public String getPresetConfigsTitle() {
+        return get("presetConfigsTitle");
+    }
 }

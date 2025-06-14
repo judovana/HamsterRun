@@ -18,6 +18,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class MiscPanel extends JPanel implements Localized {
@@ -136,13 +139,8 @@ public class MiscPanel extends JPanel implements Localized {
                     int returnVal = chooser.showOpenDialog(parent);
                     if (returnVal == JFileChooser.APPROVE_OPTION) {
                         lastPath = chooser.getSelectedFile();
-                        BaseConfig lastConfig = BaseConfig.getConfig();
-                        BaseConfig.load(chooser.getSelectedFile());
-                        BaseConfig.getConfig().setBaseSize(lastConfig.getBaseSize());
-                        BaseConfig.getConfig().setGridSize(lastConfig.getGridSize());
-                        SpritesProvider.recreateFloor();
-                        new SetupWindow(world).setVisible(true);
-                        parent.dispose();
+                        InputStream is = new FileInputStream(chooser.getSelectedFile());
+                        loadConfig(is, world, parent);
                     }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(load, ex);
@@ -151,6 +149,16 @@ public class MiscPanel extends JPanel implements Localized {
             }
         });
         setTitles();
+    }
+
+    public static void loadConfig(InputStream is, World world, SetupWindow parent) throws IOException {
+        BaseConfig lastConfig = BaseConfig.getConfig();
+        BaseConfig.load(is);
+        BaseConfig.getConfig().setBaseSize(lastConfig.getBaseSize());
+        BaseConfig.getConfig().setGridSize(lastConfig.getGridSize());
+        SpritesProvider.recreateFloor();
+        new SetupWindow(world).setVisible(true);
+        parent.dispose();
     }
 
     @Override

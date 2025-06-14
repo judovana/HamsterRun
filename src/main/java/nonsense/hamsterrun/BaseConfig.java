@@ -37,9 +37,12 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import java.awt.Point;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -562,11 +565,17 @@ public class BaseConfig {
         Files.writeString(fileName.toPath(), json);
     }
 
-    public static void load(File fileName) throws FileNotFoundException {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Class.class, new ClassTypeAdapter());
-        Gson gson = builder.create();
-        BaseConfig futureConfig = gson.fromJson(new FileReader(fileName), BaseConfig.class);
-        BaseConfig.setConfig(futureConfig);
+    public static void load(File fileName) throws IOException {
+        load(new FileInputStream(fileName));
+    }
+
+    public static void load(InputStream is) throws IOException {
+        try (is) {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeAdapter(Class.class, new ClassTypeAdapter());
+            Gson gson = builder.create();
+            BaseConfig futureConfig = gson.fromJson(new InputStreamReader(is), BaseConfig.class);
+            BaseConfig.setConfig(futureConfig);
+        }
     }
 }
