@@ -76,7 +76,7 @@ public class Hawk extends MovingOne {
             if (targetCords != null && !targetCords.equals(coord)) {
                 g2d.drawImage(SpritesProvider.getFalonShaadow(), leftUpCornerOfMaze.x + targetCords.x * zoom - zoom / 2, leftUpCornerOfMaze.y + targetCords.y * zoom - zoom / 2, 2 * zoom, 2 * zoom, null);
             }
-            if (anim.everyThird() || coord.equals(targetCords)) {
+            if ((anim.everyThird() && seed.nextBoolean()) || coord.equals(targetCords)) {
                 if (lastPosition != null && !lastPosition.equals(coord)) {
                     //if current position is on rat (or some random?)
                     //draw several hawks
