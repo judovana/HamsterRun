@@ -8,6 +8,9 @@ import nonsense.hamsterrun.env.traps.AnimationCounrer;
 import nonsense.hamsterrun.ratcontroll.ComputerControl;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
+
 //moving well, over maze, better then random mous
 //maybe future pc2?-)
 //rats collects keys together
@@ -19,6 +22,15 @@ public class Key extends MovingOne {
         this.speed = seed.nextInt(5) + 3;
         this.anim = new AnimationCounrer(1000);
         anim.reset(seed.nextInt(SpritesProvider.getAlienSize(getSkin())));
+    }
+
+    @Override
+    public void drawMapExtension(Graphics2D g2d, Point leftUpCornerOfMaze, int zoom, World world) {
+        super.drawMapExtension(g2d, leftUpCornerOfMaze, zoom, world);
+        Point coord = getUniversalCoords();
+        g2d.drawLine(leftUpCornerOfMaze.x + (world.getWidth()/2) * zoom + zoom / 2, leftUpCornerOfMaze.y + (world.getHeight()/2) * zoom + zoom / 2,
+                    leftUpCornerOfMaze.x + coord.x * zoom + zoom / 2, leftUpCornerOfMaze.y + coord.y * zoom + zoom / 2);
+
     }
 
 
