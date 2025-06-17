@@ -1,0 +1,41 @@
+{
+  "itemsWithProbabilityOverride": {
+    "class nonsense.hamsterrun.env.traps.AllWayTeleport": 0,
+    "class nonsense.hamsterrun.env.traps.Water": 100,
+    "class nonsense.hamsterrun.env.traps.Cage": 5,
+    "class nonsense.hamsterrun.env.traps.Tunnel": 10,
+    "class nonsense.hamsterrun.env.traps.Torturer": 0,
+    "class nonsense.hamsterrun.env.traps.Repa": 0,
+    "class nonsense.hamsterrun.env.traps.TwoWayTeleport": 0,
+    "class nonsense.hamsterrun.env.traps.TrapDoor": 4,
+    "class nonsense.hamsterrun.env.traps.Salat": 0,
+    "class nonsense.hamsterrun.env.traps.OneWayTeleport": 0
+  },
+  "aliensWithProbabilityOverride": {
+    "class nonsense.hamsterrun.env.aliens.Boulder": 0,
+    "class nonsense.hamsterrun.env.aliens.Hawk": 1,
+    "class nonsense.hamsterrun.env.aliens.SmallFlies": 0,
+    "class nonsense.hamsterrun.env.aliens.SmallBats": 20,
+    "class nonsense.hamsterrun.env.aliens.BigFlies": 0,
+    "class nonsense.hamsterrun.env.aliens.Ghost": 0,
+    "class nonsense.hamsterrun.env.aliens.Cat": 1,
+    "class nonsense.hamsterrun.env.aliens.Key": 25
+  },
+  "baseSize": 10,
+  "baseDensityMin": 1,
+  "baseDensityMax": 2,
+  "gridSize": 3,
+  "gridConnectivityMin": 1,
+  "gridConnectivityMax": 1,
+  "delayMs": 50,
+  "keepRegenerating": true,
+  "regSpeed": 200,
+  "columns": 2,
+  "maxAliens": 10,
+  "tunnelConfusion": 20,
+  "mouseSensitivity": 200,
+  "cumulativeMinimalScoreToEnterGoldenGate": 20000,
+  "cumulativeMinimalNUmberOfKeys": 10,
+  "individualMinimalScoreToEnterGoldenGate": 2000,
+  "floor": "floor"
+}

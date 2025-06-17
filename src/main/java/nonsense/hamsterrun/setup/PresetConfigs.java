@@ -10,6 +10,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
@@ -46,12 +47,19 @@ public class PresetConfigs extends JPanel implements Localized {
 
     }
 
-    private static List<LocalisedListItem> knownConfigs = Arrays.asList(new LocalisedListItem("paradise"));
+    private static List<LocalisedListItem> knownConfigs = Arrays.asList(
+            new LocalisedListItem("paradise"),
+            new LocalisedListItem("fireworld"),
+            new LocalisedListItem("traps"),
+            new LocalisedListItem("hunt"),
+            new LocalisedListItem("hawk"),
+            new LocalisedListItem("waterworld")
+    );
 
     private final JButton load;
     private final JList<LocalisedListItem> configs;
     private final JScrollPane scrollConfigs;
-    private final JLabel info;
+    private final JTextArea info;
 
 
     public PresetConfigs(World world, SetupWindow parent) {
@@ -75,7 +83,9 @@ public class PresetConfigs extends JPanel implements Localized {
         });
         scrollConfigs = new JScrollPane(configs);
         upperHalf.add(scrollConfigs);
-        info = new JLabel();
+        info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
         bottomHalf.add(info);
         load = new JButton("load");
         load.addActionListener(new ActionListener() {
