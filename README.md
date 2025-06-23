@@ -24,3 +24,6 @@ The only way how to lost, is that all enemies will be repalced by immortal ghost
 
 ## Movement
 Do not hold the keys. It will immediately swap you to turbo mode. Instead, one press on key, will change the direction and the rat is then going in that direction, untill it wishes. You can not stop it, it stops on it own. If you press again in the same dirrection, your speed rises. After several presses (or longer hold) it reaches super speed (there is sound for that border), and in that speed you can miss also obstacless/enemies, however some traps are hurting much *much* **much** more. So carefully. Of course in turbo speed you ca not eat. It is more probable you will stop on vegetable then elsewhere. Haveyou ever had guinea pigs? they mve exactly like this...
+
+## Endless fresh world
+The game is based on invisible perpetual changes to labyrinth, thus providing ilusion of enldess cave.  The place you (any guinea pig) stay never changes, and the neigbrhood spaces never changes! So you will never see a change on zoomed-in map. Also well placed rats may casue the world tobe immutable. The game world changes periodically (you can disbale that) and by pressing the key (you can disable this too). If aliens are out of passable terrain after regeneration, they are destroyed, and new one pops out.
