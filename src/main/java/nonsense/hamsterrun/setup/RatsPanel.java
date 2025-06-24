@@ -5,7 +5,6 @@ import nonsense.hamsterrun.BaseConfig;
 import nonsense.hamsterrun.Localization;
 import nonsense.hamsterrun.VirtualRatSetup;
 import nonsense.hamsterrun.env.RatActions;
-import nonsense.hamsterrun.env.World;
 import nonsense.hamsterrun.ratcontroll.RatsController;
 import nonsense.hamsterrun.sprites.SpritesProvider;
 
@@ -196,9 +195,9 @@ public class RatsPanel extends JPanel implements Localized {
             this.skin.setSelectedItem(rat.getSkin());
             this.add(skin);
             if (rat.isDisplay()) {
-                this.controls = (new JComboBox<String>(new String[]{"k1", "k2", "k3", "m1", "pc1", "pc2"}));
+                this.controls = (new JComboBox<String>(getDispalyfullControls()));
             } else {
-                this.controls = (new JComboBox<String>(new String[]{"pc1", "pc2"}));
+                this.controls = (new JComboBox<String>(getDisplaylessControlss()));
             }
             this.controls.setToolTipText(VirtualRatSetup.stringToRatControl("none", rat.getControlDef()).toString());
             this.controls.addActionListener(new ActionListener() {
@@ -253,6 +252,14 @@ public class RatsPanel extends JPanel implements Localized {
 //            this.setBorder(compound);
             this.setBorder(new LineBorder(Color.black, 10));
         }
+    }
+
+    private static String[] getDisplaylessControlss() {
+        return new String[]{"pc1", "pc2"};
+    }
+
+    public static String[] getDispalyfullControls() {
+        return new String[]{"k1", "k2", "k3", "m1", "pc1", "pc2"};
     }
 
 }

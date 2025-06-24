@@ -12,9 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.BorderLayout;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -39,7 +40,19 @@ public class SetupWindow extends JFrame implements Localized {
         tabs.add(allowedControls);
         JPanel presetConfigs = new PresetConfigs(world, this);
         tabs.add(presetConfigs);
+        JPanel networkConfigs = new NetworkPane(world, this);
+        tabs.add(networkConfigs);
         add(tabs);
+        tabs.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+                if (tabs.getSelectedComponent() instanceof  NetworkPane) {
+                    startButton.setEnabled(false);
+                } else {
+                    startButton.setEnabled(true);
+                }
+            }
+        });
         if (world == null) {
             startButton = new JButton("start");
             startButton.addActionListener(new ActionListener() {

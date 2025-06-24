@@ -58,6 +58,10 @@ public class Localization {
         return get("miscTitle");
     }
 
+    public String getNetTitle() {
+        return get("netTitle");
+    }
+
     public String getItemsTitle() {
         return get("itemsTitle");
     }
