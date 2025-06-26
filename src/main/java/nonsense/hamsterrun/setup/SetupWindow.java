@@ -40,8 +40,10 @@ public class SetupWindow extends JFrame implements Localized {
         tabs.add(allowedControls);
         JPanel presetConfigs = new PresetConfigs(world, this);
         tabs.add(presetConfigs);
-        JPanel networkConfigs = new NetworkPane(world, this);
-        tabs.add(networkConfigs);
+        if (world == null) {
+            JPanel networkConfigs = new NetworkPane(world, this);
+            tabs.add(networkConfigs);
+        }
         add(tabs);
         tabs.addChangeListener(new ChangeListener() {
             @Override
