@@ -46,6 +46,14 @@ public class RatsPanel extends JPanel implements Localized {
     JPanel mousesWithView;
     JPanel mousesWithoutView;
 
+    List<VirtualRatSetup> getRatsWithoutView() {
+        return ratsWithoutView;
+    }
+
+    List<VirtualRatSetup> getRatsWithView() {
+        return ratsWithView;
+    }
+
     public RatsPanel() {
         this.setLayout(new BorderLayout());
         addButton1 = new JButton("Add rat with view");

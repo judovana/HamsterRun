@@ -8,6 +8,7 @@ import nonsense.hamsterrun.sprites.SpritesProvider;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
@@ -29,9 +30,12 @@ public class SetupWindow extends JFrame implements Localized {
 
     public SetupWindow(World world) {
         JTabbedPane tabs = new JTabbedPane();
+        final RatsPanel rats;
         if (world == null) {
-            JPanel rats = new RatsPanel();
+            rats = new RatsPanel();
             tabs.add(rats);
+        } else {
+            rats = null;
         }
         JPanel items = new ItemsAndAliensPanel();
         tabs.add(items);
@@ -40,8 +44,8 @@ public class SetupWindow extends JFrame implements Localized {
         tabs.add(allowedControls);
         JPanel presetConfigs = new PresetConfigs(world, this);
         tabs.add(presetConfigs);
-        if (world == null) {
-            JPanel networkConfigs = new NetworkPane(world, this);
+        if (world == null && rats != null) {
+            JPanel networkConfigs = new NetworkPane(world, this, rats);
             tabs.add(networkConfigs);
         }
         add(tabs);
@@ -50,6 +54,13 @@ public class SetupWindow extends JFrame implements Localized {
             public void stateChanged(ChangeEvent changeEvent) {
                 if (tabs.getSelectedComponent() instanceof  NetworkPane) {
                     startButton.setEnabled(false);
+                    if (world == null && rats != null) {
+                        //FIXME this is wrong, server can be started with no rats at all..
+                        if (rats.getRatsWithView().isEmpty() ) {
+                            JOptionPane.showMessageDialog(null, Localization.get().getNoRatWarning());
+                            tabs.setSelectedIndex(0);
+                        }
+                    }
                 } else {
                     startButton.setEnabled(true);
                 }

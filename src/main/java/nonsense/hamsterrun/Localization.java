@@ -165,4 +165,12 @@ public class Localization {
     public String getPresetConfigsTitle() {
         return get("presetConfigsTitle");
     }
+
+    public Object getNoRatWarning() {
+        return get("noRatWarning");
+    }
+
+    public String getOkConnected() {
+        return get("okConnected");
+    }
 }
